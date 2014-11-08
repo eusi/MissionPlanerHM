@@ -55,7 +55,7 @@ namespace MissionPlanner.Utilities
       /// <param name="nodeKey">The node key.</param>
       /// <param name="metaKey">The meta key.</param>
       /// <returns></returns>
-      public static string GetParameterMetaData(string nodeKey, string metaKey, string vechileType)
+      public static string GetParameterMetaData(string nodeKey, string metaKey)
       {
           CheckLoad();
 
@@ -65,7 +65,9 @@ namespace MissionPlanner.Utilities
             // Either it will be pulled from a file in the ArduPlane hierarchy or the ArduCopter hierarchy
              try
              {
-                 var element = _parameterMetaDataXML.Element("Params").Element(vechileType);
+                 MainV2.Firmwares selected = MainV2.comPort.MAV.cs.firmware;
+
+                 var element = _parameterMetaDataXML.Element("Params").Element(selected.ToString());
                  if (element != null && element.HasElements)
                  {
                      var node = element.Element(nodeKey);
@@ -115,11 +117,11 @@ namespace MissionPlanner.Utilities
       /// </summary>
       /// <param name="nodeKey"></param>
       /// <returns></returns>
-      public static List<KeyValuePair<int, string>> GetParameterOptionsInt(string nodeKey, string vechileType)
+      public static List<KeyValuePair<int, string>> GetParameterOptionsInt(string nodeKey)
       {
           CheckLoad();
 
-          string availableValuesRaw = GetParameterMetaData(nodeKey, ParameterMetaDataConstants.Values, vechileType);
+          string availableValuesRaw = GetParameterMetaData(nodeKey, ParameterMetaDataConstants.Values);
 
           string[] availableValues = availableValuesRaw.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
           if (availableValues.Any())
@@ -128,12 +130,8 @@ namespace MissionPlanner.Utilities
               // Add the values to the ddl
               foreach (string val in availableValues)
               {
-                  try
-                  {
-                      string[] valParts = val.Split(new[] { ':' });
-                      splitValues.Add(new KeyValuePair<int, string>(int.Parse(valParts[0].Trim()), (valParts.Length > 1) ? valParts[1].Trim() : valParts[0].Trim()));
-                  }
-                  catch { Console.WriteLine("Bad entry in param meta data: " + nodeKey); }
+                  string[] valParts = val.Split(new[] { ':' });
+                  splitValues.Add(new KeyValuePair<int, string>(int.Parse(valParts[0].Trim()), (valParts.Length > 1) ? valParts[1].Trim() : valParts[0].Trim()));
               };
 
               return splitValues;
@@ -142,11 +140,11 @@ namespace MissionPlanner.Utilities
           return new List<KeyValuePair<int, string>>();
       }
 
-      public static bool GetParameterRange(string nodeKey, ref double min, ref double max, string vechileType)
+      public static bool GetParameterRange(string nodeKey, ref double min, ref double max)
       {
           CheckLoad();
 
-          string rangeRaw = ParameterMetaDataRepository.GetParameterMetaData(nodeKey, ParameterMetaDataConstants.Range, vechileType);
+          string rangeRaw = ParameterMetaDataRepository.GetParameterMetaData(nodeKey, ParameterMetaDataConstants.Range);
 
           string[] rangeParts = rangeRaw.Split(new[] { ' ' });
           if (rangeParts.Count() == 2)

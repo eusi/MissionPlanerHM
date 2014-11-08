@@ -45,7 +45,7 @@ namespace MissionPlanner.Controls
 
       public string Value
       {
-          get { return ((float)numericUpDown1.Value * DisplayScale).ToString(CultureInfo.InvariantCulture); } 
+          get { return ((float)numericUpDown1.Value * DisplayScale).ToString(); } 
          set
          {
              float back1 = _minrange;

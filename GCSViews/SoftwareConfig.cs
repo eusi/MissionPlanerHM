@@ -70,11 +70,6 @@ namespace MissionPlanner.GCSViews
                         start = AddBackstageViewPage(new ConfigArdurover(), "Basic Tuning");
                     }
 
-                    if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduTracker)
-                    {
-                        start = AddBackstageViewPage(new ConfigAntennaTracker(), "Extended Tuning");
-                    }
-
                     AddBackstageViewPage(new ConfigFriendlyParams { ParameterMode = ParameterMetaDataConstants.Standard }, "Standard Params");
                     AddBackstageViewPage(new ConfigFriendlyParams { ParameterMode = ParameterMetaDataConstants.Advanced }, "Advanced Params",null,true);
                     AddBackstageViewPage(new ConfigRawParams(), "Full Parameter List", null, true);

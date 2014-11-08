@@ -320,11 +320,6 @@ namespace MissionPlanner.Log
 
                         answer.Add(item);
                     }
-                    catch (OutOfMemoryException ex)
-                    {
-                        CustomMessageBox.Show("out of memory");
-                        return answer;
-                    }
                     catch { }
                 }
             }

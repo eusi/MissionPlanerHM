@@ -78,8 +78,7 @@ namespace MissionPlanner.Warnings
                     {
                         foreach (var item in warnings)
                         {
-                            // check primary condition
-                            if (checkCond(item))
+                            if (item.CheckValue())
                             {
                                 if (MainV2.speechEnable)
                                 {
@@ -88,9 +87,6 @@ namespace MissionPlanner.Warnings
 
                                     MainV2.speechEngine.SpeakAsync(item.SayText());
                                 }
-
-                                MainV2.comPort.MAV.cs.messageHigh = item.SayText();
-                                MainV2.comPort.MAV.cs.messageHighTime = DateTime.Now;
                             }
 
                         }
@@ -101,24 +97,6 @@ namespace MissionPlanner.Warnings
 
                 System.Threading.Thread.Sleep(100);
             }
-        }
-
-        static bool checkCond(CustomWarning item)
-        {
-            // if there is a child go recursive
-            if (item.Child != null) 
-            {
-                if (item.CheckValue() && checkCond(item.Child))
-                    return true;
-            } 
-            else 
-            {
-                // is no child then simple check
-                if (item.CheckValue())
-                    return true;
-            }
-
-            return false;
         }
     }
 }

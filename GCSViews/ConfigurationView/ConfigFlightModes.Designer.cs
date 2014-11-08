@@ -176,7 +176,6 @@
             this.CMB_fmode6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode6.FormattingEnabled = true;
             this.CMB_fmode6.Name = "CMB_fmode6";
-            this.CMB_fmode6.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // labelfm5
             // 
@@ -191,7 +190,6 @@
             this.CMB_fmode5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode5.FormattingEnabled = true;
             this.CMB_fmode5.Name = "CMB_fmode5";
-            this.CMB_fmode5.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // labelfm4
             // 
@@ -206,7 +204,6 @@
             this.CMB_fmode4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode4.FormattingEnabled = true;
             this.CMB_fmode4.Name = "CMB_fmode4";
-            this.CMB_fmode4.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // labelfm3
             // 
@@ -221,7 +218,6 @@
             this.CMB_fmode3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode3.FormattingEnabled = true;
             this.CMB_fmode3.Name = "CMB_fmode3";
-            this.CMB_fmode3.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // labelfm2
             // 
@@ -236,7 +232,6 @@
             this.CMB_fmode2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode2.FormattingEnabled = true;
             this.CMB_fmode2.Name = "CMB_fmode2";
-            this.CMB_fmode2.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // labelfm1
             // 
@@ -251,7 +246,6 @@
             this.CMB_fmode1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CMB_fmode1.FormattingEnabled = true;
             this.CMB_fmode1.Name = "CMB_fmode1";
-            this.CMB_fmode1.SelectedIndexChanged += new System.EventHandler(this.flightmode_SelectedIndexChanged);
             // 
             // BUT_SaveModes
             // 

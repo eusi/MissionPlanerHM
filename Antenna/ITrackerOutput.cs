@@ -21,10 +21,6 @@ namespace MissionPlanner.Antenna
         int TiltPWMRange { get; set; }
         int PanPWMCenter { get; set; }
         int TiltPWMCenter { get; set; }
-        int PanSpeed { get; set; }
-        int TiltSpeed { get; set; }
-        int PanAccel { get; set; }
-        int TiltAccel { get; set; }
 
         bool PanReverse { get; set; }
         bool TiltReverse { get; set; }

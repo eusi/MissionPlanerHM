@@ -120,7 +120,7 @@ namespace px4uploader
                     {
                         up.verifyotp();
                     }
-                    catch (Exception ex)  { Console.WriteLine(ex.ToString()); up.close(); return false; }
+                    catch { up.close(); return false; }
 
                     try
                     {
