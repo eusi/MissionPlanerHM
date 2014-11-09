@@ -1,0 +1,33 @@
+<UserControl x:Class="MissionPlanner.Wizard._98DontForget" d:DesignHeight="500" d:DesignWidth="800"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+xmlns:BackstageView="clr-namespace:MissionPlanner.Controls.BackstageView"
+xmlns:Controls="clr-namespace:MissionPlanner.Controls"
+xmlns:GCSViews="clr-namespace:MissionPlanner.GCSViews"
+xmlns:Wizard="clr-namespace:MissionPlanner.Wizard"
+xmlns:ConfigurationView="clr-namespace:MissionPlanner.GCSViews.ConfigurationView"
+mc:Ignorable="d" 
+> <Grid><Label Name="_Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,-5,0,0" FontFamily="Microsoft Sans Serif" >Dont Forget!!</Label>
+<Image Name="_Image" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="38,10,0,0" Width="288" Height="72"></Image>
+<Grid Name="panel1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,60,0,0" Width="740" Height="424">
+<Grid Name="flowLayoutPanel1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,75,0,0" Width="727" Height="344">
+<Label Name="linkLabel1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-10,0,0" FontFamily="Microsoft Sans Serif" >ardupilot.com</Label>
+<Label Name="linkLabel2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,8,0,0" FontFamily="Microsoft Sans Serif" >APM:Copter Wiki</Label>
+<Label Name="linkLabel3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,26,0,0" FontFamily="Microsoft Sans Serif" >APM:Plane Wiki</Label>
+<Label Name="linkLabel8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,44,0,0" FontFamily="Microsoft Sans Serif" >APM:Rover</Label>
+<Label Name="linkLabel4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,62,0,0" FontFamily="Microsoft Sans Serif" >Mission Planner Wiki</Label>
+<Label Name="linkLabel5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,80,0,0" FontFamily="Microsoft Sans Serif" >ArduCopter ESC Calibration</Label>
+<Label Name="linkLabel6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,98,0,0" FontFamily="Microsoft Sans Serif" >ArduCopter First Time Setup</Label>
+<Label Name="linkLabel7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,116,0,0" FontFamily="Microsoft Sans Serif" >ArduCopter First Flight</Label>
+<Label Name="linkLabel9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,134,0,0" FontFamily="Microsoft Sans Serif" >ArduCopter Tutorial Videos (youtube)</Label>
+</Grid>
+<Label Name="label3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,26,0,0" FontFamily="Microsoft Sans Serif" >Here are some links to additional information that may be relevant to you. 
+Check them out!!
+</Label>
+<Label Name="label1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,-6,0,0" FontFamily="Microsoft Sans Serif" >Things to check</Label>
+</Grid>
+</Grid></UserControl>

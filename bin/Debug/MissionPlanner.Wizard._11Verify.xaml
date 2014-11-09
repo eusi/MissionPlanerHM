@@ -1,0 +1,41 @@
+<UserControl x:Class="MissionPlanner.Wizard._11Verify" d:DesignHeight="500" d:DesignWidth="800"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+xmlns:BackstageView="clr-namespace:MissionPlanner.Controls.BackstageView"
+xmlns:Controls="clr-namespace:MissionPlanner.Controls"
+xmlns:GCSViews="clr-namespace:MissionPlanner.GCSViews"
+xmlns:Wizard="clr-namespace:MissionPlanner.Wizard"
+xmlns:ConfigurationView="clr-namespace:MissionPlanner.GCSViews.ConfigurationView"
+mc:Ignorable="d" 
+> <Grid><Label Name="_Label" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,-5,0,0" FontFamily="Microsoft Sans Serif" >Verify</Label>
+<Image Name="_Image" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="38,10,0,0" Width="288" Height="72"></Image>
+<Grid Name="panel1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,60,0,0" Width="740" Height="424">
+<Grid Name="tableLayoutPanel1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="68,133,0,0" Width="587" Height="256">
+<CheckBox Name="chk_perarm" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="569,207,0,0" Width="15">checkBox5</CheckBox>
+<CheckBox Name="chk_rc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="569,156,0,0" Width="15">checkBox4</CheckBox>
+<CheckBox Name="chk_compass" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="569,105,0,0" Width="15">checkBox3</CheckBox>
+<CheckBox Name="chk_accel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="569,54,0,0" Width="15">checkBox2</CheckBox>
+<Label Name="label10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,194,0,0" FontFamily="Microsoft Sans Serif" >Verify Pre-Arm Test</Label>
+<Label Name="lbl_prearm" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,194,0,0" FontFamily="Microsoft Sans Serif" >Can you arm the autopilot?
+Please try arming with your transmitter.
+NOTE: Props may spin!</Label>
+<Label Name="label8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,143,0,0" FontFamily="Microsoft Sans Serif" >Verify RC</Label>
+<Label Name="lbl_rc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,143,0,0" FontFamily="Microsoft Sans Serif" >Have you configured your RC transmitter?</Label>
+<Label Name="label2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,-10,0,0" FontFamily="Microsoft Sans Serif" >Verify GPS</Label>
+<Label Name="label4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,41,0,0" FontFamily="Microsoft Sans Serif" >Verify Accel</Label>
+<Label Name="lbl_compass" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,92,0,0" FontFamily="Microsoft Sans Serif" >Have you completed a compass calibration?</Label>
+<Label Name="label5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,92,0,0" FontFamily="Microsoft Sans Serif" >Verify Compass</Label>
+<Label Name="lbl_accel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,41,0,0" FontFamily="Microsoft Sans Serif" >Have you completed an accel calibration?</Label>
+<Label Name="lbl_gps" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="286,-10,0,0" FontFamily="Microsoft Sans Serif" >Does the autopilot have gps lock?</Label>
+<CheckBox Name="chk_gps" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="569,3,0,0" Width="15">checkBox1</CheckBox>
+</Grid>
+<Label Name="label3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,26,0,0" FontFamily="Microsoft Sans Serif" >Use this screen to verify that you meet all the basic requirements to arm and fly the autopilot.
+
+NOTE: this test will attempt to arm your autopilot and props may spin, please remove any props.</Label>
+<Label Name="label1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,-6,0,0" FontFamily="Microsoft Sans Serif" >Verify Current Progress</Label>
+</Grid>
+</Grid></UserControl>

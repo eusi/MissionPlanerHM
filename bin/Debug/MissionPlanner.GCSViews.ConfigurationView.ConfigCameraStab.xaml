@@ -1,0 +1,46 @@
+<UserControl x:Class="MissionPlanner.GCSViews.ConfigurationView.ConfigCameraStab" d:DesignHeight="432" d:DesignWidth="674"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+xmlns:BackstageView="clr-namespace:MissionPlanner.Controls.BackstageView"
+xmlns:Controls="clr-namespace:MissionPlanner.Controls"
+xmlns:GCSViews="clr-namespace:MissionPlanner.GCSViews"
+xmlns:Wizard="clr-namespace:MissionPlanner.Wizard"
+xmlns:ConfigurationView="clr-namespace:MissionPlanner.GCSViews.ConfigurationView"
+mc:Ignorable="d" 
+> <Grid><Label Name="LNK_wiki" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="624,-1,0,0" FontFamily="Microsoft Sans Serif" >Wiki</Label>
+<Label Name="LBL_Error" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="303,392,0,0" FontFamily="Microsoft Sans Serif" >Error Message of some kind</Label>
+<Image Name="PBOX_WarningIcon" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,389,0,0" Width="32" Height="32"></Image>
+<Label Name="label7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,227,0,0" FontFamily="Microsoft Sans Serif" >Gain</Label>
+<Label Name="label8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,281,0,0" FontFamily="Microsoft Sans Serif" >Max</Label>
+<Label Name="label9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,253,0,0" FontFamily="Microsoft Sans Serif" >Trim</Label>
+<Label Name="label10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,227,0,0" FontFamily="Microsoft Sans Serif" >Min</Label>
+<xctk:DecimalUpDown Name="numericUpDown5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,235,0,0" Width="59"></xctk:DecimalUpDown>
+<xctk:DecimalUpDown Name="numericUpDown6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,261,0,0" Width="59"></xctk:DecimalUpDown>
+<xctk:DecimalUpDown Name="numericUpDown7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,287,0,0" Width="59"></xctk:DecimalUpDown>
+<CheckBox Name="checkBox2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="365,287,0,0" Width="66">Reverse</CheckBox>
+<xctk:DecimalUpDown Name="numericUpDown8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="376,235,0,0" Width="55"></xctk:DecimalUpDown>
+<Label Name="label6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,188,0,0" FontFamily="Microsoft Sans Serif" >Roll</Label>
+<Label Name="label5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="21,30,0,0" FontFamily="Microsoft Sans Serif" >Pitch</Label>
+<Label Name="label4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="346,69,0,0" FontFamily="Microsoft Sans Serif" >Gain</Label>
+<Label Name="label3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,123,0,0" FontFamily="Microsoft Sans Serif" >Max</Label>
+<Label Name="label2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,95,0,0" FontFamily="Microsoft Sans Serif" >Trim</Label>
+<Label Name="label1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="243,69,0,0" FontFamily="Microsoft Sans Serif" >Min</Label>
+<Grid Name="groupBox2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,59,0,0" Width="635" Height="5">
+</Grid>
+<Grid Name="groupBox1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,216,0,0" Width="635" Height="5">
+</Grid>
+<Button Name="BUT_Refresh" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="114,397,0,0" Width="78">Refresh</Button>
+<Button Name="BUT_SetDefaults" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,397,0,0" Width="78">Set Defaults</Button>
+<Button Name="BUT_WriteValues" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="568,383,0,0" Width="94">Write</Button>
+<xctk:DecimalUpDown Name="numericUpDown4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,77,0,0" Width="59"></xctk:DecimalUpDown>
+<xctk:DecimalUpDown Name="numericUpDown3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,103,0,0" Width="59"></xctk:DecimalUpDown>
+<xctk:DecimalUpDown Name="numericUpDown2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="273,129,0,0" Width="59"></xctk:DecimalUpDown>
+<CheckBox Name="checkBox1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="365,129,0,0" Width="66">Reverse</CheckBox>
+<xctk:DecimalUpDown Name="numericUpDown1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="376,77,0,0" Width="55"></xctk:DecimalUpDown>
+<Image Name="pictureBox2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="33,207,0,0" Width="203" Height="112"></Image>
+<Image Name="pictureBox1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="33,52,0,0" Width="203" Height="112"></Image>
+</Grid></UserControl>

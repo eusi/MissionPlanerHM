@@ -1,0 +1,59 @@
+<UserControl x:Class="MissionPlanner.GCSViews.ConfigurationView.ConfigFailSafe" d:DesignHeight="449" d:DesignWidth="688"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+xmlns:BackstageView="clr-namespace:MissionPlanner.Controls.BackstageView"
+xmlns:Controls="clr-namespace:MissionPlanner.Controls"
+xmlns:GCSViews="clr-namespace:MissionPlanner.GCSViews"
+xmlns:Wizard="clr-namespace:MissionPlanner.Wizard"
+xmlns:ConfigurationView="clr-namespace:MissionPlanner.GCSViews.ConfigurationView"
+mc:Ignorable="d" 
+> <Grid><Label Name="lbl_gpslock" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,111,0,0" FontFamily="Microsoft Sans Serif" >No Lock</Label>
+<Label Name="lbl_armed" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,62,0,0" FontFamily="Microsoft Sans Serif" >Dissarmed</Label>
+<Grid Name="groupBox1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="480,174,0,0" Width="205" Height="257">
+<ComboBox Name="mavlinkComboBoxfs_batt_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,216,0,0" Width="199"></ComboBox>
+<CheckBox Name="mavlinkCheckBoxFS_GCS_ENABLE" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,198,0,0" Width="199">GCS FS Enable</CheckBox>
+<Grid Name="pnlmah" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,176,0,0" Width="199" Height="23">
+<Label Name="label5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,-7,0,0" FontFamily="Microsoft Sans Serif" >Reserved MAH</Label>
+<xctk:DecimalUpDown Name="mavlinkNumericUpDownFS_BATT_MAH" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0" Width="100"></xctk:DecimalUpDown>
+</Grid>
+<Grid Name="PNL_low_bat" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,153,0,0" Width="199" Height="23">
+<Label Name="label4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="4,-7,0,0" FontFamily="Microsoft Sans Serif" >Low Battery</Label>
+<xctk:DecimalUpDown Name="mavlinkNumericUpDownlow_voltage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0" Width="100"></xctk:DecimalUpDown>
+</Grid>
+<Grid Name="PNL_thr_fs_value" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,16,0,0" Width="199" Height="25">
+<Label Name="label3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,-10,0,0" FontFamily="Microsoft Sans Serif" >FS Pwm</Label>
+<xctk:DecimalUpDown Name="mavlinkNumericUpDownfs_thr_value" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,0,0,0" Width="93"></xctk:DecimalUpDown>
+<xctk:DecimalUpDown Name="mavlinkNumericUpDownthr_fs_value" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0" Width="103"></xctk:DecimalUpDown>
+</Grid>
+<CheckBox Name="mavlinkCheckBoxlong_fs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,111,0,0" Width="199">FailSafe Long (20 sec)</CheckBox>
+<CheckBox Name="mavlinkCheckBoxshort_fs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,93,0,0" Width="199">FailSafe Short (1 sec)</CheckBox>
+<CheckBox Name="mavlinkCheckBoxgcs_fs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,76,0,0" Width="199">GCS FailSafe</CheckBox>
+<CheckBox Name="mavlinkCheckBoxthr_fs_action" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,59,0,0" Width="199">Throttle Failsafe Action</CheckBox>
+<CheckBox Name="mavlinkCheckBoxthr_fs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,41,0,0" Width="199">Throttle FailSafe</CheckBox>
+<ComboBox Name="mavlinkComboBox_fs_thr_enable" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,20,0,0" Width="199"></ComboBox>
+</Grid>
+<Label Name="LNK_wiki" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="657,-5,0,0" FontFamily="Microsoft Sans Serif" >Wiki</Label>
+<Label Name="lbl_currentmode" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="473,11,0,0" FontFamily="Microsoft Sans Serif" >Manual</Label>
+<Label Name="label2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="342,-5,0,0" FontFamily="Microsoft Sans Serif" >Servo/Motor OUT</Label>
+<Label Name="label1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="84,-5,0,0" FontFamily="Microsoft Sans Serif" >Radio IN</Label>
+<ProgressBar Name="horizontalProgressBar9" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,406,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,351,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar11" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,296,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,241,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar13" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,186,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar14" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,131,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar15" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,21,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar16" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="297,76,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,406,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar7" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,351,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar6" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,296,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,241,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,186,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,131,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,21,0,0" Width="170" Height="25"></ProgressBar>
+<ProgressBar Name="horizontalProgressBar1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,76,0,0" Width="170" Height="25"></ProgressBar>
+</Grid></UserControl>
