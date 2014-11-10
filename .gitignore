@@ -1,8 +1,8 @@
 *.pfx
 *.suo
 *.user
-obj/
 bin/
+obj/
 /CustomImages
 /APMPlannerXplanes/APMPlannerXplanes/Debug
 /APMPlannerXplanes/Debug

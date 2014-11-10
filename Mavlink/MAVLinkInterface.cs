@@ -147,10 +147,7 @@ namespace MissionPlanner
         int bps2 = 0;
         public DateTime bpstime { get; set; }
 
-        float synclost;
-        internal float packetslost = 0;
-        internal float packetsnotlost = 0;
-        DateTime packetlosttimer = DateTime.MinValue;
+        
 
         public MAVLinkInterface()
         {
@@ -178,9 +175,7 @@ namespace MissionPlanner
             this.bps2 = 0;
             this.bpstime = DateTime.MinValue;
 
-            this.packetslost = 0f;
-            this.packetsnotlost = 0f;
-            this.packetlosttimer = DateTime.MinValue;
+
             this.lastbad = new byte[2];
 
             for (int a = 0; a < MAVlist.Length; a++ )
@@ -432,8 +427,8 @@ Please check the following
             giveComport = false;
             frmProgressReporter.UpdateProgressAndStatus(100, "Done.");
             log.Info("Done open " + MAV.sysid + " " + MAV.compid);
-            packetslost = 0;
-            synclost = 0;
+            MAV.packetslost = 0;
+            MAV.synclost = 0;
         }
 
         void SetupMavConnect(byte sysid, byte compid,byte mgsno, mavlink_heartbeat_t hb)
@@ -1384,7 +1379,7 @@ Please check the following
             }
             else
             {
-                ctl.flags = (byte)(SERIAL_CONTROL_FLAG.EXCLUSIVE | SERIAL_CONTROL_FLAG.RESPOND);
+                ctl.flags = (byte)(SERIAL_CONTROL_FLAG.EXCLUSIVE | SERIAL_CONTROL_FLAG.RESPOND);// | SERIAL_CONTROL_FLAG.MULTI);
             }
 
             if (data != null && data.Length != 0)
@@ -1657,10 +1652,14 @@ Please check the following
                     {
                         //Console.WriteLine("getwp ans " + DateTime.Now.Millisecond);
 
-
-                        //Array.Copy(buffer, 6, buffer, 0, buffer.Length - 6);
-
                         var wp = buffer.ByteArrayToStructure<mavlink_mission_item_t>(6);
+
+                        // received a packet, but not what we requested
+                        if (req.seq != wp.seq)
+                        {
+                            generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST, req);
+                            continue;
+                        }
 
                         loc.options = (byte)(wp.frame);
                         loc.id = (byte)(wp.command);
@@ -1980,6 +1979,7 @@ Please check the following
                     {
                         var ans = buffer.ByteArrayToStructure<mavlink_mission_ack_t>(6);
                         log.Info("set wp " + index + " ACK 47 : " + buffer[5] + " ans " + Enum.Parse(typeof(MAV_MISSION_RESULT), ans.type.ToString()));
+                        giveComport = false;
 
                         if (req.current == 2)
                         {
@@ -2398,26 +2398,10 @@ Please check the following
             // add byte count
             _bytesReceivedSubj.OnNext(buffer.Length);
 
-            // update packet loss statistics
-            if (!logreadmode && packetlosttimer.AddSeconds(5) < DateTime.Now)
-            {
-                packetlosttimer = DateTime.Now;
-                packetslost = (packetslost * 0.8f);
-                packetsnotlost = (packetsnotlost * 0.8f);
-            }
-            else if (logreadmode && packetlosttimer.AddSeconds(5) < lastlogread)
-            {
-                packetlosttimer = lastlogread;
-                packetslost = (packetslost * 0.8f);
-                packetsnotlost = (packetsnotlost * 0.8f);
-            }
-
-            //MAV.cs.linkqualitygcs = (ushort)((packetsnotlost / (packetsnotlost + packetslost)) * 100.0);
-
             // update bps statistics
             if (bpstime.Second != DateTime.Now.Second && !logreadmode && BaseStream.IsOpen)
             {
-                Console.Write("bps {0} loss {1} left {2} mem {3}      \n", bps1, synclost, BaseStream.BytesToRead, System.GC.GetTotalMemory(false) / 1024 / 1024.0);
+                Console.Write("bps {0} loss {1} left {2} mem {3}      \n", bps1, MAV.synclost, BaseStream.BytesToRead, System.GC.GetTotalMemory(false) / 1024 / 1024.0);
                 bps2 = bps1; // prev sec
                 bps1 = 0; // current sec
                 bpstime = DateTime.Now;
@@ -2474,6 +2458,20 @@ Please check the following
             byte sysid = buffer[3];
             byte compid = buffer[4];
 
+            // update packet loss statistics
+            if (!logreadmode && MAVlist[sysid].packetlosttimer.AddSeconds(5) < DateTime.Now)
+            {
+                MAVlist[sysid].packetlosttimer = DateTime.Now;
+                MAVlist[sysid].packetslost = (MAVlist[sysid].packetslost * 0.8f);
+                MAVlist[sysid].packetsnotlost = (MAVlist[sysid].packetsnotlost * 0.8f);
+            }
+            else if (logreadmode && MAVlist[sysid].packetlosttimer.AddSeconds(5) < lastlogread)
+            {
+                MAVlist[sysid].packetlosttimer = lastlogread;
+                MAVlist[sysid].packetslost = (MAVlist[sysid].packetslost * 0.8f);
+                MAVlist[sysid].packetsnotlost = (MAVlist[sysid].packetsnotlost * 0.8f);
+            }
+
             // if its a gcs packet - extract wp's and return
             if (buffer.Length >= 5 && (sysid == 255 || sysid == 253) && logreadmode) // gcs packet
             {
@@ -2492,7 +2490,7 @@ Please check the following
                         {
                             if (packetSeqNo != expectedPacketSeqNo)
                             {
-                                synclost++; // actualy sync loss's
+                                MAVlist[sysid].synclost++; // actualy sync loss's
                                 int numLost = 0;
 
                                 if (packetSeqNo < ((MAVlist[sysid].recvpacketcount + 1))) // recvpacketcount = 255 then   10 < 256 = true if was % 0x100 this would fail
@@ -2503,13 +2501,13 @@ Please check the following
                                 {
                                     numLost = packetSeqNo - MAV.recvpacketcount;
                                 }
-                                packetslost += numLost;
+                                MAVlist[sysid].packetslost += numLost;
                                 WhenPacketLost.OnNext(numLost);
 
                                 log.InfoFormat("lost pkts new seqno {0} pkts lost {1}", packetSeqNo, numLost);
                             }
 
-                            packetsnotlost++;
+                            MAVlist[sysid].packetsnotlost++;
 
                             MAVlist[sysid].recvpacketcount = packetSeqNo;
                         }
@@ -3153,9 +3151,13 @@ Please check the following
                 {
                     if (buffer[5] == (byte)MAVLINK_MSG_ID.RALLY_POINT)
                     {
-                        giveComport = false;
-
                         mavlink_rally_point_t fp = buffer.ByteArrayToStructure<mavlink_rally_point_t>(6);
+
+                        if (req.idx != fp.idx)
+                        {
+                            generatePacket((byte)MAVLINK_MSG_ID.FENCE_FETCH_POINT, req);
+                            continue;
+                        }
 
                         plla.Lat = fp.lat / t7;
                         plla.Lng = fp.lng / t7;
@@ -3163,6 +3165,8 @@ Please check the following
                         plla.Alt = fp.alt;
 
                         total = fp.count;
+
+                        giveComport = false;
 
                         return plla;
                     }
