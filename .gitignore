@@ -2,6 +2,7 @@
 *.suo
 *.user
 obj/
+bin/
 /CustomImages
 /APMPlannerXplanes/APMPlannerXplanes/Debug
 /APMPlannerXplanes/Debug
