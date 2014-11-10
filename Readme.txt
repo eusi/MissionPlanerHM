@@ -1,30 +1,26 @@
-﻿
-1. Install software
+﻿-----------WINDOWS-------------
 
-- Git
-  http://code.google.com/p/msysgit/downloads/list
-  Select a file summarized as "Full installer for official Git for Windows"
-   with the highest version
-- TortuiseGit
-  http://code.google.com/p/tortoisegit/wiki/Download
-- Visual Studio
-  http://www.visualstudio.com/downloads/download-visual-studio-vs
-  Select "Visual Studio Express 2013 for Windows Desktop"
-- DirectX Redist
-  http://www.microsoft.com/en-us/download/details.aspx?id=35
-- Microsoft .NET 4.0
+1) Install software
 
-2. Check out
+* Git
+* TortuiseGit
+* Visual Studio Express 2013 for Windows Desktop
+* DirectX Redist (http://www.microsoft.com/en-us/download/details.aspx?id=35)
+* Microsoft .NET 4.0
 
-- Create an empty folder anywhere
-- In explorer left click and select "Git Clone"
-  set URL https://github.com/diydrones/MissionPlanner
-  OK
+2) Check out
 
-3. Build
+* Check out via "Git Clone" (https://github.com/eusi/MissionPlanerHM)
 
-- Open ArdupilotMega.sln with Visual Studio express 2013 for windows desktop.
-- Compile.
+3) Build
+
+* Open ArdupilotMega.sln with Visual Studio express 2013 for windows desktop.
+* Compile.
+
+
+**Note:**
+
+MissionPlaner (original) may not be used to make this fork work. To be on the safe side the MP installer was copied to .installer directory. Perhaps some system32 libs might missing.
 
 
 -----------MONO-------------
