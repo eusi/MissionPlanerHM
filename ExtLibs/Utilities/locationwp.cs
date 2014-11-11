@@ -8,6 +8,7 @@ namespace MissionPlanner.Utilities
     /// <summary>
     /// Struct as used in Ardupilot
     /// </summary>
+    [Serializable]
     public struct Locationwp
     {
         public byte id;				// command id

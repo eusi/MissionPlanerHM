@@ -1423,6 +1423,44 @@ namespace MissionPlanner.GCSViews
                 last = lla;
             }
         }
+
+        public List<Locationwp> getWayPoints()
+        {
+            List<Locationwp> result = new List<Locationwp>();
+
+            for (int a = 0; a < Commands.Rows.Count - 0; a++)
+            {
+                Locationwp temp = new Locationwp();
+
+
+                byte mode = (byte)(MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[0].Value.ToString());
+
+               
+                temp.id = mode;
+              
+               
+                temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p4 = float.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US")) / MainV2.comPort.MAV.cs.multiplierdist;
+
+
+                if (temp.id == 99)
+                    temp.id = 0;
+
+               result.Add(temp);
+
+        
+
+            }
+
+
+            return result;
+        }
+
         /// <summary>
         /// Saves a waypoint writer file
         /// </summary>
@@ -1839,6 +1877,8 @@ namespace MissionPlanner.GCSViews
 
             MainV2.comPort.giveComport = false;
         }
+
+
 
         /// <summary>
         /// Processes a loaded EEPROM to the map and datagrid
@@ -2310,6 +2350,24 @@ namespace MissionPlanner.GCSViews
             {
                 CustomMessageBox.Show("Can't open file! " + ex.ToString());
             }
+        }
+
+        public void SetNewWayPoints(List<Locationwp> waypoints) {
+
+            try
+            {
+
+                processToScreen(waypoints, false);
+
+                writeKML();
+
+                MainMap.ZoomAndCenterMarkers("objects");
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show("Can't open file! " + ex.ToString());
+            }
+        
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)

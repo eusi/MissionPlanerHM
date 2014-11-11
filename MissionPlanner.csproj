@@ -183,6 +183,8 @@
       <HintPath>packages\Rx-PlatformServices.2.2.4\lib\net40\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Speech">
       <Private>True</Private>
     </Reference>
@@ -247,6 +249,8 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="SmartAir\MissionPlannerService.cs" />
+    <Compile Include="SmartAir\IMissionPlannerService.cs" />
     <Compile Include="Antenna\Tracker.cs">
       <SubType>UserControl</SubType>
     </Compile>
