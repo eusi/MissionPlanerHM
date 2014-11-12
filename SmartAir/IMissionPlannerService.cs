@@ -1,4 +1,5 @@
-﻿using MissionPlanner.Utilities;
+﻿using GMap.NET;
+using MissionPlanner.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,19 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json,
             UriTemplate = "/setWayPoints")]
-        void setWayPoints(List<Locationwp> waypoints);
+        void setWayPoints(List<Locationwp> waypoints,bool append); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
         [OperationContract()]
         [WebGet(ResponseFormat=WebMessageFormat.Json)]           
         List<Locationwp> getWayPoints();
+
+        void setZone(List<PointLatLng> zonePoints, System.Drawing.Color color, string zoneName);
+
+        PointLatLngAlt getUAVPosition();
+
+        JudgServerInterface.Obstacles getObstacles();
+
+        void setTarget(PointLatLng target, string targetName);
+
     }
 }

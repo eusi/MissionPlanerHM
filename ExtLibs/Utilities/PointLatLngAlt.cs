@@ -11,7 +11,7 @@ using GeoUtility.GeoSystem;
 
 namespace MissionPlanner.Utilities
 {
-
+    [Serializable]
     public class PointLatLngAlt: IComparable
     {
         public static readonly PointLatLngAlt Zero = new PointLatLngAlt();

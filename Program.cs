@@ -13,9 +13,7 @@ using MissionPlanner.Utilities;
 using MissionPlanner;
 using System.Drawing;
 using System.Text.RegularExpressions;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Web;
+
 
 namespace MissionPlanner
 {
@@ -205,17 +203,7 @@ namespace MissionPlanner
 
             Application.DoEvents();
 
-            #region SmartAir Service
-                
-
-            WebServiceHost host = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri("http://localhost:8000/MissionPlannerService"));
-            ServiceEndpoint ep = host.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
-            ServiceDebugBehavior stp = host.Description.Behaviors.Find<ServiceDebugBehavior>();
-            stp.HttpHelpPageEnabled = false;
-            host.Open();
-
-         
-            #endregion
+           
 
 
             try

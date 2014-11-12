@@ -249,6 +249,11 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="SmartAir\JudgeServer\IJudgeServer.cs" />
+    <Compile Include="SmartAir\JudgeServer\MovingObstacle.cs" />
+    <Compile Include="SmartAir\JudgeServer\Obstacles.cs" />
+    <Compile Include="SmartAir\JudgeServer\ServerInfo.cs" />
+    <Compile Include="SmartAir\JudgeServer\StationaryObstacle.cs" />
     <Compile Include="SmartAir\MissionPlannerService.cs" />
     <Compile Include="SmartAir\IMissionPlannerService.cs" />
     <Compile Include="Antenna\Tracker.cs">

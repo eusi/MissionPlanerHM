@@ -32,6 +32,9 @@ using GMap.NET.MapProviders;
 using MissionPlanner.Maps;
 using System.Data;
 using DotSpatial.Projections;
+using System.ServiceModel.Web;
+using System.ServiceModel.Description;
+using System.ServiceModel;
 
 namespace MissionPlanner.GCSViews
 {
@@ -61,6 +64,8 @@ namespace MissionPlanner.GCSViews
         private ComponentResourceManager rm = new ComponentResourceManager(typeof(FlightPlanner));
 
         private Dictionary<string, string[]> cmdParamNames = new Dictionary<string, string[]>();
+
+        WebServiceHost smartAirWSHost;
 
         public enum altmode
         {
@@ -2352,12 +2357,12 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        public void SetNewWayPoints(List<Locationwp> waypoints) {
+        public void SetNewWayPoints(List<Locationwp> waypoints,bool append) {
 
             try
             {
 
-                processToScreen(waypoints, false);
+                processToScreen(waypoints, append);
 
                 writeKML();
 
@@ -6222,6 +6227,75 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
                 }
             }
+        }
+
+        private void btnSmartAir_Click(object sender, EventArgs e)
+        {
+            pnlSmartAir.Visible = true;
+            
+        }
+
+       
+
+        private void btnStartWS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+
+                    smartAirWSHost.Abort();
+                    smartAirWSHost = null;
+                }
+
+                if (smartAirWSHost == null)
+                {
+                    smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
+                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
+                    ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
+                    stp.HttpHelpPageEnabled = false;
+                    smartAirWSHost.Open();
+                    this.btnStopWS.Enabled = true;
+                    this.btnStartWS.Enabled = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void btnStopWS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+                    smartAirWSHost.Abort();
+                }
+                else if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Opened)
+                {
+                    smartAirWSHost.Close();
+
+                }
+                smartAirWSHost = null;
+                this.btnStopWS.Enabled = false;
+                this.btnStartWS.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            pnlSmartAir.Visible = false;
         }
     }
 }

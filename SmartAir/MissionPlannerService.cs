@@ -11,9 +11,9 @@ namespace MissionPlanner.SmartAir
     {
 
 
-        public void setWayPoints(List<Locationwp> waypoints)
+        public void setWayPoints(List<Locationwp> waypoints,bool append)
         {
-            MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints);
+            MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
 
 
         }
@@ -22,12 +22,29 @@ namespace MissionPlanner.SmartAir
         public List<Locationwp> getWayPoints()
         {
             return MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
-            //List<Locationwp> result = new List<Locationwp>();
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    result.Add(new Locationwp() { id = 16, alt = i, lat = 2, lng = 3, options = 1 });
-            //}
-            //return result;
+            
+        }
+
+
+        public void setZone(List<GMap.NET.PointLatLng> zonePoints, System.Drawing.Color color, string zoneName)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public PointLatLngAlt getUAVPosition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public JudgServerInterface.Obstacles getObstacles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void setTarget(GMap.NET.PointLatLng target, string targetName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
