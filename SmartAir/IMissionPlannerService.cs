@@ -7,6 +7,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 
+
 namespace MissionPlanner.SmartAir
 {
     [ServiceContract]
@@ -18,8 +19,8 @@ namespace MissionPlanner.SmartAir
             Method = "POST",
             BodyStyle = WebMessageBodyStyle.WrappedRequest,
             ResponseFormat = WebMessageFormat.Json,
-            RequestFormat = WebMessageFormat.Json,
-            UriTemplate = "/setWayPoints")]
+            RequestFormat = WebMessageFormat.Json
+            )]
         void setWayPoints(List<Locationwp> waypoints,bool append); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
         [OperationContract()]
@@ -30,7 +31,7 @@ namespace MissionPlanner.SmartAir
 
         PointLatLngAlt getUAVPosition();
 
-        JudgServerInterface.Obstacles getObstacles();
+        //JudgeServerInterface.Obstacles getObstacles();
 
         void setTarget(PointLatLng target, string targetName);
 

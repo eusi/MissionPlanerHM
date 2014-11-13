@@ -249,11 +249,6 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
-    <Compile Include="SmartAir\JudgeServer\IJudgeServer.cs" />
-    <Compile Include="SmartAir\JudgeServer\MovingObstacle.cs" />
-    <Compile Include="SmartAir\JudgeServer\Obstacles.cs" />
-    <Compile Include="SmartAir\JudgeServer\ServerInfo.cs" />
-    <Compile Include="SmartAir\JudgeServer\StationaryObstacle.cs" />
     <Compile Include="SmartAir\MissionPlannerService.cs" />
     <Compile Include="SmartAir\IMissionPlannerService.cs" />
     <Compile Include="Antenna\Tracker.cs">
@@ -6475,6 +6470,10 @@
       <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
       <Name>ZedGraph</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
+    <ProjectReference Include="JudgeServerInterface\JudgeServerInterface.csproj">
+      <Project>{3e87adf1-f5a9-480a-ab41-469442778a9e}</Project>
+      <Name>JudgeServerInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

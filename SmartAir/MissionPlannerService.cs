@@ -1,4 +1,5 @@
-﻿using MissionPlanner.Utilities;
+﻿
+using MissionPlanner.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,18 @@ namespace MissionPlanner.SmartAir
 
         public void setWayPoints(List<Locationwp> waypoints,bool append)
         {
+            try
+            {
+
+            
             MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
 
+            }
+            catch (Exception)
+            {
 
+               
+            }
         }
 
 
@@ -37,10 +47,10 @@ namespace MissionPlanner.SmartAir
             throw new NotImplementedException();
         }
 
-        public JudgServerInterface.Obstacles getObstacles()
-        {
-            throw new NotImplementedException();
-        }
+        //public JudgeServerInterface.Obstacles getObstacles()
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void setTarget(GMap.NET.PointLatLng target, string targetName)
         {

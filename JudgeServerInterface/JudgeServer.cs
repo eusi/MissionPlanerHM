@@ -70,7 +70,7 @@ namespace JudgeServerInterface
             return si;
         }
 
-        public Obstacles GetObstacles()
+        public JudgeServerInterface.Obstacles GetObstacles()
         {
             return new Obstacles();
         }
