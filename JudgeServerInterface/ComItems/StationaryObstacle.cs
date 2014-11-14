@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The object latitude in floating point degrees.
         /// </summary>
+          [DataMember]
         public float Latitude
         {
             get { return _latitude; }
@@ -28,6 +30,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The object longitude in floating point degrees.
         /// </summary>
+          [DataMember]
         public float Longitude
         {
             get { return _longitude; }
@@ -39,6 +42,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The obstacle's cylinder radius in floating point feet.
         /// </summary>
+          [DataMember]
         public float CylinderRadius
         {
             get { return _cylinderRadius; }
@@ -50,6 +54,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The obstacle's cylinder height in floating point feet.
         /// </summary>
+          [DataMember]
         public float CylinderHeight
         {
             get { return _cylinderHeight; }

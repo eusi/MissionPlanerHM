@@ -250,6 +250,7 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="SmartAir\Color.cs" />
     <Compile Include="SmartAir\MissionPlannerService.cs" />
     <Compile Include="SmartAir\IMissionPlannerService.cs" />
     <Compile Include="Antenna\Tracker.cs">
@@ -540,6 +541,9 @@
     <Compile Include="ScriptConsole.Designer.cs">
       <DependentUpon>ScriptConsole.cs</DependentUpon>
     </Compile>
+    <Compile Include="SmartAir\ProposedRoute.cs" />
+    <Compile Include="SmartAir\Target.cs" />
+    <Compile Include="SmartAir\Zone.cs" />
     <Compile Include="Swarm\FollowPathControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -6405,6 +6409,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="JudgeServerInterface\JudgeServerInterface.csproj">
+      <Project>{3e87adf1-f5a9-480a-ab41-469442778a9e}</Project>
+      <Name>JudgeServerInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="ExtLibs\AviFile\AviFile.csproj">
       <Project>{ABB32A29-AF50-47FA-B243-5FD75A5ABA54}</Project>
       <Name>AviFile</Name>
@@ -6471,10 +6479,6 @@
       <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
       <Name>ZedGraph</Name>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-    </ProjectReference>
-    <ProjectReference Include="JudgeServerInterface\JudgeServerInterface.csproj">
-      <Project>{3e87adf1-f5a9-480a-ab41-469442778a9e}</Project>
-      <Name>JudgeServerInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

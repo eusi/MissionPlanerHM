@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// A unique message stored on the server that proves the team has correctly downloaded the server information. This information must be displayed as part of interoperability.
         /// </summary>
+          [DataMember]
         public string ServerMessage
         {
             get { return _serverMessage; }
@@ -27,6 +29,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The time the unique message was created. This information must be displayed as part of interoperability.
         /// </summary>
+          [DataMember]
         public string MessageTimeStamp
         {
             get { return _messageTimeStamp; }
@@ -38,6 +41,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// The current time on the server. This information must be displayed as part of interoperability.
         /// </summary>
+          [DataMember]
         public string ServerTime
         {
             get { return _serverTime; }

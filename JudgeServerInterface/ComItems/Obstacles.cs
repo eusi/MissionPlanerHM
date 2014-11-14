@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// Includes all stationary obstacles
         /// </summary>
+          [DataMember]
         public List<StationaryObstacle> StationaryObstacles
         {
             get { return _stationaryObstacles; }
@@ -28,6 +30,7 @@ namespace JudgeServerInterface
         /// <summary>
         /// Includes all moving obstacles
         /// </summary>
+          [DataMember]
         public List<MovingObstacle> MovingObstacles
         {
             get { return _movingObstacles; }
