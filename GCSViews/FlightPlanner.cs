@@ -1433,6 +1433,8 @@ namespace MissionPlanner.GCSViews
         {
             List<Locationwp> result = new List<Locationwp>();
 
+             result.Add(new Locationwp(){id=16, options=0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) ,lng=  double.Parse(String.Format(TXT_homelng.Text,"0.000000"), new System.Globalization.CultureInfo("en-US")),alt=  float.Parse(String.Format(TXT_homealt.Text,"0.000000"), new System.Globalization.CultureInfo("en-US")) });
+
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {
                 Locationwp temp = new Locationwp();
@@ -1442,8 +1444,16 @@ namespace MissionPlanner.GCSViews
 
                
                 temp.id = mode;
-              
-               
+
+                if (CMB_altmode.SelectedValue.ToString() == "3")
+                { // abs MAV_FRAME_GLOBAL_RELATIVE_ALT=3
+                    temp.options = 1;
+                }
+                else
+                {
+                    temp.options = 0;
+                }
+ 
                 temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
                 temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
                 temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
@@ -1888,7 +1898,7 @@ namespace MissionPlanner.GCSViews
         /// <summary>
         /// Processes a loaded EEPROM to the map and datagrid
         /// </summary>
-        void processToScreen(List<Locationwp> cmds, bool append = false)
+        void processToScreen(List<Locationwp> cmds, bool append = false, bool forceSetHome=false)
         {
             quickadd = true;
 
@@ -1980,9 +1990,18 @@ namespace MissionPlanner.GCSViews
                 {
                     if (cellhome.Value.ToString() != TXT_homelat.Text && cellhome.Value.ToString() != "0")
                     {
-                        DialogResult dr = CustomMessageBox.Show("Reset Home to loaded coords", "Reset Home Coords", MessageBoxButtons.YesNo);
+                        bool resetHomeCoord=true;
 
-                        if (dr == DialogResult.Yes)
+                        // if force set home point is set to false, ask user what to do about home waypoint
+                        if (!forceSetHome) {
+                          DialogResult dr = CustomMessageBox.Show("Reset Home to loaded coords", "Reset Home Coords", MessageBoxButtons.YesNo);
+
+                          if (dr == DialogResult.No)
+                              resetHomeCoord = false;
+
+                        }
+                                          
+                        if (resetHomeCoord)
                         {
                             TXT_homelat.Text = (double.Parse(cellhome.Value.ToString())).ToString();
                             cellhome = Commands.Rows[0].Cells[Lon.Index] as DataGridViewTextBoxCell;
@@ -2345,6 +2364,7 @@ namespace MissionPlanner.GCSViews
 
                 sr.Close();
 
+                
                 processToScreen(cmds, append);
 
                 writeKML();
@@ -2362,7 +2382,7 @@ namespace MissionPlanner.GCSViews
             try
             {
 
-                processToScreen(waypoints, append);
+                processToScreen(waypoints, append,true);
 
                 writeKML();
 
@@ -6251,9 +6271,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 if (smartAirWSHost == null)
                 {
                     smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
+                   
                     ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
                     ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
                     stp.HttpHelpPageEnabled = false;
+                    stp.IncludeExceptionDetailInFaults = true;   
                     smartAirWSHost.Open();
                     this.btnStopWS.Enabled = true;
                     this.btnStartWS.Enabled = false;

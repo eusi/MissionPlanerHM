@@ -17,22 +17,40 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
-            BodyStyle = WebMessageBodyStyle.WrappedRequest,
+            BodyStyle = WebMessageBodyStyle.Wrapped,
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
         void setWayPoints(List<Locationwp> waypoints,bool append); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
+        
+
         [OperationContract()]
-        [WebGet(ResponseFormat=WebMessageFormat.Json)]           
+        [WebGet(ResponseFormat=WebMessageFormat.Json)]
         List<Locationwp> getWayPoints();
 
-        void setZone(List<PointLatLng> zonePoints, System.Drawing.Color color, string zoneName);
+        [OperationContract()]
+        [WebInvoke(
+            Method = "POST",
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json
+            )]
+        void setZone(List<PointLatLng> zonePoints, MissionPlanner.SmartAir.MissionPlannerService.Color color, string zoneName);
 
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
         PointLatLngAlt getUAVPosition();
 
         //JudgeServerInterface.Obstacles getObstacles();
 
+        [OperationContract()]
+        [WebInvoke(
+            Method = "POST",
+            BodyStyle = WebMessageBodyStyle.Wrapped,
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json
+            )]
         void setTarget(PointLatLng target, string targetName);
 
     }
