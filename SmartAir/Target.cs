@@ -28,10 +28,10 @@ namespace MissionPlanner.SmartAir
             set { targetName = value; }
         }
 
-         Color color;
+         SmartAirColor color;
 
          [DataMember]
-        public Color Color
+        public SmartAirColor Color
          {
              get { return color; }
              set { color = value; }

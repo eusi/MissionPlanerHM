@@ -35,11 +35,207 @@ using DotSpatial.Projections;
 using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel;
+using MissionPlanner.SmartAir;
 
 namespace MissionPlanner.GCSViews
 {
     public partial class FlightPlanner : MyUserControl, IDeactivate, IActivate
     {
+        #region SmartAir
+
+        // to do
+        public void SetNewWayPoints(List<Locationwp> waypoints, bool append)
+        {
+
+            try
+            {
+
+                processToScreen(waypoints, append, true);
+
+                writeKML();
+
+                MainMap.ZoomAndCenterMarkers("objects");
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show("Can't open file! " + ex.ToString());
+            }
+
+        }
+
+        public List<Locationwp> getWayPoints()
+        {
+            List<Locationwp> result = new List<Locationwp>();
+
+            result.Add(new Locationwp() { id = 16, options = 0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), lng = double.Parse(String.Format(TXT_homelng.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), alt = float.Parse(String.Format(TXT_homealt.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) });
+
+            for (int a = 0; a < Commands.Rows.Count - 0; a++)
+            {
+                Locationwp temp = new Locationwp();
+
+
+                byte mode = (byte)(MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[0].Value.ToString());
+
+
+                temp.id = mode;
+
+                if (CMB_altmode.SelectedValue.ToString() == "3")
+                { // abs MAV_FRAME_GLOBAL_RELATIVE_ALT=3
+                    temp.options = 1;
+                }
+                else
+                {
+                    temp.options = 0;
+                }
+
+                temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.p4 = float.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
+                temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US")) / MainV2.comPort.MAV.cs.multiplierdist;
+
+
+                if (temp.id == 99)
+                    temp.id = 0;
+
+                result.Add(temp);
+
+
+
+            }
+
+
+            return result;
+        }
+
+        public void drawZones(List<Zone> zonesToDraw)
+        {
+            zonesToDraw = new List<Zone>();
+            Zone temp = new Zone();
+            temp.Color = new SmartAirColor(100, 100, 100, 100);
+            temp.ZoneName = "SearchArea";
+            temp.ZonePoints = new List<PointLatLng>();
+            PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
+            temp.ZonePoints.Add(tempPoint);
+            tempPoint = new PointLatLng(48.9467725, 10.5505013);
+            temp.ZonePoints.Add(tempPoint);
+            tempPoint = new PointLatLng(48.9443485, 10.5524755);
+            temp.ZonePoints.Add(tempPoint);
+            tempPoint = new PointLatLng(48.9437143, 10.5458879);
+            temp.ZonePoints.Add(tempPoint);
+
+            zonesToDraw.Add(temp);
+            foreach (var zone in zonesToDraw)
+            {
+                //loadPolygonToolStripMenuItem_Click
+            }
+            
+            throw new NotImplementedException();
+
+
+        }
+
+        public void drawTargets(List<SmartAir.Target> targetsToDraw)
+        {
+            throw new NotImplementedException();
+
+
+        }
+
+        public void drawProposedRoute(SmartAir.ProposedRoute proposedRoute)
+        {
+            throw new NotImplementedException();
+            
+        }
+
+        public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
+        {
+            throw new NotImplementedException();
+
+        }
+
+
+
+        // controls
+        private void btnSmartAir_Click(object sender, EventArgs e)
+        {
+            pnlSmartAir.Visible = true;
+
+        }
+
+        private void btnStartWS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+
+                    smartAirWSHost.Abort();
+                    smartAirWSHost = null;
+                }
+
+                if (smartAirWSHost == null)
+                {
+                    smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
+
+                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
+                    ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
+                    stp.HttpHelpPageEnabled = false;
+                    stp.IncludeExceptionDetailInFaults = true;
+                    smartAirWSHost.Open();
+                    this.btnStopWS.Enabled = true;
+                    this.btnStartWS.Enabled = false;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void btnStopWS_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+                    smartAirWSHost.Abort();
+                }
+                else if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Opened)
+                {
+                    smartAirWSHost.Close();
+
+                }
+                smartAirWSHost = null;
+                this.btnStopWS.Enabled = false;
+                this.btnStartWS.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            pnlSmartAir.Visible = false;
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            SmartAir.SmartAirData.Instance.createTestData();
+        }
+
+        #endregion
+        
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow = 0;
         public bool quickadd = false;
@@ -1429,52 +1625,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        public List<Locationwp> getWayPoints()
-        {
-            List<Locationwp> result = new List<Locationwp>();
-
-             result.Add(new Locationwp(){id=16, options=0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) ,lng=  double.Parse(String.Format(TXT_homelng.Text,"0.000000"), new System.Globalization.CultureInfo("en-US")),alt=  float.Parse(String.Format(TXT_homealt.Text,"0.000000"), new System.Globalization.CultureInfo("en-US")) });
-
-            for (int a = 0; a < Commands.Rows.Count - 0; a++)
-            {
-                Locationwp temp = new Locationwp();
-
-
-                byte mode = (byte)(MAVLink.MAV_CMD)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[0].Value.ToString());
-
-               
-                temp.id = mode;
-
-                if (CMB_altmode.SelectedValue.ToString() == "3")
-                { // abs MAV_FRAME_GLOBAL_RELATIVE_ALT=3
-                    temp.options = 1;
-                }
-                else
-                {
-                    temp.options = 0;
-                }
- 
-                temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p4 = float.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US")) / MainV2.comPort.MAV.cs.multiplierdist;
-
-
-                if (temp.id == 99)
-                    temp.id = 0;
-
-               result.Add(temp);
-
-        
-
-            }
-
-
-            return result;
-        }
+       
 
         /// <summary>
         /// Saves a waypoint writer file
@@ -2377,23 +2528,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        public void SetNewWayPoints(List<Locationwp> waypoints,bool append) {
-
-            try
-            {
-
-                processToScreen(waypoints, append,true);
-
-                writeKML();
-
-                MainMap.ZoomAndCenterMarkers("objects");
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show("Can't open file! " + ex.ToString());
-            }
-        
-        }
+       
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
@@ -3598,7 +3733,7 @@ namespace MissionPlanner.GCSViews
             });
         }
 
-        private void addpolygonmarker(string tag, double lng, double lat, int alt, Color? color, GMapOverlay overlay)
+        private void addpolygonmarker(string tag, double lng, double lat, int alt, System.Drawing.Color? color, GMapOverlay overlay)
         {
             try
             {
@@ -6249,76 +6384,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
         }
 
-        private void btnSmartAir_Click(object sender, EventArgs e)
-        {
-            pnlSmartAir.Visible = true;
-            
-        }
-
-       
-
-        private void btnStartWS_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
-                {
-
-                    smartAirWSHost.Abort();
-                    smartAirWSHost = null;
-                }
-
-                if (smartAirWSHost == null)
-                {
-                    smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
-                   
-                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
-                    ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
-                    stp.HttpHelpPageEnabled = false;
-                    stp.IncludeExceptionDetailInFaults = true;   
-                    smartAirWSHost.Open();
-                    this.btnStopWS.Enabled = true;
-                    this.btnStartWS.Enabled = false;
-                    
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-
-            }
-        }
-
-        private void btnStopWS_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
-                {
-                    smartAirWSHost.Abort();
-                }
-                else if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Opened)
-                {
-                    smartAirWSHost.Close();
-
-                }
-                smartAirWSHost = null;
-                this.btnStopWS.Enabled = false;
-                this.btnStartWS.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-
-                MessageBox.Show(ex.Message);
-
-            }
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            pnlSmartAir.Visible = false;
-        }
+    
     }
 }

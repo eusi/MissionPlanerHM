@@ -9,6 +9,8 @@ namespace MissionPlanner.SmartAir
     [Serializable]
     public class UAVPosition : PointLatLngAlt
     {
+        public UAVPosition()
+        { }
         public UAVPosition(double lat, double lng, double alt, string timeStamp)
         {
             this.Lat = lat;

@@ -197,6 +197,7 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.btnTest = new MissionPlanner.Controls.MyButton();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -734,6 +735,7 @@
             this.pnlSmartAir.BackColor = System.Drawing.Color.Transparent;
             this.pnlSmartAir.CaptionFont = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Bold);
             this.pnlSmartAir.CaptionHeight = 27;
+            this.pnlSmartAir.Controls.Add(this.btnTest);
             this.pnlSmartAir.Controls.Add(this.btnStopWS);
             this.pnlSmartAir.Controls.Add(this.btnClose);
             this.pnlSmartAir.Controls.Add(this.btnStartWS);
@@ -1322,6 +1324,13 @@
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // btnTest
+            // 
+            resources.ApplyResources(this.btnTest, "btnTest");
+            this.btnTest.Name = "btnTest";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1496,5 +1505,6 @@
         private Controls.MyButton btnStartWS;
         private Controls.MyButton btnStopWS;
         private Controls.MyButton btnClose;
+        private Controls.MyButton btnTest;
     }
 }

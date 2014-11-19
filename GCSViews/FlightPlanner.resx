@@ -1400,6 +1400,33 @@
   <data name="&gt;&gt;panelAction.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="btnTest.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnTest.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 87</value>
+  </data>
+  <data name="btnTest.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 23</value>
+  </data>
+  <data name="btnTest.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="btnTest.Text" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="&gt;&gt;btnTest.Name" xml:space="preserve">
+    <value>btnTest</value>
+  </data>
+  <data name="&gt;&gt;btnTest.Type" xml:space="preserve">
+    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;btnTest.Parent" xml:space="preserve">
+    <value>pnlSmartAir</value>
+  </data>
+  <data name="&gt;&gt;btnTest.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btnStopWS.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1428,7 +1455,7 @@
     <value>pnlSmartAir</value>
   </data>
   <data name="&gt;&gt;btnStopWS.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1455,7 +1482,7 @@
     <value>pnlSmartAir</value>
   </data>
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnStartWS.Location" type="System.Drawing.Point, System.Drawing">
     <value>22, 57</value>
@@ -1479,7 +1506,7 @@
     <value>pnlSmartAir</value>
   </data>
   <data name="&gt;&gt;btnStartWS.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="txtWSUrl.Location" type="System.Drawing.Point, System.Drawing">
     <value>22, 31</value>
@@ -1503,7 +1530,7 @@
     <value>pnlSmartAir</value>
   </data>
   <data name="&gt;&gt;txtWSUrl.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="pnlSmartAir.Location" type="System.Drawing.Point, System.Drawing">
     <value>172, 37</value>

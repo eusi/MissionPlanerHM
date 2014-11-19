@@ -17,10 +17,10 @@ namespace MissionPlanner.SmartAir
             get { return zonePoints; }
             set { zonePoints = value; }
         }
-        Color color;
+        SmartAirColor color;
 
         [DataMember]
-        public Color Color
+        public SmartAirColor Color
         {
             get { return color; }
             set { color = value; }

@@ -6,9 +6,9 @@ using System.Text;
 namespace MissionPlanner.SmartAir
 {
     [Serializable]
-    public class Color
+    public class SmartAirColor
     {
-        public Color(int alpha, int red, int green, int blue)
+        public SmartAirColor(int alpha, int red, int green, int blue)
         {
             this.alpha = alpha;
             this.red = red;

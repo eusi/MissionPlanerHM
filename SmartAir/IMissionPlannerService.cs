@@ -68,15 +68,7 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         UAVPosition getUAVPosition();
-
-        /// <summary>
-        /// This method gets the UAV position history.
-        /// </summary>
-        /// <param name="resetHistory">If true --> history will be empty after method call.</param>
-        /// <returns>A list of coordinates.</returns>
-        [OperationContract()]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        List<UAVPosition> getUAVPositionHistory(bool resetHistory);
+         
 
         /// <summary>
         /// This methods retrieves the latest positions of the stationary and moving obstacles. 
