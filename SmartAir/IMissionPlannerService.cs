@@ -54,12 +54,29 @@ namespace MissionPlanner.SmartAir
         void setZones(List<Zone> newZones);
 
         /// <summary>
-        /// Gets the current position of the UAV.
+        /// This method gets the current zones.
         /// </summary>
-        /// <returns>The coordinates with Lat/Lng/Alt </returns>
+        /// <returns>A list of zones.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        PointLatLngAlt getUAVPosition();
+        List<Zone> getZones();
+
+        /// <summary>
+        /// This method gets the current position of the UAV.
+        /// </summary>
+        /// <returns>The coordinates with Lat/Lng/Alt and timestamp </returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        UAVPosition getUAVPosition();
+
+        /// <summary>
+        /// This method gets the UAV position history.
+        /// </summary>
+        /// <param name="resetHistory">If true --> history will be empty after method call.</param>
+        /// <returns>A list of coordinates.</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        List<UAVPosition> getUAVPositionHistory(bool resetHistory);
 
         /// <summary>
         /// This methods retrieves the latest positions of the stationary and moving obstacles. 
@@ -81,6 +98,21 @@ namespace MissionPlanner.SmartAir
             RequestFormat = WebMessageFormat.Json
             )]
         void setTargets(List<Target> targets);
+
+        /// <summary>
+        /// This method gets the targets.
+        /// </summary>
+        /// <returns>A list of targets.</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        List<Target> getTargets();
+
+        /// <summary>
+        /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.
+        /// </summary>       
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        void createTestData();
 
     }
 }

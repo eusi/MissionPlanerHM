@@ -6279,6 +6279,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     smartAirWSHost.Open();
                     this.btnStopWS.Enabled = true;
                     this.btnStartWS.Enabled = false;
+                    
                 }
 
             }

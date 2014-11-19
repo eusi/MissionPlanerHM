@@ -250,6 +250,8 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="SmartAir\SmartAirContext.cs" />
+    <Compile Include="SmartAir\UAVPosition.cs" />
     <Compile Include="SmartAir\Color.cs" />
     <Compile Include="SmartAir\MissionPlannerService.cs" />
     <Compile Include="SmartAir\IMissionPlannerService.cs" />
