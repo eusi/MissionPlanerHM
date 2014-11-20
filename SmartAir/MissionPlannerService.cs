@@ -22,11 +22,11 @@ namespace MissionPlanner.SmartAir
         /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
-        public void setWayPoints(List<Locationwp> waypoints, bool append, string objective, string createdBy)
+        public void setWayPoints(List<Locationwp> waypoints, bool append, string objective)
         {
             try
             {
-                SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective, CreatedBy = createdBy });
+                SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
                  
                 MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
                 //MissionPlanner.GCSViews.FlightPlanner.instance.drawProposedRoute(SmartAirData.Instance.ReceivedRoutes.LastOrDefault());
