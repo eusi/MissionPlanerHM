@@ -118,6 +118,7 @@
             this.btnSmartAir = new MissionPlanner.Controls.MyButton();
             this.panelMap = new System.Windows.Forms.Panel();
             this.pnlSmartAir = new BSE.Windows.Forms.Panel();
+            this.btnTest = new MissionPlanner.Controls.MyButton();
             this.btnStopWS = new MissionPlanner.Controls.MyButton();
             this.btnClose = new MissionPlanner.Controls.MyButton();
             this.btnStartWS = new MissionPlanner.Controls.MyButton();
@@ -197,7 +198,7 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.btnTest = new MissionPlanner.Controls.MyButton();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -647,6 +648,7 @@
             this.flowLayoutPanel1.Controls.Add(this.panel5);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.btnSmartAir);
+            this.flowLayoutPanel1.Controls.Add(this.button1);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
@@ -761,6 +763,13 @@
             this.pnlSmartAir.ToolTipTextCloseIcon = null;
             this.pnlSmartAir.ToolTipTextExpandIconPanelCollapsed = null;
             this.pnlSmartAir.ToolTipTextExpandIconPanelExpanded = null;
+            // 
+            // btnTest
+            // 
+            resources.ApplyResources(this.btnTest, "btnTest");
+            this.btnTest.Name = "btnTest";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btnStopWS
             // 
@@ -1324,12 +1333,12 @@
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // btnTest
+            // button1
             // 
-            resources.ApplyResources(this.btnTest, "btnTest");
-            this.btnTest.Name = "btnTest";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FlightPlanner
             // 
@@ -1506,5 +1515,6 @@
         private Controls.MyButton btnStopWS;
         private Controls.MyButton btnClose;
         private Controls.MyButton btnTest;
+        private System.Windows.Forms.Button button1;
     }
 }
