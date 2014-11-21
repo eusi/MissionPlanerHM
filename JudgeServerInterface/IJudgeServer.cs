@@ -16,7 +16,7 @@ namespace JudgeServerInterface
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        void Connect(string userName, string password);
+        void Connect(string server, string userName, string password);
 
         /// <summary>
         /// Teams make requests to obtain server information for purpose of displaying the information.
@@ -37,7 +37,8 @@ namespace JudgeServerInterface
         /// <param name="longitude">The longitude of the aircraft as a floating point degree value. Valid values are: -180 <= longitude <= 180.</param>
         /// <param name="altitude">The MSL altitutde of the aircraft in feet as a floating point value.</param>
         /// <param name="heading">The heading of the aircraft as a floating point degree value. Valid values are: 0 <= uas_heading <= 360.</param>
-        void setUASTelemetry(float latitude, float longitude, float altitude, float heading);
+        /// <returns>flag if submiting was successfull</returns>
+        bool setUASTelemetry(double latitude, double longitude, double altitude, double heading);
     }
 
  

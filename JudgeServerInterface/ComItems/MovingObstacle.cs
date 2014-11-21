@@ -14,49 +14,49 @@ namespace JudgeServerInterface
     public class MovingObstacle
     {
 
-        private float _latitude;
+        private double _latitude;
 
         /// <summary>
         /// The object latitude in floating point degrees.
         /// </summary>
         [DataMember]
-        public float Latitude
+        public double Latitude
         {
             get { return _latitude; }
             set { _latitude = value; }
         }
 
-        private float _longitude;
+        private double _longitude;
 
         /// <summary>
         /// The object longitude in floating point degrees.
         /// </summary>
         [DataMember]
-        public float Longitude
+        public double Longitude
         {
             get { return _longitude; }
             set { _longitude = value; }
         }
 
-        private float _altitude;
+        private double _altitude;
 
         /// <summary>
         /// The object's MSL altitude in floating point feet.
         /// </summary>
           [DataMember]
-        public float Altitude
+        public double Altitude
         {
             get { return _altitude; }
             set { _altitude = value; }
         }
 
-        private float _sphereRadius;
+          private double _sphereRadius;
 
         /// <summary>
         /// The object's sphere radius in floating point feet.
         /// </summary>
           [DataMember]
-        public float SphereRadius
+          public double SphereRadius
         {
             get { return _sphereRadius; }
             set { _sphereRadius = value; }

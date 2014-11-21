@@ -13,49 +13,49 @@ namespace JudgeServerInterface
     public class StationaryObstacle
     {
 
-        private float _latitude;
+        private double _latitude;
 
         /// <summary>
         /// The object latitude in floating point degrees.
         /// </summary>
           [DataMember]
-        public float Latitude
+        public double Latitude
         {
             get { return _latitude; }
             set { _latitude = value; }
         }
 
-        private float _longitude;
+          private double _longitude;
 
         /// <summary>
         /// The object longitude in floating point degrees.
         /// </summary>
           [DataMember]
-        public float Longitude
+          public double Longitude
         {
             get { return _longitude; }
             set { _longitude = value; }
         }
 
-        private float _cylinderRadius;
+          private double _cylinderRadius;
 
         /// <summary>
         /// The obstacle's cylinder radius in floating point feet.
         /// </summary>
           [DataMember]
-        public float CylinderRadius
+          public double CylinderRadius
         {
             get { return _cylinderRadius; }
             set { _cylinderRadius = value; }
         }
 
-        private float _cylinderHeight;
+          private double _cylinderHeight;
 
         /// <summary>
         /// The obstacle's cylinder height in floating point feet.
         /// </summary>
           [DataMember]
-        public float CylinderHeight
+          public double CylinderHeight
         {
             get { return _cylinderHeight; }
             set { _cylinderHeight = value; }
