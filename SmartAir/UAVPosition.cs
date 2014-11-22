@@ -19,5 +19,8 @@ namespace MissionPlanner.SmartAir
             this.Ts = timeStamp;
         }
         public string Ts;
+
+        [NonSerialized]
+        public float yaw;
     }
 }

@@ -1211,6 +1211,11 @@ namespace MissionPlanner
                 // update form
                 try
                 {
+                    SmartAir.SmartAirData.Instance.UAVPosition.Alt = this.alt;
+                    SmartAir.SmartAirData.Instance.UAVPosition.Lat = this.lat;
+                    SmartAir.SmartAirData.Instance.UAVPosition.Lng = this.lng;
+                    SmartAir.SmartAirData.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
+                    SmartAir.SmartAirData.Instance.UAVPosition.yaw = this.yaw;
                     if (bs != null)
                     {
                         bs.DataSource = this;

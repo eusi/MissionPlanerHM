@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Windows.Forms;
 
 
 namespace MissionPlanner.SmartAir
@@ -74,8 +75,8 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         /// <returns>The coordinates with Lat/Lng/Alt </returns>
         public UAVPosition getUAVPosition()
-        {
-            return SmartAirData.Instance.UAVPosition;
+        {        
+            return SmartAirData.Instance.UAVPosition;          
         }
              
 
@@ -86,7 +87,6 @@ namespace MissionPlanner.SmartAir
         public Obstacles getObstacles()
         {
             return SmartAirData.Instance.LatestObstacles;
-           
         }
 
         /// <summary>
