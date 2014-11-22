@@ -55,6 +55,13 @@ namespace MissionPlanner.GCSViews
                 writeKML();
 
                 MainMap.ZoomAndCenterMarkers("objects");
+                MAVLinkInterface port = MainV2.comPort;
+
+                if (port.BaseStream.IsOpen)
+                {
+                    BUT_write_Click(null, null);
+                }
+              
             }
             catch (Exception ex)
             {

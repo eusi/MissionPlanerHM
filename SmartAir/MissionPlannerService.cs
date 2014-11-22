@@ -56,7 +56,7 @@ namespace MissionPlanner.SmartAir
         {
 
             SmartAirData.Instance.Zones = newZones;
-            //MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
+            MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
 
         }
 
