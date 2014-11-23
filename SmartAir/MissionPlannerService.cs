@@ -118,17 +118,5 @@ namespace MissionPlanner.SmartAir
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-       
     }
 }
