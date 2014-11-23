@@ -119,27 +119,44 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
-            zonesToDraw = new List<Zone>();
-            Zone temp = new Zone();
-            temp.Color = new SmartAirColor(100, 100, 100, 100);
-            temp.ZoneName = "SearchArea";
-            temp.ZonePoints = new List<PointLatLng>();
-            PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
-            temp.ZonePoints.Add(tempPoint);
-            tempPoint = new PointLatLng(48.9467725, 10.5505013);
-            temp.ZonePoints.Add(tempPoint);
-            tempPoint = new PointLatLng(48.9443485, 10.5524755);
-            temp.ZonePoints.Add(tempPoint);
-            tempPoint = new PointLatLng(48.9437143, 10.5458879);
-            temp.ZonePoints.Add(tempPoint);
-
-            zonesToDraw.Add(temp);
-            foreach (var zone in zonesToDraw)
+            if (zonesToDraw == null)
             {
-                //loadPolygonToolStripMenuItem_Click
+                zonesToDraw = new List<Zone>();
+                Zone temp = new Zone();
+                temp.Color = new SmartAirColor(100, 100, 100, 100);
+                temp.ZoneName = "SearchArea";
+                temp.ZonePoints = new List<PointLatLng>();
+                PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9467725, 10.5505013);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9443485, 10.5524755);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9437143, 10.5458879);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9459845, 10.5469548);
+                temp.ZonePoints.Add(tempPoint);
+
+                zonesToDraw.Add(temp);
             }
+
             
-            throw new NotImplementedException();
+            foreach (var zones in zonesToDraw)
+            {
+                foreach (var point in zones.ZonePoints)
+                {
+                    double lat = point.Lat;
+                    double lng = point.Lng;
+                    drawnpolygon.Points.Add(point);
+                 
+
+                    addpolygonmarkergrid("test", lng, lat, 0);
+                }
+            }
+            drawnpolygonsoverlay.Polygons.Add(drawnpolygon);
+            drawnpolygon.Stroke = new Pen(Color.Blue, 2);
+            
+           // throw new NotImplementedException();
 
 
         }
@@ -6389,6 +6406,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            drawZones(null);
         }
 
     
