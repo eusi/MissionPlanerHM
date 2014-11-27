@@ -73,8 +73,8 @@ namespace MissionPlanner.GCSViews
         public List<Locationwp> getWayPoints()
         {
             List<Locationwp> result = new List<Locationwp>();
-
-            result.Add(new Locationwp() { id = 16, options = 0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), lng = double.Parse(String.Format(TXT_homelng.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), alt = float.Parse(String.Format(TXT_homealt.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) });
+            if(TXT_homelng.Text.Length!=0 ||  TXT_homelat.Text.Length!=0||  TXT_homealt.Text.Length!=0)  
+                 result.Add(new Locationwp() { id = 16, options = 0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), lng = double.Parse(String.Format(TXT_homelng.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), alt = float.Parse(String.Format(TXT_homealt.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) });
 
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {
