@@ -116,6 +116,7 @@
             this.BUT_loadwpfile = new MissionPlanner.Controls.MyButton();
             this.BUT_saveWPFile = new MissionPlanner.Controls.MyButton();
             this.btnSmartAir = new MissionPlanner.Controls.MyButton();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelMap = new System.Windows.Forms.Panel();
             this.pnlSmartAir = new BSE.Windows.Forms.Panel();
             this.btnTest = new MissionPlanner.Controls.MyButton();
@@ -198,7 +199,6 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -716,6 +716,13 @@
             this.btnSmartAir.Name = "btnSmartAir";
             this.btnSmartAir.UseVisualStyleBackColor = true;
             this.btnSmartAir.Click += new System.EventHandler(this.btnSmartAir_Click);
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panelMap
             // 
@@ -1332,13 +1339,6 @@
             // 
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // FlightPlanner
             // 
