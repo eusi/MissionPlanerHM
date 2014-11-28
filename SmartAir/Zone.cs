@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Drawing;
 
 namespace MissionPlanner.SmartAir
 {
@@ -17,10 +18,10 @@ namespace MissionPlanner.SmartAir
             get { return zonePoints; }
             set { zonePoints = value; }
         }
-        SmartAirColor color;
+        Color color;
 
         [DataMember]
-        public SmartAirColor Color
+        public Color Color
         {
             get { return color; }
             set { color = value; }

@@ -123,7 +123,7 @@ namespace MissionPlanner.GCSViews
             {
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
-                temp.Color = new SmartAirColor(100, 100, 100, 100);
+                temp.Color = Color.Blue;
                 temp.ZoneName = "SearchArea";
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
@@ -134,30 +134,59 @@ namespace MissionPlanner.GCSViews
                 temp.ZonePoints.Add(tempPoint);
                 tempPoint = new PointLatLng(48.9437143, 10.5458879);
                 temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9459845, 10.5469548);
+                tempPoint = new PointLatLng(4.9459845, 10.5469548);
                 temp.ZonePoints.Add(tempPoint);
 
                 zonesToDraw.Add(temp);
+
+                Zone temp2 = new Zone();
+                temp2.ZoneName = "No Fly";
+                temp2.Color = Color.Red;
+                temp2.ZonePoints = new List<PointLatLng>();
+                temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
+                temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
+                temp2.ZonePoints.Add(new PointLatLng(-21.34, 3.23));
+
+                zonesToDraw.Add(temp2);
             }
 
             
             foreach (var zones in zonesToDraw)
             {
-                foreach (var point in zones.ZonePoints)
-                {
-                    double lat = point.Lat;
-                    double lng = point.Lng;
-                    drawnpolygon.Points.Add(point);
-                 
 
-                    addpolygonmarkergrid("test", lng, lat, 0);
-                }
+                
+                GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneName);
+                polygon.Fill = new SolidBrush(Color.FromArgb(50, zones.Color));
+                polygon.Stroke = new Pen(zones.Color);
+                deleteZone(zones.ZoneName);
+                drawnpolygonsoverlay.Polygons.Add(polygon);
+                
+
+                
+
             }
-            drawnpolygonsoverlay.Polygons.Add(drawnpolygon);
-            drawnpolygon.Stroke = new Pen(Color.Blue, 2);
+
+
+            
+            
             
            // throw new NotImplementedException();
 
+
+        }
+
+        private void deleteZone(String name)
+        {
+            GMapPolygon demon = null;
+
+            foreach (var polygon in drawnpolygonsoverlay.Polygons)
+            {
+                if (polygon.Name == name)
+                {
+                    demon = polygon;
+                }
+            }
+            drawnpolygonsoverlay.Polygons.Remove(demon);
 
         }
 
@@ -6412,6 +6441,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         {
             drawZones(null);
         }
+
+
 
     
     }

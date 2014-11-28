@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace MissionPlanner.SmartAir
 {
@@ -117,9 +118,9 @@ namespace MissionPlanner.SmartAir
             temp.Add(new GMap.NET.PointLatLng(3, 3));
             temp.Add(new GMap.NET.PointLatLng(4, 4));
 
-            zones.Add(new Zone() { ZonePoints = temp, Color = new SmartAirColor(100, 100, 100, 100), ZoneName = "No Fly Zone" });
-            zones.Add(new Zone() { ZonePoints = temp, Color = new SmartAirColor(200, 200, 200, 200), ZoneName = "Emergency Zone" });
-            zones.Add(new Zone() { ZonePoints = temp, Color = new SmartAirColor(100, 0, 0, 0), ZoneName = "Search Area" });
+            zones.Add(new Zone() { ZonePoints = temp, Color = Color.Red, ZoneName = "No Fly Zone" });
+            zones.Add(new Zone() { ZonePoints = temp, Color = Color.OrangeRed, ZoneName = "Emergency Zone" });
+            zones.Add(new Zone() { ZonePoints = temp, Color = Color.Green, ZoneName = "Search Area" });
 
             targets = new List<Target>();
             targets.Add(new Target() { Coordinates = new GMap.NET.PointLatLng(1, 1), TargetName = "Drop Target", Color = new SmartAirColor(100, 0, 0, 0) });
