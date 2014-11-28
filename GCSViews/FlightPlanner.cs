@@ -124,7 +124,7 @@ namespace MissionPlanner.GCSViews
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
                 temp.Color = new SmartAirColor(100, 100, 100, 100);
-                temp.ZoneName = "SearchArea";
+                temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
                 temp.ZonePoints.Add(tempPoint);

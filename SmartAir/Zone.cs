@@ -25,13 +25,13 @@ namespace MissionPlanner.SmartAir
             get { return color; }
             set { color = value; }
         }
-        string zoneName;
+        SAM_TYPES zoneType;
 
         [DataMember]
-        public string ZoneName
+        public SAM_TYPES ZoneType
         {
-            get { return zoneName; }
-            set { zoneName = value; }
+            get { return zoneType; }
+            set { zoneType = value; }
         }
     }
 }

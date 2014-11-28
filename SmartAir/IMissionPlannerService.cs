@@ -28,7 +28,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        void setWayPoints(List<Locationwp> waypoints, bool append, string objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
+        void setWayPoints(List<Locationwp> waypoints, bool append, SAM_TYPES objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
 
         /// <summary>

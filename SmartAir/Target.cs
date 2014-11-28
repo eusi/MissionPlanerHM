@@ -19,13 +19,13 @@ namespace MissionPlanner.SmartAir
         }
 
 
-        string targetName;
+        SAM_TYPES targetType;
 
-         [DataMember]    
-        public string TargetName
+         [DataMember]
+        public SAM_TYPES TargetType
         {
-            get { return targetName; }
-            set { targetName = value; }
+            get { return targetType; }
+            set { targetType = value; }
         }
 
          SmartAirColor color;

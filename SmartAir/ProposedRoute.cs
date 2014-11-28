@@ -22,12 +22,12 @@ namespace MissionPlanner.SmartAir
            set { wayPoints = value; }
        }
 
-       string objective;
+       SAM_TYPES objective;
 
        /// <summary>
        /// The objective of the route.
        /// </summary>
-       public string Objective
+       public SAM_TYPES Objective
        {
            get { return objective; }
            set { objective = value; }
