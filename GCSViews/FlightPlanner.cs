@@ -123,6 +123,7 @@ namespace MissionPlanner.GCSViews
             {
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
+
                 temp.Color = Color.Blue;
                 temp.ZoneName = "SearchArea";
                 temp.ZonePoints = new List<PointLatLng>();
