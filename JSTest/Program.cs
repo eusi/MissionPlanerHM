@@ -41,10 +41,11 @@ namespace JSTest
             Console.WriteLine("");
 
             dt0 = DateTime.Now;
-            bool ok = js.setUASTelemetry(38.14873256, -76.42888069, 82.45, 146.345);
+            js.setUASTelemetry(38.14873256, -76.42888069, 82.45, 146.345);
             dt1 = DateTime.Now;
 
-            Console.WriteLine("Transmitting UAS telemetry: " + ok.ToString());
+            Console.WriteLine("Transmitting UAS telemetry: done");
+            Console.WriteLine("dt: " + (dt1 - dt0));
 
             Console.ReadKey();
         }

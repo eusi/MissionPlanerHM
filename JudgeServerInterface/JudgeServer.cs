@@ -42,6 +42,18 @@ namespace JudgeServerInterface
             }
 
             IRestResponse response = httpClient.Execute(request);
+
+            if (response.StatusCode == 0)
+                throw new TimeoutException("Timeout for http request!");
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+                throw new InvalidRequest(response.Content);
+            if (response.StatusCode == HttpStatusCode.NotFound)
+                throw new InvalidUrl(response.Content);
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+                throw new InternalServerError(response.Content);
+            if (response.StatusCode != HttpStatusCode.OK)
+                throw new UnknownError(response.Content);
+
             return response;
         }
 
@@ -84,7 +96,7 @@ namespace JudgeServerInterface
             return obs;
         }
 
-        public bool setUASTelemetry(double latitude, double longitude, double altitude, double heading)
+        public void setUASTelemetry(double latitude, double longitude, double altitude, double heading)
         {
             CultureInfo culture = new CultureInfo("en-US");
 
@@ -95,9 +107,6 @@ namespace JudgeServerInterface
             post_parameters.Add(new KeyValuePair<string, string>("uas_heading", heading.ToString(culture)));
 
             IRestResponse response = this.Request(ServerLinks.Telemetry, post_parameters);
-
-            if (response.StatusCode == HttpStatusCode.OK) return true;
-            return false;
         }
     }
 }

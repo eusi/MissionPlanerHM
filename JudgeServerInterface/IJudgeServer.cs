@@ -38,7 +38,7 @@ namespace JudgeServerInterface
         /// <param name="altitude">The MSL altitutde of the aircraft in feet as a floating point value.</param>
         /// <param name="heading">The heading of the aircraft as a floating point degree value. Valid values are: 0 <= uas_heading <= 360.</param>
         /// <returns>flag if submiting was successfull</returns>
-        bool setUASTelemetry(double latitude, double longitude, double altitude, double heading);
+        void setUASTelemetry(double latitude, double longitude, double altitude, double heading);
     }
 
  

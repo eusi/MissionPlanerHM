@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ComItems\ServerInfo.cs" />
     <Compile Include="ComItems\StationaryObstacle.cs" />
+    <Compile Include="ServerExceptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
