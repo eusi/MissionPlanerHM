@@ -54,8 +54,18 @@ namespace MissionPlanner.SmartAir
         /// <param name="zonePoints">The coordinates (Lat/Lng) of the zone with color and name.</param>   
         public void setZones(List<Zone> newZones)
         {
-
-            SmartAirData.Instance.Zones = newZones;
+            lock (SmartAirData.Instance.Zones)
+            {
+                foreach (var zone in newZones)
+                {
+                    if (SmartAirData.Instance.Zones.ContainsKey(zone.ZoneType))
+                        SmartAirData.Instance.Zones[zone.ZoneType] = zone;
+                    else
+                    {
+                        SmartAirData.Instance.Zones.Add(zone.ZoneType, zone);
+                    }
+                }
+            }
             MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
 
         }
@@ -64,7 +74,7 @@ namespace MissionPlanner.SmartAir
         /// This method gets the zones.
         /// </summary>
         /// <returns>A list of zones.</returns>
-        public List<Zone> getZones()
+        public Dictionary<SAM_TYPES,Zone> getZones()
         {
             return SmartAirData.Instance.Zones;
         }
@@ -95,8 +105,23 @@ namespace MissionPlanner.SmartAir
         /// <param name="targets">The coordinates with Lat/Lng. and name</param>       
         public void setTargets(List<Target> targets)
         {
+            // there can be more than one target each category eg off axis task --> group targets by type and save to dict            
+            foreach (var targetsGroupedByType in targets.GroupBy(x => x.TargetType))
+            {
+                lock (SmartAirData.Instance.Targets)
+                {
 
-            SmartAirData.Instance.Targets = targets;
+                    if (SmartAirData.Instance.Targets.ContainsKey(targetsGroupedByType.Key))
+                    {                        
+                        SmartAirData.Instance.Targets[targetsGroupedByType.Key] = targetsGroupedByType.ToList();
+                    }
+                    else
+                    {
+                        SmartAirData.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
+                    }
+                    
+                }
+            }
             MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
         }
 
@@ -104,7 +129,7 @@ namespace MissionPlanner.SmartAir
         /// This method gets the targets.
         /// </summary>
         /// <returns>A list of targets.</returns>
-        public List<Target> getTargets()
+        public Dictionary<SAM_TYPES,List<Target>> getTargets()
         {
             return SmartAirData.Instance.Targets;
         }

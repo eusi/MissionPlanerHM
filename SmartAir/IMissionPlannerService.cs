@@ -59,7 +59,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of zones.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        List<Zone> getZones();
+        Dictionary<SAM_TYPES, Zone> getZones();
 
         /// <summary>
         /// This method gets the current position of the UAV.
@@ -97,7 +97,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of targets.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        List<Target> getTargets();
+        Dictionary<SAM_TYPES, List<Target>> getTargets();
 
         /// <summary>
         /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.

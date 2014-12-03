@@ -35,12 +35,8 @@ namespace MissionPlanner.SmartAir
             set { zoneType = value; }
         }
 
-        String name;
+      
 
-        public String ZoneName
-        {
-            get { return name; }
-            set { name = value; }
-        }
+       
     }
 }
