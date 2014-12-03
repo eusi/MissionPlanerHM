@@ -119,16 +119,16 @@ namespace MissionPlanner.SmartAir
             temp.Add(new GMap.NET.PointLatLng(4, 4));
 
 
-            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = Color.Red, ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
-            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = Color.OrangeRed, ZoneType = SAM_TYPES.ZONE_EMERGENT });
-            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = Color.Green, ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
+            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
+            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_EMERGENT });
+            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
 
 
             targets = new Dictionary<SAM_TYPES, List<Target>>();
             targets.Add(SAM_TYPES.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SAM_TYPES.TARGET_AIRDROP, Color = new SmartAirColor(100, 0, 0, 0) }});
-            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
+            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
             targets.Add(SAM_TYPES.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SAM_TYPES.TARGET_SRIC, Color = new SmartAirColor(100, 0, 100, 0) }});
-            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 255, 255, 255) }});
+           
 
 
         }

@@ -124,7 +124,7 @@ namespace MissionPlanner.GCSViews
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
 
-                temp.Color = Color.Blue;
+                temp.Color = new SmartAirColor(255,255,255,255);
                 temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
@@ -142,7 +142,7 @@ namespace MissionPlanner.GCSViews
 
                 Zone temp2 = new Zone();
                 temp.ZoneType = SAM_TYPES.ZONE_NO_FLIGHT;
-                temp2.Color = Color.Red;
+                temp2.Color = new SmartAirColor(255, 0, 255, 255);
                 temp2.ZonePoints = new List<PointLatLng>();
                 temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
                 temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
@@ -157,8 +157,9 @@ namespace MissionPlanner.GCSViews
 
                 
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
-                polygon.Fill = new SolidBrush(Color.FromArgb(50, zones.Color));
-                polygon.Stroke = new Pen(zones.Color);
+                Color zoneColor = Color.FromArgb(zones.Color.alpha, zones.Color.red, zones.Color.green, zones.Color.blue);
+                polygon.Fill = new SolidBrush(zoneColor);
+                polygon.Stroke = new Pen(zoneColor);
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
                 
