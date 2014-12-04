@@ -44,11 +44,38 @@ namespace MissionPlanner.SmartAir
 
         Dictionary<SAM_TYPES, Zone> zones = new Dictionary<SAM_TYPES, Zone>();
 
-        Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();        
+        Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();
+
+        float lastWPIndex = 0;
+
+        float nextWPIndex = 0;
+
+     
 
         #endregion
 
         #region Properties
+
+
+        public float NextWPIndex
+        {
+            get { return nextWPIndex; }
+            set
+            {
+
+                // check if waypoint index has changed
+                if (lastWPIndex != nextWPIndex)
+                {
+                    MissionPlanner.GCSViews.FlightPlanner.instance.NewWaypointReachedEvent(nextWPIndex);
+                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndex);
+                    lastWPIndex = nextWPIndex;
+                }
+                nextWPIndex = value;
+
+            }
+        }
+
+
         public Dictionary<SAM_TYPES,Zone> Zones
         {
             get { return zones; }

@@ -199,11 +199,7 @@ namespace MissionPlanner.GCSViews
 
         }
 
-        public void drawProposedRoute(SmartAir.ProposedRoute proposedRoute)
-        {
-            throw new NotImplementedException();
-            
-        }
+
 
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
@@ -211,7 +207,50 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        public void hideWaypoint(int wpIndexToHide)
+        {
+            // to do
 
+
+        }
+
+        public void NewWaypointReachedEvent(float newWPIndex)
+        {
+            if (chkAutoLoiterInterrupt.Checked)
+            {
+                Commands.Enabled = false;
+
+                // check if next of next wp exists
+                if (Commands.Rows.Count > newWPIndex + 1)
+                {
+                    try
+                    {
+                        // check if next wp is loitering and is allowed to interrupt 
+                        var rowNextIndex = Commands.Rows[(int)newWPIndex];
+                        if ((bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
+                        {
+                            // skip loiter and jump to next wp
+                            if (Commands.Rows.Count > newWPIndex + 1)
+                            {
+                                MainV2.comPort.setWPCurrent((ushort)(newWPIndex + 1));
+
+                            }
+
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                    Commands.Enabled = true;
+                }
+            }
+
+        
+        }
 
         // controls
         private void btnSmartAir_Click(object sender, EventArgs e)

@@ -27,10 +27,38 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
+          
+                foreach (Locationwp wp in waypoints)
+                {
+                    wp.IsLoiterInterruptAllowed = true;
+                }
+                
+                var lastWP = waypoints.LastOrDefault();
+                // clone last wp
+                if (lastWP != null && ((MAVLink.MAV_CMD) lastWP.id) == MAVLink.MAV_CMD.WAYPOINT)
+                {
+                    Locationwp clone = new Locationwp();
+                    clone.IsLoiterInterruptAllowed = lastWP.IsLoiterInterruptAllowed;
+                    clone.id = (byte) MAVLink.MAV_CMD.LOITER_UNLIM;
+                    clone.lat = lastWP.lat;
+                    clone.lng = lastWP.lng;
+                    clone.alt = lastWP.alt;
+                    clone.options = lastWP.options;
+                    clone.p1 = lastWP.p1;
+                    clone.p2 = lastWP.p2;
+                    clone.p3 = lastWP.p3;
+                    clone.p4 = lastWP.p4;
+                    waypoints.Add(clone);
+
+
+                }
+
+
                 SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
                  
                 MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
-                //MissionPlanner.GCSViews.FlightPlanner.instance.drawProposedRoute(SmartAirData.Instance.ReceivedRoutes.LastOrDefault());
+                MissionPlanner.GCSViews.FlightPlanner.instance.NewWaypointReachedEvent( SmartAirData.Instance.NextWPIndex);
+                
             }
             catch (Exception ex)
             {
