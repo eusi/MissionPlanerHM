@@ -124,7 +124,7 @@ namespace MissionPlanner.GCSViews
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
 
-                temp.Color = Color.Blue;
+                temp.Color = new SmartAirColor(50,0,0,255);
                 temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
@@ -142,7 +142,7 @@ namespace MissionPlanner.GCSViews
 
                 Zone temp2 = new Zone();
                 temp.ZoneType = SAM_TYPES.ZONE_NO_FLIGHT;
-                temp2.Color = Color.Red;
+                temp2.Color = new SmartAirColor(50,255,0,0);
                 temp2.ZonePoints = new List<PointLatLng>();
                 temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
                 temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
@@ -157,15 +157,17 @@ namespace MissionPlanner.GCSViews
 
                 
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
-                polygon.Fill = new SolidBrush(Color.FromArgb(50, zones.Color));
-                polygon.Stroke = new Pen(zones.Color);
+                polygon.Fill = new SolidBrush(Color.FromArgb(zones.Color.alpha, zones.Color.red, zones.Color.green, zones.Color.blue));
+                polygon.Stroke = new Pen(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
+         
                 
 
                 
 
             }
+            MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
 
 
             
@@ -1408,7 +1410,7 @@ namespace MissionPlanner.GCSViews
                     {
                         // no autozoom
                         lookat = "<LookAt>     <longitude>" + (minlong + longdiff / 2).ToString(new System.Globalization.CultureInfo("en-US")) + "</longitude>     <latitude>" + (minlat + latdiff / 2).ToString(new System.Globalization.CultureInfo("en-US")) + "</latitude> <range>" + range + "</range> </LookAt>";
-                        //MainMap.ZoomAndCenterMarkers("objects");
+                        //MainMap.ZoomAndCenterMarkers();
                         //MainMap.Zoom -= 1;
                         //MainMap_OnMapZoomChanged();
                     }

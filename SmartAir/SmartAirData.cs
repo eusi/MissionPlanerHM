@@ -119,9 +119,9 @@ namespace MissionPlanner.SmartAir
             temp.Add(new GMap.NET.PointLatLng(4, 4));
 
 
-            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = Color.Red, ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
-            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = Color.OrangeRed, ZoneType = SAM_TYPES.ZONE_EMERGENT });
-            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = Color.Green, ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
+            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,255,0,0), ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
+            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,255,255,0), ZoneType = SAM_TYPES.ZONE_EMERGENT });
+            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,0,255,0), ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
 
 
             targets = new Dictionary<SAM_TYPES, List<Target>>();
