@@ -225,7 +225,7 @@ namespace MissionPlanner.GCSViews
         {
             if (chkAutoLoiterInterrupt.Checked)
             {
-                Commands.Enabled = false;
+              
 
                 // check if next of next wp exists
                 if (Commands.Rows.Count > newWPIndex + 1)
@@ -246,13 +246,13 @@ namespace MissionPlanner.GCSViews
                         }
 
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
 
-                        throw;
+                        throw ex;
                     }
 
-                    Commands.Enabled = true;
+                    
                 }
             }
 
