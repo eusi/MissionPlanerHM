@@ -44,11 +44,38 @@ namespace MissionPlanner.SmartAir
 
         Dictionary<SAM_TYPES, Zone> zones = new Dictionary<SAM_TYPES, Zone>();
 
-        Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();        
+        Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();
+
+        float lastWPIndex = 0;
+
+        float nextWPIndex = 0;
+
+     
 
         #endregion
 
         #region Properties
+
+
+        public float NextWPIndex
+        {
+            get { return nextWPIndex; }
+            set
+            {
+
+                // check if waypoint index has changed
+                if (lastWPIndex != nextWPIndex)
+                {
+                    MissionPlanner.GCSViews.FlightPlanner.instance.NewWaypointReachedEvent(nextWPIndex);
+                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndex);
+                    lastWPIndex = nextWPIndex;
+                }
+                nextWPIndex = value;
+
+            }
+        }
+
+
         public Dictionary<SAM_TYPES,Zone> Zones
         {
             get { return zones; }
@@ -119,16 +146,18 @@ namespace MissionPlanner.SmartAir
             temp.Add(new GMap.NET.PointLatLng(4, 4));
 
 
-            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,255,0,0), ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
-            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,255,255,0), ZoneType = SAM_TYPES.ZONE_EMERGENT });
-            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(50,0,255,0), ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
+
+            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
+            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_EMERGENT });
+            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
+
 
 
             targets = new Dictionary<SAM_TYPES, List<Target>>();
             targets.Add(SAM_TYPES.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SAM_TYPES.TARGET_AIRDROP, Color = new SmartAirColor(100, 0, 0, 0) }});
-            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
+            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
             targets.Add(SAM_TYPES.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SAM_TYPES.TARGET_SRIC, Color = new SmartAirColor(100, 0, 100, 0) }});
-            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 255, 255, 255) }});
+           
 
 
         }

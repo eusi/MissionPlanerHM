@@ -20,7 +20,7 @@ namespace MissionPlanner.SmartAir
         }
         public string Ts;
 
-        [NonSerialized]
-        public float yaw;
+        
+        public float Yaw;
     }
 }

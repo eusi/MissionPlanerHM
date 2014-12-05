@@ -124,7 +124,9 @@ namespace MissionPlanner.GCSViews
                 zonesToDraw = new List<Zone>();
                 Zone temp = new Zone();
 
-                temp.Color = new SmartAirColor(50,0,0,255);
+
+                temp.Color = new SmartAirColor(255,255,255,255);
+
                 temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
@@ -142,7 +144,9 @@ namespace MissionPlanner.GCSViews
 
                 Zone temp2 = new Zone();
                 temp.ZoneType = SAM_TYPES.ZONE_NO_FLIGHT;
-                temp2.Color = new SmartAirColor(50,255,0,0);
+
+                temp2.Color = new SmartAirColor(255, 0, 255, 255);
+
                 temp2.ZonePoints = new List<PointLatLng>();
                 temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
                 temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
@@ -157,8 +161,10 @@ namespace MissionPlanner.GCSViews
 
                 
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
+
                 polygon.Fill = new SolidBrush(Color.FromArgb(zones.Color.alpha, zones.Color.red, zones.Color.green, zones.Color.blue));
                 polygon.Stroke = new Pen(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
+
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
          
@@ -200,11 +206,7 @@ namespace MissionPlanner.GCSViews
 
         }
 
-        public void drawProposedRoute(SmartAir.ProposedRoute proposedRoute)
-        {
-            throw new NotImplementedException();
-            
-        }
+
 
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
@@ -212,7 +214,50 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        public void hideWaypoint(int wpIndexToHide)
+        {
+            // to do
 
+
+        }
+
+        public void NewWaypointReachedEvent(float newWPIndex)
+        {
+            if (chkAutoLoiterInterrupt.Checked)
+            {
+                Commands.Enabled = false;
+
+                // check if next of next wp exists
+                if (Commands.Rows.Count > newWPIndex + 1)
+                {
+                    try
+                    {
+                        // check if next wp is loitering and is allowed to interrupt 
+                        var rowNextIndex = Commands.Rows[(int)newWPIndex];
+                        if ((bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
+                        {
+                            // skip loiter and jump to next wp
+                            if (Commands.Rows.Count > newWPIndex + 1)
+                            {
+                                MainV2.comPort.setWPCurrent((ushort)(newWPIndex + 1));
+
+                            }
+
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+                    Commands.Enabled = true;
+                }
+            }
+
+        
+        }
 
         // controls
         private void btnSmartAir_Click(object sender, EventArgs e)
@@ -6443,6 +6488,16 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         private void button1_Click(object sender, EventArgs e)
         {
             drawZones(null);
+        }
+
+        private void hud1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void quickView_DoubleClick(object sender, EventArgs e)
+        {
+
         }
 
 

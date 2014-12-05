@@ -50,8 +50,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlightPlanner));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlightPlanner));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -74,6 +74,8 @@
             this.Grad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Dist = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AZ = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Task = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsLoiterInterruptAllowed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CHK_verifyheight = new System.Windows.Forms.CheckBox();
             this.TXT_WPRad = new System.Windows.Forms.TextBox();
             this.TXT_DefaultAlt = new System.Windows.Forms.TextBox();
@@ -116,6 +118,7 @@
             this.BUT_loadwpfile = new MissionPlanner.Controls.MyButton();
             this.BUT_saveWPFile = new MissionPlanner.Controls.MyButton();
             this.btnSmartAir = new MissionPlanner.Controls.MyButton();
+            this.chkAutoLoiterInterrupt = new System.Windows.Forms.CheckBox();
             this.panelMap = new System.Windows.Forms.Panel();
             this.pnlSmartAir = new BSE.Windows.Forms.Panel();
             this.btnTest = new MissionPlanner.Controls.MyButton();
@@ -198,6 +201,16 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.hud1 = new MissionPlanner.Controls.HUD();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
+            this.quickView6 = new MissionPlanner.Controls.QuickView();
+            this.quickView5 = new MissionPlanner.Controls.QuickView();
+            this.quickView4 = new MissionPlanner.Controls.QuickView();
+            this.quickView3 = new MissionPlanner.Controls.QuickView();
+            this.quickView2 = new MissionPlanner.Controls.QuickView();
+            this.quickView1 = new MissionPlanner.Controls.QuickView();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -212,12 +225,14 @@
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panelBASE.SuspendLayout();
+            this.panel6.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanelQuick.SuspendLayout();
             this.SuspendLayout();
             // 
             // Commands
             // 
             this.Commands.AllowUserToAddRows = false;
-            resources.ApplyResources(this.Commands, "Commands");
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -226,6 +241,7 @@
             dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.Commands.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            resources.ApplyResources(this.Commands, "Commands");
             this.Commands.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Command,
             this.Param1,
@@ -240,7 +256,9 @@
             this.Down,
             this.Grad,
             this.Dist,
-            this.AZ});
+            this.AZ,
+            this.Task,
+            this.IsLoiterInterruptAllowed});
             this.Commands.Name = "Commands";
             dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
@@ -367,6 +385,19 @@
             this.AZ.Name = "AZ";
             this.AZ.ReadOnly = true;
             this.AZ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Task
+            // 
+            resources.ApplyResources(this.Task, "Task");
+            this.Task.Name = "Task";
+            // 
+            // IsLoiterInterruptAllowed
+            // 
+            this.IsLoiterInterruptAllowed.FillWeight = 1F;
+            resources.ApplyResources(this.IsLoiterInterruptAllowed, "IsLoiterInterruptAllowed");
+            this.IsLoiterInterruptAllowed.Name = "IsLoiterInterruptAllowed";
+            this.IsLoiterInterruptAllowed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IsLoiterInterruptAllowed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // CHK_verifyheight
             // 
@@ -647,6 +678,7 @@
             this.flowLayoutPanel1.Controls.Add(this.panel5);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.btnSmartAir);
+            this.flowLayoutPanel1.Controls.Add(this.chkAutoLoiterInterrupt);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
@@ -715,8 +747,16 @@
             this.btnSmartAir.UseVisualStyleBackColor = true;
             this.btnSmartAir.Click += new System.EventHandler(this.btnSmartAir_Click);
             // 
+            // chkAutoLoiterInterrupt
+            // 
+            resources.ApplyResources(this.chkAutoLoiterInterrupt, "chkAutoLoiterInterrupt");
+            this.chkAutoLoiterInterrupt.Name = "chkAutoLoiterInterrupt";
+            this.chkAutoLoiterInterrupt.UseVisualStyleBackColor = true;
+            // 
             // panelMap
             // 
+            this.panelMap.Controls.Add(this.tableLayoutPanel1);
+            this.panelMap.Controls.Add(this.panel6);
             this.panelMap.Controls.Add(this.pnlSmartAir);
             this.panelMap.Controls.Add(this.lbl_distance);
             this.panelMap.Controls.Add(this.lbl_homedist);
@@ -1331,6 +1371,130 @@
             this.timer1.Interval = 1200;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.hud1);
+            resources.ApplyResources(this.panel6, "panel6");
+            this.panel6.Name = "panel6";
+            // 
+            // hud1
+            // 
+            this.hud1.airspeed = 0F;
+            this.hud1.alt = 0F;
+            this.hud1.BackColor = System.Drawing.Color.Black;
+            this.hud1.batterylevel = 0F;
+            this.hud1.batteryremaining = 0F;
+            this.hud1.connected = false;
+            this.hud1.current = 0F;
+            this.hud1.datetime = new System.DateTime(((long)(0)));
+            this.hud1.disttowp = 0F;
+            resources.ApplyResources(this.hud1, "hud1");
+            this.hud1.failsafe = false;
+            this.hud1.gpsfix = 0F;
+            this.hud1.gpshdop = 0F;
+            this.hud1.groundalt = 0F;
+            this.hud1.groundcourse = 0F;
+            this.hud1.groundspeed = 0F;
+            this.hud1.heading = 0F;
+            this.hud1.hudcolor = System.Drawing.Color.White;
+            this.hud1.linkqualitygcs = 0F;
+            this.hud1.lowairspeed = false;
+            this.hud1.lowgroundspeed = false;
+            this.hud1.lowvoltagealert = false;
+            this.hud1.message = "";
+            this.hud1.messagetime = new System.DateTime(((long)(0)));
+            this.hud1.mode = "Unknown";
+            this.hud1.Name = "hud1";
+            this.hud1.navpitch = 0F;
+            this.hud1.navroll = 0F;
+            this.hud1.opengl = true;
+            this.hud1.pitch = 0F;
+            this.hud1.roll = 0F;
+            this.hud1.Russian = false;
+            this.hud1.status = false;
+            this.hud1.streamjpg = null;
+            this.hud1.targetalt = 0F;
+            this.hud1.targetheading = 0F;
+            this.hud1.targetspeed = 0F;
+            this.hud1.turnrate = 0F;
+            this.hud1.UseOpenGL = true;
+            this.hud1.verticalspeed = 0F;
+            this.hud1.VSync = false;
+            this.hud1.wpno = 0;
+            this.hud1.xtrack_error = 0F;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanelQuick, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // tableLayoutPanelQuick
+            // 
+            resources.ApplyResources(this.tableLayoutPanelQuick, "tableLayoutPanelQuick");
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView6, 1, 2);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView5, 0, 2);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView4, 1, 1);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView3, 0, 1);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView2, 1, 0);
+            this.tableLayoutPanelQuick.Controls.Add(this.quickView1, 0, 0);
+            this.tableLayoutPanelQuick.Name = "tableLayoutPanelQuick";
+            // 
+            // quickView6
+            // 
+            this.quickView6.desc = "DistToMAV";
+            resources.ApplyResources(this.quickView6, "quickView6");
+            this.quickView6.Name = "quickView6";
+            this.quickView6.number = 0D;
+            this.quickView6.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(252)))));
+            this.quickView6.numberformat = "0.00";
+            // 
+            // quickView5
+            // 
+            this.quickView5.desc = "verticalspeed";
+            resources.ApplyResources(this.quickView5, "quickView5");
+            this.quickView5.Name = "quickView5";
+            this.quickView5.number = 0D;
+            this.quickView5.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(86)))));
+            this.quickView5.numberformat = "0.00";
+            // 
+            // quickView4
+            // 
+            this.quickView4.desc = "yaw";
+            resources.ApplyResources(this.quickView4, "quickView4");
+            this.quickView4.Name = "quickView4";
+            this.quickView4.number = 0D;
+            this.quickView4.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(83)))));
+            this.quickView4.numberformat = "0.00";
+            // 
+            // quickView3
+            // 
+            this.quickView3.desc = "wp_dist";
+            resources.ApplyResources(this.quickView3, "quickView3");
+            this.quickView3.Name = "quickView3";
+            this.quickView3.number = 0D;
+            this.quickView3.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(91)))));
+            this.quickView3.numberformat = "0.00";
+            // 
+            // quickView2
+            // 
+            this.quickView2.desc = "groundspeed";
+            resources.ApplyResources(this.quickView2, "quickView2");
+            this.quickView2.Name = "quickView2";
+            this.quickView2.number = 9999.99D;
+            this.quickView2.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(132)))), ((int)(((byte)(46)))));
+            this.quickView2.numberformat = "0.00";
+            // 
+            // quickView1
+            // 
+            this.quickView1.desc = "alt";
+            resources.ApplyResources(this.quickView1, "quickView1");
+            this.quickView1.Name = "quickView1";
+            this.quickView1.number = 0D;
+            this.quickView1.numberColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(151)))), ((int)(((byte)(248)))));
+            this.quickView1.numberformat = "0.00";
+            this.toolTip1.SetToolTip(this.quickView1, resources.GetString("quickView1.ToolTip"));
+            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1349,6 +1513,7 @@
             this.panelWaypoints.PerformLayout();
             this.panelAction.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -1360,6 +1525,9 @@
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.panelBASE.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanelQuick.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1465,20 +1633,6 @@
         private System.Windows.Forms.ToolStripMenuItem prefetchWPPathToolStripMenuItem;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox TXT_altwarn;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Command;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Param1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Param2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Param3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Param4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Lat;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Lon;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Alt;
-        private System.Windows.Forms.DataGridViewButtonColumn Delete;
-        private System.Windows.Forms.DataGridViewImageColumn Up;
-        private System.Windows.Forms.DataGridViewImageColumn Down;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Grad;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Dist;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AZ;
         private System.Windows.Forms.ToolStripMenuItem pOIToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem poiaddToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem poideleteToolStripMenuItem;
@@ -1506,5 +1660,32 @@
         private Controls.MyButton btnStopWS;
         private Controls.MyButton btnClose;
         private Controls.MyButton btnTest;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Command;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Param1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Param2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Param3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Param4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Lat;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Lon;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Alt;
+        private System.Windows.Forms.DataGridViewButtonColumn Delete;
+        private System.Windows.Forms.DataGridViewImageColumn Up;
+        private System.Windows.Forms.DataGridViewImageColumn Down;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Grad;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Dist;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AZ;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Task;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsLoiterInterruptAllowed;
+        private System.Windows.Forms.CheckBox chkAutoLoiterInterrupt;
+        private System.Windows.Forms.Panel panel6;
+        private Controls.HUD hud1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelQuick;
+        private Controls.QuickView quickView6;
+        private Controls.QuickView quickView5;
+        private Controls.QuickView quickView4;
+        private Controls.QuickView quickView3;
+        private Controls.QuickView quickView2;
+        private Controls.QuickView quickView1;
     }
 }
