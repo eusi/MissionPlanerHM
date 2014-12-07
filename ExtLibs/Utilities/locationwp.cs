@@ -22,5 +22,7 @@ namespace MissionPlanner.Utilities
         public float alt;				// Altitude in centimeters (meters * 100)
         [NonSerialized]
         public bool IsLoiterInterruptAllowed;
+        [NonSerialized]
+        public string objective;
     };
 }

@@ -27,10 +27,10 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-          
-                foreach (Locationwp wp in waypoints)
+
+                foreach (var wp in waypoints)
                 {
-                    wp.IsLoiterInterruptAllowed = true;
+                    wp.objective = objective.ToString();
                 }
                 
                 var lastWP = waypoints.LastOrDefault();
@@ -38,7 +38,7 @@ namespace MissionPlanner.SmartAir
                 if (lastWP != null && ((MAVLink.MAV_CMD) lastWP.id) == MAVLink.MAV_CMD.WAYPOINT)
                 {
                     Locationwp clone = new Locationwp();
-                    clone.IsLoiterInterruptAllowed = lastWP.IsLoiterInterruptAllowed;
+                    clone.IsLoiterInterruptAllowed = true;
                     clone.id = (byte) MAVLink.MAV_CMD.LOITER_UNLIM;
                     clone.lat = lastWP.lat;
                     clone.lng = lastWP.lng;
@@ -48,6 +48,7 @@ namespace MissionPlanner.SmartAir
                     clone.p2 = lastWP.p2;
                     clone.p3 = lastWP.p3;
                     clone.p4 = lastWP.p4;
+                    clone.objective = objective.ToString();
                     waypoints.Add(clone);
 
 
@@ -151,6 +152,15 @@ namespace MissionPlanner.SmartAir
                 }
             }
             MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
+        }
+
+        /// <summary>
+        /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
+        /// </summary>
+        /// <returns>Indicates if the stopping process was sucessful.</returns>
+        public bool stopLoiter()
+        {            
+           return MissionPlanner.GCSViews.FlightPlanner.instance.stopLoiter();
         }
 
         /// <summary>

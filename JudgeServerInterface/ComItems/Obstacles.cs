@@ -10,6 +10,7 @@ namespace JudgeServerInterface
     /// <summary>
     /// This class includes the current informations of all obstacles.
     /// </summary>
+    [DataContract]
     public class Obstacles
     {
 

@@ -43,14 +43,17 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
 
-        // to do
+       
+
+
+
         public void SetNewWayPoints(List<Locationwp> waypoints, bool append)
         {
 
             try
             {
 
-                processToScreen(waypoints, append, true);
+                processToScreen(waypoints, append, false,false);
 
                 writeKML();
 
@@ -73,8 +76,8 @@ namespace MissionPlanner.GCSViews
         public List<Locationwp> getWayPoints()
         {
             List<Locationwp> result = new List<Locationwp>();
-            if(TXT_homelng.Text.Length!=0 ||  TXT_homelat.Text.Length!=0||  TXT_homealt.Text.Length!=0)  
-                 result.Add(new Locationwp() { id = 16, options = 0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), lng = double.Parse(String.Format(TXT_homelng.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")), alt = float.Parse(String.Format(TXT_homealt.Text, "0.000000"), new System.Globalization.CultureInfo("en-US")) });
+            //if (TXT_homelng.Text.Length != 0 || TXT_homelat.Text.Length != 0 || TXT_homealt.Text.Length != 0)
+            //    result.Add(new Locationwp() { id = 16, options = 0, lat = double.Parse(String.Format(TXT_homelat.Text, "0.000000")), lng = double.Parse(String.Format(TXT_homelng.Text, "0.000000")), alt = float.Parse(String.Format(TXT_homealt.Text, "0.000000")) });
 
             for (int a = 0; a < Commands.Rows.Count - 0; a++)
             {
@@ -95,13 +98,13 @@ namespace MissionPlanner.GCSViews
                     temp.options = 0;
                 }
 
-                temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.p4 = float.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US"));
-                temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString(), new System.Globalization.CultureInfo("en-US")) / MainV2.comPort.MAV.cs.multiplierdist;
+                temp.p1 = float.Parse(Commands.Rows[a].Cells[Param1.Index].Value.ToString());
+                temp.p2 = float.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString());
+                temp.p3 = float.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString());
+                temp.p4 = float.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString());
+                temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString());
+                temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString());
+                temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist;
 
 
                 if (temp.id == 99)
@@ -221,6 +224,49 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
+        {
+            // to do
+
+
+        }
+
+        public bool stopLoiter()
+        {
+            var nextWPIndex = SmartAirData.Instance.NextWPIndex;
+            // check if next of next wp exists
+            if (Commands.Rows.Count > nextWPIndex+1)
+            {
+                try
+                {
+                    // check if next wp is loitering and is allowed to interrupt 
+                    var rowNextIndex = Commands.Rows[(int)nextWPIndex];
+                    if (rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString() ||
+                        rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TIME.ToString() ||
+                        rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TURNS.ToString())
+                    {
+                        // skip loiter and jump to next wp
+
+                        MainV2.comPort.setWPCurrent((ushort)(nextWPIndex + 1));
+
+                        return true;
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
+
+            }
+
+            return false;
+
+        }
+
+
         public void NewWaypointReachedEvent(float newWPIndex)
         {
             if (chkAutoLoiterInterrupt.Checked)
@@ -228,20 +274,19 @@ namespace MissionPlanner.GCSViews
               
 
                 // check if next of next wp exists
-                if (Commands.Rows.Count > newWPIndex + 1)
+                if (Commands.Rows.Count > newWPIndex+1)
                 {
                     try
                     {
                         // check if next wp is loitering and is allowed to interrupt 
                         var rowNextIndex = Commands.Rows[(int)newWPIndex];
-                        if ((bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
+                        if (rowNextIndex!=null&&rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value != null && (bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
                         {
                             // skip loiter and jump to next wp
-                            if (Commands.Rows.Count > newWPIndex + 1)
-                            {
+                           
                                 MainV2.comPort.setWPCurrent((ushort)(newWPIndex + 1));
 
-                            }
+                            
 
                         }
 
@@ -258,6 +303,8 @@ namespace MissionPlanner.GCSViews
 
         
         }
+
+
 
         // controls
         private void btnSmartAir_Click(object sender, EventArgs e)
@@ -335,6 +382,43 @@ namespace MissionPlanner.GCSViews
             SmartAir.SmartAirData.Instance.createTestData();
         }
 
+
+        JudgeServerWorker JSWorker;
+
+        private void btnJSStart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+
+                JSWorker = new JudgeServerWorker(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
+                Thread JSWorkerThread = new Thread(new ThreadStart(JSWorker.GetAndSendInfo));
+                JSWorkerThread.Start();
+                btnJSStart.Enabled = false;
+                btnJSStop.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        private void btnJSStop_Click(object sender, EventArgs e)
+        {
+            if (JSWorker != null)
+                JSWorker.Stop();
+            btnJSStart.Enabled = true;
+            btnJSStop.Enabled = false;
+        }
+
+        private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAutoLoiterInterrupt.Checked == true)
+                NewWaypointReachedEvent(SmartAirData.Instance.NextWPIndex);
+
+        }
         #endregion
         
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -2150,7 +2234,7 @@ namespace MissionPlanner.GCSViews
         /// <summary>
         /// Processes a loaded EEPROM to the map and datagrid
         /// </summary>
-        void processToScreen(List<Locationwp> cmds, bool append = false, bool forceSetHome=false)
+        void processToScreen(List<Locationwp> cmds, bool append = false, bool askForSetHome = true, bool routeIncludesHomeWayPoint = true)
         {
             quickadd = true;
 
@@ -2229,56 +2313,65 @@ namespace MissionPlanner.GCSViews
                 cell.Value = temp.p3;
                 cell = Commands.Rows[i].Cells[Param4.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.p4;
-            }
+                var test = (Commands.Rows[i].Cells[IsLoiterInterruptAllowed.Index]);
+                DataGridViewCheckBoxCell IsLoiterInterruptAllowedcell = (Commands.Rows[i].Cells[IsLoiterInterruptAllowed.Index]) as DataGridViewCheckBoxCell;
+                IsLoiterInterruptAllowedcell.Value = temp.IsLoiterInterruptAllowed;
 
-            setWPParams();
+                cell = Commands.Rows[i].Cells[Task.Index] as DataGridViewTextBoxCell;
+                cell.Value = temp.objective;
 
-            try
-            {
 
-                DataGridViewTextBoxCell cellhome;
-                cellhome = Commands.Rows[0].Cells[Lat.Index] as DataGridViewTextBoxCell;
-                if (cellhome.Value != null)
+                setWPParams();
+                if (routeIncludesHomeWayPoint)
                 {
-                    if (cellhome.Value.ToString() != TXT_homelat.Text && cellhome.Value.ToString() != "0")
+                    try
                     {
-                        bool resetHomeCoord=true;
 
-                        // if force set home point is set to false, ask user what to do about home waypoint
-                        if (!forceSetHome) {
-                          DialogResult dr = CustomMessageBox.Show("Reset Home to loaded coords", "Reset Home Coords", MessageBoxButtons.YesNo);
-
-                          if (dr == DialogResult.No)
-                              resetHomeCoord = false;
-
-                        }
-                                          
-                        if (resetHomeCoord)
+                        DataGridViewTextBoxCell cellhome;
+                        cellhome = Commands.Rows[0].Cells[Lat.Index] as DataGridViewTextBoxCell;
+                        if (cellhome.Value != null)
                         {
-                            TXT_homelat.Text = (double.Parse(cellhome.Value.ToString())).ToString();
-                            cellhome = Commands.Rows[0].Cells[Lon.Index] as DataGridViewTextBoxCell;
-                            TXT_homelng.Text = (double.Parse(cellhome.Value.ToString())).ToString();
-                            cellhome = Commands.Rows[0].Cells[Alt.Index] as DataGridViewTextBoxCell;
-                            TXT_homealt.Text = (double.Parse(cellhome.Value.ToString()) * MainV2.comPort.MAV.cs.multiplierdist).ToString();
+                            if (cellhome.Value.ToString() != TXT_homelat.Text && cellhome.Value.ToString() != "0")
+                            {
+                                bool resetHomeCoord = false;
+
+                                // if force set home point is set to false, ask user what to do about home waypoint
+                                if (askForSetHome)
+                                {
+                                    DialogResult dr = CustomMessageBox.Show("Reset Home to loaded coords", "Reset Home Coords", MessageBoxButtons.YesNo);
+
+                                    if (dr == DialogResult.Yes)
+                                        resetHomeCoord = true;
+
+                                }
+
+                                if (resetHomeCoord)
+                                {
+                                    TXT_homelat.Text = (double.Parse(cellhome.Value.ToString())).ToString();
+                                    cellhome = Commands.Rows[0].Cells[Lon.Index] as DataGridViewTextBoxCell;
+                                    TXT_homelng.Text = (double.Parse(cellhome.Value.ToString())).ToString();
+                                    cellhome = Commands.Rows[0].Cells[Alt.Index] as DataGridViewTextBoxCell;
+                                    TXT_homealt.Text = (double.Parse(cellhome.Value.ToString()) * MainV2.comPort.MAV.cs.multiplierdist).ToString();
+                                }
+                            }
                         }
                     }
+                    catch (Exception ex) { log.Error(ex.ToString()); } // if there is no valid home
+
+                    if (Commands.RowCount > 0)
+                    {
+                        log.Info("remove home from list");
+                        Commands.Rows.Remove(Commands.Rows[0]); // remove home row
+                    }
                 }
+                quickadd = false;
+
+                writeKML();
+
+                MainMap.ZoomAndCenterMarkers("objects");
+
+                MainMap_OnMapZoomChanged();
             }
-            catch (Exception ex) { log.Error(ex.ToString()); } // if there is no valid home
-
-            if (Commands.RowCount > 0)
-            {
-                log.Info("remove home from list");
-                Commands.Rows.Remove(Commands.Rows[0]); // remove home row
-            }
-
-            quickadd = false;
-
-            writeKML();
-
-            MainMap.ZoomAndCenterMarkers("objects");
-
-            MainMap_OnMapZoomChanged();
         }
 
         void setWPParams()
@@ -6499,6 +6592,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
         {
 
         }
+        
 
 
 

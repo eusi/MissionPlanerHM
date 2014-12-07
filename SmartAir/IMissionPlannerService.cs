@@ -15,6 +15,14 @@ namespace MissionPlanner.SmartAir
     {
 
         /// <summary>
+        /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
+        /// </summary>
+        /// <returns>Indicates if the stopping process was sucessful.</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        bool stopLoiter();
+
+        /// <summary>
         /// This methods adds new waypoints to the mission planner.  
         /// </summary>
         /// <param name="waypoints">The waypoints to add.</param>

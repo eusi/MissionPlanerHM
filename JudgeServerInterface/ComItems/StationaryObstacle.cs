@@ -10,6 +10,7 @@ namespace JudgeServerInterface
     /// <summary>
     /// This class represents a stationary osbtacle.
     /// </summary>
+       [DataContract]
     public class StationaryObstacle
     {
 
