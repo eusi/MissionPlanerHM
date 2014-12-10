@@ -2139,6 +2139,7 @@ namespace MissionPlanner.GCSViews
                 port.setWP(home, (ushort)0, MAVLink.MAV_FRAME.GLOBAL, 0);
 
                    List<Locationwp> tempWPList = new List<Locationwp>();
+                   home.IsLoiterInterruptAllowed = false;
                    tempWPList.Add(home);
 
                 MAVLink.MAV_FRAME frame = MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
@@ -2187,7 +2188,10 @@ namespace MissionPlanner.GCSViews
                     temp.p3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                     temp.p4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
 
-                   
+                    if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
+                        temp.IsLoiterInterruptAllowed = (bool)Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value;
+                    else
+                        temp.IsLoiterInterruptAllowed = false;
 
                     
                     MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(a + 1), frame, 0);

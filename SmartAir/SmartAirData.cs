@@ -151,7 +151,7 @@ namespace MissionPlanner.SmartAir
                     int iNextWPIndex = (int)nextWPIndexFromAutopilot;
 
                     var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
-                    if (currentWP != null && currentWP.IsLoiterInterruptAllowed && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
+                    if (currentWP != null && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
                     {
                         // skip loiter, jump to next wp and send it to autopilot 
                         MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
