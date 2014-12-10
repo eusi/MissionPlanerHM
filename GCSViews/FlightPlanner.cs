@@ -42,11 +42,7 @@ namespace MissionPlanner.GCSViews
     public partial class FlightPlanner : MyUserControl, IDeactivate, IActivate
     {
         #region SmartAir
-
-       
-
-
-
+               
         public void SetNewWayPoints(List<Locationwp> waypoints, bool append)
         {
 
@@ -208,9 +204,7 @@ namespace MissionPlanner.GCSViews
 
 
         }
-
-
-
+        
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
             throw new NotImplementedException();
@@ -231,81 +225,97 @@ namespace MissionPlanner.GCSViews
 
         }
 
-        public bool stopLoiter()
-        {
-            var nextWPIndex = SmartAirData.Instance.NextWPIndex;
-            // check if next of next wp exists
-            if (Commands.Rows.Count > nextWPIndex+1)
-            {
-                try
-                {
-                    // check if next wp is loitering and is allowed to interrupt 
-                    var rowNextIndex = Commands.Rows[(int)nextWPIndex];
-                    if (rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString() ||
-                        rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TIME.ToString() ||
-                        rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TURNS.ToString())
-                    {
-                        // skip loiter and jump to next wp
+        //public bool stopLoiter()
+        //{
+        //    var nextWPIndexFromAutopilot = SmartAirData.Instance.NextWPIndexFromAutopilot;
 
-                        MainV2.comPort.setWPCurrent((ushort)(nextWPIndex + 1));
+        //    // important table in auto pilot has one wp more! home location is index 0!
+        //    if (nextWPIndexFromAutopilot <= 0)
+        //    {
+        //        // next wp is home location --> home location is loiter by default --> nothing to do 
+        //        return false;
+        //    }
 
-                        return true;
+        //    // calc index in datagrid (table in auto pilot has one wp more! home location is index 0!)
+        //    int dataGridWPIndex = ((int)nextWPIndexFromAutopilot) - 1;
 
-                    }
+        //    // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
+        //    if (Commands.Rows.Count > dataGridWPIndex + 1)
+        //    {
+        //        try
+        //        {
+        //            // check if next wp is loitering and is allowed to interrupt 
+        //            var rowNextIndex = Commands.Rows[dataGridWPIndex];
+        //            if (rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString() ||
+        //                rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TIME.ToString() ||
+        //                rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TURNS.ToString())
+        //            {
+        //                // skip loiter, jump to next wp and send it to autopilot (use here index from autopilot!) 
+        //                MainV2.comPort.setWPCurrent((ushort)(nextWPIndexFromAutopilot + 1));          
 
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
+        //                return true;
+
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return false;
+        //        }
 
 
-            }
+        //    }
 
-            return false;
+        //    return false;
 
-        }
-
-
-        public void NewWaypointReachedEvent(float newWPIndex)
-        {
-            if (chkAutoLoiterInterrupt.Checked)
-            {
+        //}
+        ///// <summary>
+        ///// This method works only when autopilot waypoint table is in sync with mission planner wp table
+        ///// </summary>
+        ///// <param name="nextWPIndexFromAutopilot"></param>
+        //public void NewWaypointReachedEvent(float nextWPIndexFromAutopilot)
+        //{
+        //    if (chkAutoLoiterInterrupt.Checked)
+        //    {
               
+        //        // important table in auto pilot has one wp more! home location is index 0!
+        //        if (nextWPIndexFromAutopilot <= 0)
+        //        {
+        //            // next wp is home location --> home location is loiter by default --> nothing to do 
+        //            return;
+        //        }
 
-                // check if next of next wp exists
-                if (Commands.Rows.Count > newWPIndex+1)
-                {
-                    try
-                    {
-                        // check if next wp is loitering and is allowed to interrupt 
-                        var rowNextIndex = Commands.Rows[(int)newWPIndex];
-                        if (rowNextIndex!=null&&rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value != null && (bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
-                        {
-                            // skip loiter and jump to next wp
-                           
-                                MainV2.comPort.setWPCurrent((ushort)(newWPIndex + 1));
+        //        // calc index in datagrid (table in auto pilot has one wp more! home location is index 0!)
+        //        int dataGridWPIndex = ((int)nextWPIndexFromAutopilot)-1;
 
-                            
+        //        // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
+        //        if (Commands.Rows.Count > dataGridWPIndex+1)
+        //        {
+        //            try
+        //            {
+        //                // check if wp is loitering and is allowed to interrupt 
+        //                var rowNextIndex = Commands.Rows[dataGridWPIndex];
+        //                if (rowNextIndex!=null&&rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value != null && (bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
+        //                {
+        //                    // skip loiter, jump to next wp and send it to autopilot (use here index from autopilot!) 
+        //                    MainV2.comPort.setWPCurrent((ushort)(nextWPIndexFromAutopilot + 1));                            
 
-                        }
+        //                }
 
-                    }
-                    catch (Exception ex)
-                    {
+        //            }
+        //            catch (Exception ex)
+        //            {
 
-                        throw ex;
-                    }
+        //                throw ex;
+        //            }
 
                     
-                }
-            }
+        //        }
+        //    }
 
         
-        }
-
-
-
+        //}
+        
         // controls
         private void btnSmartAir_Click(object sender, EventArgs e)
         {
@@ -416,7 +426,9 @@ namespace MissionPlanner.GCSViews
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
         {
             if (chkAutoLoiterInterrupt.Checked == true)
-                NewWaypointReachedEvent(SmartAirData.Instance.NextWPIndex);
+                SmartAirData.Instance.AutoLoadRoutes = true;
+            else
+                SmartAirData.Instance.AutoLoadRoutes = false;
 
         }
         #endregion
@@ -2126,7 +2138,12 @@ namespace MissionPlanner.GCSViews
 
                 port.setWP(home, (ushort)0, MAVLink.MAV_FRAME.GLOBAL, 0);
 
+                   List<Locationwp> tempWPList = new List<Locationwp>();
+                   tempWPList.Add(home);
+
                 MAVLink.MAV_FRAME frame = MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
+              
+
 
                 // process grid to memory eeprom
                 for (int a = 0; a < Commands.Rows.Count - 0; a++)
@@ -2161,6 +2178,7 @@ namespace MissionPlanner.GCSViews
                         }
                     }
 
+                   
                     temp.alt = (float)(double.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist);
                     temp.lat = (double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString()));
                     temp.lng = (double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString()));
@@ -2169,6 +2187,9 @@ namespace MissionPlanner.GCSViews
                     temp.p3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                     temp.p4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
 
+                   
+
+                    
                     MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(a + 1), frame, 0);
 
                     // we timed out while uploading wps/ command wasnt replaced/ command wasnt added
@@ -2201,6 +2222,8 @@ namespace MissionPlanner.GCSViews
                         e.ErrorMessage = "Upload wps failed " + Commands.Rows[a].Cells[Command.Index].Value.ToString() + " " + Enum.Parse(typeof(MAVLink.MAV_MISSION_RESULT), ans.ToString());
                         return;
                     }
+                    tempWPList.Add(temp);
+                    
                 }
 
                 port.setWPACK();
@@ -2221,7 +2244,7 @@ namespace MissionPlanner.GCSViews
                 {
 
                 }
-
+                SmartAirData.Instance.WayPointsTableOfAutoPilot=tempWPList;
                 ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done.");
             }
             catch (Exception ex) { log.Error(ex); MainV2.comPort.giveComport = false; throw; }

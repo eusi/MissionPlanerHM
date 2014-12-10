@@ -58,7 +58,7 @@ namespace MissionPlanner.SmartAir
                 SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
                  
                 MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
-                MissionPlanner.GCSViews.FlightPlanner.instance.NewWaypointReachedEvent( SmartAirData.Instance.NextWPIndex);
+                SmartAirData.Instance.LoadNextRoute(SmartAirData.Instance.NextWPIndexFromAutopilot);
                 
             }
             catch (Exception ex)
@@ -160,7 +160,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>Indicates if the stopping process was sucessful.</returns>
         public bool stopLoiter()
         {            
-           return MissionPlanner.GCSViews.FlightPlanner.instance.stopLoiter();
+           return SmartAirData.Instance.stopLoiter();
         }
 
         /// <summary>

@@ -1217,7 +1217,7 @@ namespace MissionPlanner
                     SmartAir.SmartAirData.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
                     SmartAir.SmartAirData.Instance.UAVPosition.Yaw = this.yaw;
 
-                    SmartAir.SmartAirData.Instance.NextWPIndex = this.wpno;
+                    SmartAir.SmartAirData.Instance.NextWPIndexFromAutopilot = this.wpno;
                     if (bs != null)
                     {
                         bs.DataSource = this;

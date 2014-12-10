@@ -12,6 +12,7 @@ namespace MissionPlanner.SmartAir
     {
         private static volatile SmartAirData instance;
         private static object syncRoot = new Object();
+        
 
         private SmartAirData()
         { 
@@ -46,33 +47,129 @@ namespace MissionPlanner.SmartAir
 
         Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();
 
-        float lastWPIndex = 0;
+        float lastWPIndexFromAutopilot = 0;
 
-        float nextWPIndex = 0;
+        float nextWPIndexFromAutopilot = 0;
+
+        List<Locationwp> wayPointsTableOfAutoPilot = new List<Locationwp>();
+
+        bool autoLoadRoutes = true;
 
      
+
+        
 
         #endregion
 
         #region Properties
 
-
-        public float NextWPIndex
+        public bool AutoLoadRoutes
         {
-            get { return nextWPIndex; }
+            get { return autoLoadRoutes; }
             set
             {
 
-                // check if waypoint index has changed
-                if (lastWPIndex != nextWPIndex)
+
+                autoLoadRoutes = value;
+                if (value == true)
+                    LoadNextRoute(this.nextWPIndexFromAutopilot);
+            }
+        }
+
+        public List<Locationwp> WayPointsTableOfAutoPilot
+        {
+            get { return wayPointsTableOfAutoPilot; }
+            set { wayPointsTableOfAutoPilot = value; }
+        }
+
+        public float NextWPIndexFromAutopilot
+        {
+            get { return nextWPIndexFromAutopilot; }
+            set
+            {
+
+                // check if autopilot waypoint index has changed
+                if (lastWPIndexFromAutopilot != nextWPIndexFromAutopilot)
                 {
-                    MissionPlanner.GCSViews.FlightPlanner.instance.NewWaypointReachedEvent(nextWPIndex);
-                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndex);
-                    lastWPIndex = nextWPIndex;
+                    LoadNextRoute(nextWPIndexFromAutopilot);
+                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndexFromAutopilot);
+                    lastWPIndexFromAutopilot = nextWPIndexFromAutopilot;
                 }
-                nextWPIndex = value;
+                nextWPIndexFromAutopilot = value;
 
             }
+        }
+
+        /// <summary>
+        /// This method works only when autopilot waypoint table is in sync with mission planner wp table
+        /// </summary>
+        /// <param name="nextWPIndex"></param>
+        public void LoadNextRoute(float nextWPIndex)
+        {
+            if (AutoLoadRoutes)
+            {
+                
+                int iNextWPIndex = (int)nextWPIndex;
+
+                // check if the waypoint has a following way point in the current table --> if not, loiter is not interrupted --> loiter until next WP is available
+                if (wayPointsTableOfAutoPilot.Count > iNextWPIndex + 1)
+                {
+                    try
+                    {
+                        
+                        // check if current wp is loitering and is allowed to interrupt 
+                        var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
+                        if (currentWP != null&&currentWP.IsLoiterInterruptAllowed && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
+                        {
+                            // skip loiter, jump to next wp and send it to autopilot 
+                            MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));                            
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+
+                    
+                }
+            }
+
+        
+        }
+
+        public bool stopLoiter()
+        {
+             
+            // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
+            if (wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot + 1)
+            {
+                try
+                {
+                    int iNextWPIndex = (int)nextWPIndexFromAutopilot;
+
+                    var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
+                    if (currentWP != null && currentWP.IsLoiterInterruptAllowed && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
+                    {
+                        // skip loiter, jump to next wp and send it to autopilot 
+                        MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
+                        return true;
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
+
+            }
+
+            return false;
+
         }
 
 
