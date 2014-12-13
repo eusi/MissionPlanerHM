@@ -36,6 +36,7 @@ using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using System.ServiceModel;
 using MissionPlanner.SmartAir;
+using JudgeServerInterface;
 
 namespace MissionPlanner.GCSViews
 {
@@ -118,43 +119,7 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
-            if (zonesToDraw == null)
-            {
-                zonesToDraw = new List<Zone>();
-                Zone temp = new Zone();
-
-
-                temp.Color = new SmartAirColor(255,255,255,255);
-
-                temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
-                temp.ZonePoints = new List<PointLatLng>();
-                PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9467725, 10.5505013);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9443485, 10.5524755);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9437143, 10.5458879);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(4.9459845, 10.5469548);
-                temp.ZonePoints.Add(tempPoint);
-
-                zonesToDraw.Add(temp);
-
-                Zone temp2 = new Zone();
-                temp.ZoneType = SAM_TYPES.ZONE_NO_FLIGHT;
-
-                temp2.Color = new SmartAirColor(255, 0, 255, 255);
-
-                temp2.ZonePoints = new List<PointLatLng>();
-                temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
-                temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
-                temp2.ZonePoints.Add(new PointLatLng(-21.34, 3.23));
-
-                zonesToDraw.Add(temp2);
-            }
-
-            
+                      
             foreach (var zones in zonesToDraw)
             {
 
@@ -207,9 +172,106 @@ namespace MissionPlanner.GCSViews
         
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
-            // to do
+
+            foreach (var oldObstacle in obstacles)
+            {
+                drawnpolygonsoverlay.Polygons.Remove(oldObstacle);
+            }
+            obstacles.Clear();
+            drawnpolygonsoverlay.Markers.Clear();
+
+            List<StationaryObstacle> stationary = obstacleToDraw.StationaryObstacles;
+
+            foreach (var newObstacle in stationary)
+            {
+                GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
+    
+                drawnpolygonsoverlay.Polygons.Add(newCircle);
+                obstacles.Add(newCircle);
+                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.green);
+                drawnpolygonsoverlay.Markers.Add(marker);
+            }
+
+            List<MovingObstacle> moving = obstacleToDraw.MovingObstacles;
+
+            foreach (var newObstacle in moving)
+            {
+                GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
+
+                drawnpolygonsoverlay.Polygons.Add(newCircle);
+                obstacles.Add(newCircle);
+                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.green);
+                drawnpolygonsoverlay.Markers.Add(marker);
+            }
+
         }
 
+        private GMapPolygon CreateCircle(double lat, double lng, double radius, int segments)
+        {
+
+            int Points = 100;
+            int Radius = (int) radius;
+            int Direction = 1;
+            int startangle = 0;
+
+
+            double a = startangle;
+            double step = 360.0f / Points;
+            if (Direction == -1)
+            {
+                a += 360;
+                step *= -1;
+            }
+            List<PointLatLng> newCircle = new List<PointLatLng>();
+
+            for (; a <= (startangle + 360) && a >= 0; a += step)
+            {
+
+                //selectedrow = Commands.Rows.Add();
+
+                //Commands.Rows[selectedrow].Cells[Command.Index].Value = MAVLink.MAV_CMD.WAYPOINT.ToString();
+
+                //ChangeColumnHeader(MAVLink.MAV_CMD.WAYPOINT.ToString());
+
+                float d = Radius;
+                float R = 6371000;
+
+                var lat2 = Math.Asin(Math.Sin(lat * deg2rad) * Math.Cos(d / R) + Math.Cos(lat * deg2rad) * Math.Sin(d / R) * Math.Cos(a * deg2rad));
+                var lon2 = lng * deg2rad + Math.Atan2(Math.Sin(a * deg2rad) * Math.Sin(d / R) * Math.Cos(lat * deg2rad), Math.Cos(d / R) - Math.Sin(lat * deg2rad) * Math.Sin(lat2));
+
+                PointLatLng pll = new PointLatLng(lat2 * rad2deg, lon2 * rad2deg);
+                newCircle.Add(pll);
+
+
+
+            }
+            GMapPolygon newPolygon = new GMapPolygon(newCircle, "obstacle");
+            GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(lat, lng),GMarkerGoogleType.green);
+            markerOverlay.Markers.Add(marker);
+            return newPolygon;
+
+        }
+
+        private GMapPolygon createCircle2(double lat, double lng, double radius, int segments)
+        {
+            List<PointLatLng> gpollist = new List<PointLatLng>();
+
+            double seg = Math.PI * 2 / segments;
+
+            int y = 0;
+            for (int i = 0; i < segments; i++)
+            {
+                double theta = seg * i;
+                double a = lat + Math.Cos(theta) * radius;
+                double b = lng + Math.Sin(theta) * radius;
+
+                PointLatLng gpoi = new PointLatLng(a, b);
+
+                gpollist.Add(gpoi);
+            }
+            GMapPolygon gpol = new GMapPolygon(gpollist, "pol");
+            return gpol;
+        }
         public void hideWaypoint(int wpIndexToHide)
         {
             // to do
@@ -825,6 +887,7 @@ namespace MissionPlanner.GCSViews
 
             drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
             MainMap.Overlays.Add(drawnpolygonsoverlay);
+
 
             MainMap.Overlays.Add(poioverlay);
 
@@ -2835,6 +2898,9 @@ namespace MissionPlanner.GCSViews
         GMapOverlay geofenceoverlay;
         static GMapOverlay rallypointoverlay;
 
+        List<GMapPolygon> obstacles = new List<GMapPolygon>();
+        GMapOverlay markerOverlay = new GMapOverlay();
+
         // etc
         readonly Random rnd = new Random();
         string mobileGpsLog = string.Empty;
@@ -4409,10 +4475,8 @@ namespace MissionPlanner.GCSViews
                 float d = Radius;
                 float R = 6371000;
 
-                var lat2 = Math.Asin(Math.Sin(MouseDownEnd.Lat * deg2rad) * Math.Cos(d / R) +
-              Math.Cos(MouseDownEnd.Lat * deg2rad) * Math.Sin(d / R) * Math.Cos(a * deg2rad));
-                var lon2 = MouseDownEnd.Lng * deg2rad + Math.Atan2(Math.Sin(a * deg2rad) * Math.Sin(d / R) * Math.Cos(MouseDownEnd.Lat * deg2rad),
-                                     Math.Cos(d / R) - Math.Sin(MouseDownEnd.Lat * deg2rad) * Math.Sin(lat2));
+                var lat2 = Math.Asin(Math.Sin(MouseDownEnd.Lat * deg2rad) * Math.Cos(d / R) + Math.Cos(MouseDownEnd.Lat * deg2rad) * Math.Sin(d / R) * Math.Cos(a * deg2rad));
+                var lon2 = MouseDownEnd.Lng * deg2rad + Math.Atan2(Math.Sin(a * deg2rad) * Math.Sin(d / R) * Math.Cos(MouseDownEnd.Lat * deg2rad), Math.Cos(d / R) - Math.Sin(MouseDownEnd.Lat * deg2rad) * Math.Sin(lat2));
 
                 PointLatLng pll = new PointLatLng(lat2 * rad2deg, lon2 * rad2deg);
 
@@ -6618,6 +6682,20 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         private void quickView_DoubleClick(object sender, EventArgs e)
         {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+            
+
+
+            GMapPolygon newPolygon = CreateCircle(47.260614, 11.348180, 100, 100);
+            drawnpolygonsoverlay.Polygons.Add(newPolygon);
+
+
+
 
         }
         
