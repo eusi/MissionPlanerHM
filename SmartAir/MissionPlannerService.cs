@@ -23,7 +23,7 @@ namespace MissionPlanner.SmartAir
         /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
-        public void setWayPoints(List<Locationwp> waypoints, bool append, SAM_TYPES objective)
+        public void setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective)
         {
             try
             {
@@ -37,6 +37,7 @@ namespace MissionPlanner.SmartAir
                 // clone last wp
                 if (lastWP != null && ((MAVLink.MAV_CMD) lastWP.id) == MAVLink.MAV_CMD.WAYPOINT)
                 {
+                    
                     Locationwp clone = new Locationwp();
                     clone.IsLoiterInterruptAllowed = true;
                     clone.id = (byte) MAVLink.MAV_CMD.LOITER_UNLIM;
@@ -103,7 +104,7 @@ namespace MissionPlanner.SmartAir
         /// This method gets the zones.
         /// </summary>
         /// <returns>A list of zones.</returns>
-        public Dictionary<SAM_TYPES,Zone> getZones()
+        public Dictionary<SamTypes,Zone> getZones()
         {
             return SmartAirData.Instance.Zones;
         }
@@ -167,7 +168,7 @@ namespace MissionPlanner.SmartAir
         /// This method gets the targets.
         /// </summary>
         /// <returns>A list of targets.</returns>
-        public Dictionary<SAM_TYPES,List<Target>> getTargets()
+        public Dictionary<SamTypes,List<Target>> getTargets()
         {
             return SmartAirData.Instance.Targets;
         }

@@ -119,7 +119,47 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
+<<<<<<< HEAD
                       
+=======
+            if (zonesToDraw == null)
+            {
+                zonesToDraw = new List<Zone>();
+                Zone temp = new Zone();
+
+
+                temp.Color = new SmartAirColor(255,255,255,255);
+
+                temp.ZoneType = SamTypes.ZONE_SEARCH_AREA;
+                temp.ZonePoints = new List<PointLatLng>();
+                PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9467725, 10.5505013);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9443485, 10.5524755);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(48.9437143, 10.5458879);
+                temp.ZonePoints.Add(tempPoint);
+                tempPoint = new PointLatLng(4.9459845, 10.5469548);
+                temp.ZonePoints.Add(tempPoint);
+
+                zonesToDraw.Add(temp);
+
+                Zone temp2 = new Zone();
+                temp.ZoneType = SamTypes.ZONE_NO_FLIGHT;
+
+                temp2.Color = new SmartAirColor(255, 0, 255, 255);
+
+                temp2.ZonePoints = new List<PointLatLng>();
+                temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
+                temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
+                temp2.ZonePoints.Add(new PointLatLng(-21.34, 3.23));
+
+                zonesToDraw.Add(temp2);
+            }
+
+            
+>>>>>>> 269170150ed5459a2fd8c48288dfc31335855a6b
             foreach (var zones in zonesToDraw)
             {
 

@@ -43,9 +43,9 @@ namespace MissionPlanner.SmartAir
 
         UAVPosition _UAVPosition = new UAVPosition();
 
-        Dictionary<SAM_TYPES, Zone> zones = new Dictionary<SAM_TYPES, Zone>();
+        Dictionary<SamTypes, Zone> zones = new Dictionary<SamTypes, Zone>();
 
-        Dictionary<SAM_TYPES, List<Target>> targets = new Dictionary<SAM_TYPES, List<Target>>();
+        Dictionary<SamTypes, List<Target>> targets = new Dictionary<SamTypes, List<Target>>();
 
         float lastWPIndexFromAutopilot = 0;
 
@@ -173,7 +173,7 @@ namespace MissionPlanner.SmartAir
         }
 
 
-        public Dictionary<SAM_TYPES,Zone> Zones
+        public Dictionary<SamTypes,Zone> Zones
         {
             get { return zones; }
             set { zones = value; }
@@ -194,7 +194,7 @@ namespace MissionPlanner.SmartAir
             }
         }
 
-        public Dictionary<SAM_TYPES, List<Target>> Targets
+        public Dictionary<SamTypes, List<Target>> Targets
         {
             get { return targets; }
             set { targets = value; }
@@ -235,7 +235,7 @@ namespace MissionPlanner.SmartAir
 
 
 
-            zones = new Dictionary<SAM_TYPES,Zone>();
+            zones = new Dictionary<SamTypes,Zone>();
             var temp = new List<GMap.NET.PointLatLng>();
             temp.Add(new GMap.NET.PointLatLng(1, 1));
             temp.Add(new GMap.NET.PointLatLng(2, 2));
@@ -244,16 +244,16 @@ namespace MissionPlanner.SmartAir
 
 
 
-            zones.Add(SAM_TYPES.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SAM_TYPES.ZONE_NO_FLIGHT });
-            zones.Add(SAM_TYPES.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_EMERGENT });
-            zones.Add(SAM_TYPES.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SAM_TYPES.ZONE_SEARCH_AREA });
+            zones.Add(SamTypes.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SamTypes.ZONE_NO_FLIGHT });
+            zones.Add(SamTypes.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamTypes.ZONE_EMERGENT });
+            zones.Add(SamTypes.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamTypes.ZONE_SEARCH_AREA });
 
 
 
-            targets = new Dictionary<SAM_TYPES, List<Target>>();
-            targets.Add(SAM_TYPES.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SAM_TYPES.TARGET_AIRDROP, Color = new SmartAirColor(100, 0, 0, 0) }});
-            targets.Add(SAM_TYPES.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SAM_TYPES.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
-            targets.Add(SAM_TYPES.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SAM_TYPES.TARGET_SRIC, Color = new SmartAirColor(100, 0, 100, 0) }});
+            targets = new Dictionary<SamTypes, List<Target>>();
+            targets.Add(SamTypes.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SamTypes.TARGET_AIRDROP, Color = new SmartAirColor(100, 0, 0, 0) }});
+            targets.Add(SamTypes.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SamTypes.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SamTypes.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
+            targets.Add(SamTypes.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SamTypes.TARGET_SRIC, Color = new SmartAirColor(100, 0, 100, 0) }});
            
 
 
