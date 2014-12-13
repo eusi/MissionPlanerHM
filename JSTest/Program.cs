@@ -13,7 +13,7 @@ namespace JSTest
         static void Main(string[] args)
         {
             IJudgeServer js = new JudgeServer();
-            js.Connect("http://smartair-JudgingServer:8080", "testuser", "testpass");
+            js.Connect("http://10.28.2.161:8080", "testuser", "testpass");
 
             js.GetServerInfo();
 
