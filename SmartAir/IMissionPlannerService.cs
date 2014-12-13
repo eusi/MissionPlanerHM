@@ -36,7 +36,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        void setWayPoints(List<Locationwp> waypoints, bool append, SAM_TYPES objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
+        void setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of zones.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Dictionary<SAM_TYPES, Zone> getZones();
+        Dictionary<SamTypes, Zone> getZones();
 
         /// <summary>
         /// This method gets the current position of the UAV.
@@ -105,7 +105,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of targets.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Dictionary<SAM_TYPES, List<Target>> getTargets();
+        Dictionary<SamTypes, List<Target>> getTargets();
 
         /// <summary>
         /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.

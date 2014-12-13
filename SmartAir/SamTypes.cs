@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MissionPlanner.SmartAir
 {
-    public enum SAM_TYPES
+    public enum SamTypes
     {
         UNKNOWN = 0,
         ZONE_NO_FLIGHT = 1,
@@ -21,6 +21,8 @@ namespace MissionPlanner.SmartAir
         TASK_AIRDROP = 23,
         TASK_OFFAXIS = 24,
         TASK_IR = 25,
+        TASK_WAYPOINT = 26,
+        TASK_SRIC = 27,
         ENUM_END = 666
 
 
