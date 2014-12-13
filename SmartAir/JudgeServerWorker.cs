@@ -1,6 +1,7 @@
 ﻿using JudgeServerInterface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,7 @@ namespace MissionPlanner.SmartAir
         bool running = true;
         JudgeServer js;
         int intervall = 100;
+      //  public static string times = "";
         public JudgeServerWorker(string url, string user, string password,int intervall)
         {
             js = new JudgeServer();
@@ -29,12 +31,14 @@ namespace MissionPlanner.SmartAir
         int iErrorCounter = 0;
         public void GetAndSendInfo()
         {
+            //List<TimeSpan> timetable = new List<TimeSpan>();
             while (running)
             {
                 try
                 {
-
-              
+                    //Stopwatch stopWatch = new Stopwatch();
+                    //stopWatch.Start();
+                   
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
@@ -47,7 +51,11 @@ namespace MissionPlanner.SmartAir
                 js.setUASTelemetry(position.Lat,position.Lng,position.Alt,position.Yaw);
 
                 Thread.Sleep(intervall);
+                    
                 iErrorCounter = 0;
+
+                //stopWatch.Stop();
+                //timetable.Add(stopWatch.Elapsed);
                 }
                 catch (Exception)
                 {
@@ -60,7 +68,14 @@ namespace MissionPlanner.SmartAir
                     
                 }
             }
+            
+            //foreach (var ts in timetable)
+            //{
+            //      // Format and display the TimeSpan value.
 
+            //    times += ts.ToString() + "|||";
+                
+            //}
         }
 
     }

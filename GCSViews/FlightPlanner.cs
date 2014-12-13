@@ -200,15 +200,14 @@ namespace MissionPlanner.GCSViews
 
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
         {
-            throw new NotImplementedException();
+            // to do
 
 
         }
         
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
-            throw new NotImplementedException();
-
+            // to do
         }
 
         public void hideWaypoint(int wpIndexToHide)
@@ -421,6 +420,8 @@ namespace MissionPlanner.GCSViews
                 JSWorker.Stop();
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
+            //Thread.Sleep(1000);
+            //MessageBox.Show(JudgeServerWorker.times);
         }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
