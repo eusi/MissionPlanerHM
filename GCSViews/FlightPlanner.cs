@@ -126,7 +126,7 @@ namespace MissionPlanner.GCSViews
 
                 temp.Color = new SmartAirColor(255,255,255,255);
 
-                temp.ZoneType = SAM_TYPES.ZONE_SEARCH_AREA;
+                temp.ZoneType = SamTypes.ZONE_SEARCH_AREA;
                 temp.ZonePoints = new List<PointLatLng>();
                 PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
                 temp.ZonePoints.Add(tempPoint);
@@ -142,7 +142,7 @@ namespace MissionPlanner.GCSViews
                 zonesToDraw.Add(temp);
 
                 Zone temp2 = new Zone();
-                temp.ZoneType = SAM_TYPES.ZONE_NO_FLIGHT;
+                temp.ZoneType = SamTypes.ZONE_NO_FLIGHT;
 
                 temp2.Color = new SmartAirColor(255, 0, 255, 255);
 
@@ -200,15 +200,14 @@ namespace MissionPlanner.GCSViews
 
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
         {
-            throw new NotImplementedException();
+            // to do
 
 
         }
         
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
-            throw new NotImplementedException();
-
+            // to do
         }
 
         public void hideWaypoint(int wpIndexToHide)
@@ -421,6 +420,8 @@ namespace MissionPlanner.GCSViews
                 JSWorker.Stop();
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
+            //Thread.Sleep(1000);
+            //MessageBox.Show(JudgeServerWorker.times);
         }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
