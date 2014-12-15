@@ -125,7 +125,7 @@ namespace MissionPlanner.GCSViews
                 
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
 
-                polygon.Fill = new SolidBrush(Color.FromArgb(zones.Color.alpha, zones.Color.red, zones.Color.green, zones.Color.blue));
+                polygon.Fill = new SolidBrush(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
                 polygon.Stroke = new Pen(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
 
                 deleteZone(zones.ZoneType.ToString());
