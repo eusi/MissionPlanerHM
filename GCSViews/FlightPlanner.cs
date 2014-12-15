@@ -119,47 +119,6 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
-<<<<<<< HEAD
-                      
-=======
-            if (zonesToDraw == null)
-            {
-                zonesToDraw = new List<Zone>();
-                Zone temp = new Zone();
-
-
-                temp.Color = new SmartAirColor(255,255,255,255);
-
-                temp.ZoneType = SamTypes.ZONE_SEARCH_AREA;
-                temp.ZonePoints = new List<PointLatLng>();
-                PointLatLng tempPoint = new PointLatLng(48.9459270, 10.5453300);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9467725, 10.5505013);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9443485, 10.5524755);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(48.9437143, 10.5458879);
-                temp.ZonePoints.Add(tempPoint);
-                tempPoint = new PointLatLng(4.9459845, 10.5469548);
-                temp.ZonePoints.Add(tempPoint);
-
-                zonesToDraw.Add(temp);
-
-                Zone temp2 = new Zone();
-                temp.ZoneType = SamTypes.ZONE_NO_FLIGHT;
-
-                temp2.Color = new SmartAirColor(255, 0, 255, 255);
-
-                temp2.ZonePoints = new List<PointLatLng>();
-                temp2.ZonePoints.Add(new PointLatLng(32.342, 2.21));
-                temp2.ZonePoints.Add(new PointLatLng(2.34, -21.34));
-                temp2.ZonePoints.Add(new PointLatLng(-21.34, 3.23));
-
-                zonesToDraw.Add(temp2);
-            }
-
-            
->>>>>>> 269170150ed5459a2fd8c48288dfc31335855a6b
             foreach (var zones in zonesToDraw)
             {
 
@@ -205,9 +164,33 @@ namespace MissionPlanner.GCSViews
 
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
         {
-            // to do
 
+            foreach (var target in targetsToDraw)
+            {
+                drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, getImg(target.TargetType)));
+            }
 
+        }
+
+        private Image getImg(SamTypes type)
+        {
+            switch (type)
+            {
+                case SamTypes.TARGET_AIRDROP:
+                    return Image.FromFile("Resources\\airdrop_icon.png");
+                case SamTypes.TARGET_IR_DYNAMIC:
+                    return Image.FromFile("Resources\\ir_dynamic_icon.png");
+                case SamTypes.TARGET_IR_STATIC:
+                    return Image.FromFile("Resources\\ir_static_icon.png");
+                case SamTypes.TARGET_OFFAXIS:
+                    return Image.FromFile("Resources\\offaxis_icon.png");
+                case SamTypes.TARGET_SRIC:
+                    return Image.FromFile("Resources\\sric_icon.png");
+                case SamTypes.TARGET_EMERGENT:
+                    return Image.FromFile("Resources\\emergent_icon.png");
+                default:
+                    return null;
+            }
         }
         
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
@@ -225,11 +208,10 @@ namespace MissionPlanner.GCSViews
             foreach (var newObstacle in stationary)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
-    
+                newCircle.Fill =  new SolidBrush(Color.FromArgb(255 , Color.Red));
+                newCircle.Stroke = new Pen(Color.Red, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
-                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.green);
-                drawnpolygonsoverlay.Markers.Add(marker);
             }
 
             List<MovingObstacle> moving = obstacleToDraw.MovingObstacles;
@@ -237,11 +219,11 @@ namespace MissionPlanner.GCSViews
             foreach (var newObstacle in moving)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
-
+                newCircle.Fill = new SolidBrush(Color.FromArgb(255, Color.Red));
+                newCircle.Stroke = new Pen(Color.Red, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
-                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.green);
-                drawnpolygonsoverlay.Markers.Add(marker);
+ 
             }
 
         }
@@ -6709,39 +6691,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                 }
             }
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            drawZones(null);
-        }
-
-        private void hud1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void quickView_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
-            
-
-
-            GMapPolygon newPolygon = CreateCircle(47.260614, 11.348180, 100, 100);
-            drawnpolygonsoverlay.Polygons.Add(newPolygon);
-
-
-
-
-        }
-        
-
-
-
     
     }
 }

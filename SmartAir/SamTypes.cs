@@ -16,6 +16,7 @@ namespace MissionPlanner.SmartAir
         TARGET_OFFAXIS = 13,
         TARGET_IR_STATIC = 14,
         TARGET_IR_DYNAMIC = 15,
+        TARGET_EMERGENT = 16,
         TASK_SEARCH_AREA = 21,
         TASK_EMERGENT = 22,
         TASK_AIRDROP = 23,

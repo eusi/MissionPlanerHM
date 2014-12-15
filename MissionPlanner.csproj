@@ -253,6 +253,7 @@
     <Compile Include="SmartAir\JudgeServerWorker.cs" />
     <Compile Include="SmartAir\SamTypes.cs" />
     <Compile Include="SmartAir\SmartAirData.cs" />
+    <Compile Include="SmartAir\TargetMarker.cs" />
     <Compile Include="SmartAir\UAVPosition.cs" />
     <Compile Include="SmartAir\SmartAirColor.cs" />
     <Compile Include="SmartAir\MissionPlannerService.cs" />
