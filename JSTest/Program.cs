@@ -13,7 +13,7 @@ namespace JSTest
         static void Main(string[] args)
         {
             IJudgeServer js = new JudgeServer();
-            js.Connect("http://10.28.2.161:8080", "testuser", "testpass");
+            js.Connect("http://smartair-JudgingServer:8080", "testuser", "testpass");
 
             js.GetServerInfo();
 
@@ -37,6 +37,11 @@ namespace JSTest
                                     + "; r=" + so.CylinderRadius.ToString()
                                     + "; long=" + so.Longitude
                                     + "; lat=" + so.Latitude);
+            foreach (MovingObstacle mo in obs.MovingObstacles)
+                Console.WriteLine("\tMO: long=" + mo.Longitude.ToString()
+                                    + "; lat=" + mo.Latitude.ToString()
+                                    + "; r=" + mo.SphereRadius.ToString()
+                                    + "; altitude=" + mo.Altitude.ToString());
             Console.WriteLine("dt: " + (dt1 - dt0));
             Console.WriteLine("");
 

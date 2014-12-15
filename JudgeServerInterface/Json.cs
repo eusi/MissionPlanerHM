@@ -89,6 +89,7 @@ namespace JudgeServerInterface
                 mo.Latitude = Convert.ToDouble(jmo.latitude, culture);
                 mo.Longitude = Convert.ToDouble(jmo.longitude, culture);
                 mo.SphereRadius = Convert.ToDouble(jmo.sphere_radius, culture);
+                obs.MovingObstacles.Add(mo);
             }
 
             return obs;
