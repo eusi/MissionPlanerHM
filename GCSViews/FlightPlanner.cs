@@ -167,7 +167,11 @@ namespace MissionPlanner.GCSViews
 
             foreach (var target in targetsToDraw)
             {
-                drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, getImg(target.TargetType)));
+                var image = getImg(target.TargetType);
+                if(image != null)
+                    drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, image));
+                else
+                    drawnpolygonsoverlay.Markers.Add(new GMarkerGoogle(target.Coordinates,GMarkerGoogleType.arrow));
             }
 
         }
@@ -177,17 +181,17 @@ namespace MissionPlanner.GCSViews
             switch (type)
             {
                 case SamTypes.TARGET_AIRDROP:
-                    return Image.FromFile("..\\..\\Resources\\airdrop_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\airdrop_icon.png");
                 case SamTypes.TARGET_IR_DYNAMIC:
-                    return Image.FromFile("..\\..\\Resources\\ir_dynamic_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\ir_dynamic_icon.png");
                 case SamTypes.TARGET_IR_STATIC:
-                    return Image.FromFile("..\\..\\Resources\\ir_static_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\ir_static_icon.png");
                 case SamTypes.TARGET_OFFAXIS:
-                    return Image.FromFile("..\\..\\Resources\\offaxis_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\offaxis_icon.png");
                 case SamTypes.TARGET_SRIC:
-                    return Image.FromFile("..\\..\\Resources\\sric_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\sric_icon.png");
                 case SamTypes.TARGET_EMERGENT:
-                    return Image.FromFile("..\\..\\Resources\\emergent_icon.png");
+                    return Image.FromFile("SmartAir\\Resources\\emergent_icon.png");
                 default:
                     return null;
             }
