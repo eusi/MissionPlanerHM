@@ -177,17 +177,17 @@ namespace MissionPlanner.GCSViews
             switch (type)
             {
                 case SamTypes.TARGET_AIRDROP:
-                    return Image.FromFile("Resources\\airdrop_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\airdrop_icon.png");
                 case SamTypes.TARGET_IR_DYNAMIC:
-                    return Image.FromFile("Resources\\ir_dynamic_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\ir_dynamic_icon.png");
                 case SamTypes.TARGET_IR_STATIC:
-                    return Image.FromFile("Resources\\ir_static_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\ir_static_icon.png");
                 case SamTypes.TARGET_OFFAXIS:
-                    return Image.FromFile("Resources\\offaxis_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\offaxis_icon.png");
                 case SamTypes.TARGET_SRIC:
-                    return Image.FromFile("Resources\\sric_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\sric_icon.png");
                 case SamTypes.TARGET_EMERGENT:
-                    return Image.FromFile("Resources\\emergent_icon.png");
+                    return Image.FromFile("..\\..\\Resources\\emergent_icon.png");
                 default:
                     return null;
             }
@@ -268,8 +268,6 @@ namespace MissionPlanner.GCSViews
 
             }
             GMapPolygon newPolygon = new GMapPolygon(newCircle, "obstacle");
-            GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(lat, lng),GMarkerGoogleType.green);
-            markerOverlay.Markers.Add(marker);
             return newPolygon;
 
         }
@@ -2921,7 +2919,6 @@ namespace MissionPlanner.GCSViews
         static GMapOverlay rallypointoverlay;
 
         List<GMapPolygon> obstacles = new List<GMapPolygon>();
-        GMapOverlay markerOverlay = new GMapOverlay();
 
         // etc
         readonly Random rnd = new Random();
