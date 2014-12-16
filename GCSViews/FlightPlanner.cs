@@ -127,7 +127,7 @@ namespace MissionPlanner.GCSViews
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
 
                 polygon.Fill = new SolidBrush(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
-                polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue));
+                polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue),3);
 
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
@@ -157,9 +157,13 @@ namespace MissionPlanner.GCSViews
             foreach (var target in targetsToDraw)
             {
                 // remove existing marker
-                var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString());                
-                foreach (var existingTarget in existingTargets)                
-                    drawnpolygonsoverlay.Markers.Remove(existingTarget);
+                var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString()).ToList();
+                for (int i = existingTargets.Count()-1; i >= 0; i--)
+                {
+                    drawnpolygonsoverlay.Markers.Remove(existingTargets[i]);
+                }
+                            
+                    
                 
                 // add marker
                 var image = getImg(target.TargetType);
@@ -207,7 +211,7 @@ namespace MissionPlanner.GCSViews
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
                 newCircle.Fill =  new SolidBrush(Color.FromArgb(180 , Color.Red));
-                newCircle.Stroke = new Pen(Color.Red, 1);
+                newCircle.Stroke = new Pen(Color.White, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
             }
@@ -218,7 +222,7 @@ namespace MissionPlanner.GCSViews
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
-                newCircle.Stroke = new Pen(Color.Red, 1);
+                newCircle.Stroke = new Pen(Color.White, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
  
