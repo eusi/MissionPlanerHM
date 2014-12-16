@@ -157,7 +157,7 @@ namespace MissionPlanner.GCSViews
             foreach (var target in targetsToDraw)
             {
                 // remove existing marker
-                var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString());
+                var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString());                
                 foreach (var existingTarget in existingTargets)                
                     drawnpolygonsoverlay.Markers.Remove(existingTarget);
                 
