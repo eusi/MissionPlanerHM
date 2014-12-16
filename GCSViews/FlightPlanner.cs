@@ -127,7 +127,7 @@ namespace MissionPlanner.GCSViews
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
 
                 polygon.Fill = new SolidBrush(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
-                polygon.Stroke = new Pen(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
+                polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue));
 
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
@@ -6685,6 +6685,23 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+      
+     
+            List<Target> targets = new List<Target>();
+            Target t1 = new Target();
+            t1.Coordinates = new PointLatLng(47.2593689233598,11.3431477546692);
+            t1.TargetType = SamTypes.TARGET_EMERGENT;
+            targets.Add(t1);
+
+            Target t2 = new Target();
+            t2.Coordinates = new PointLatLng(47.2619319329718,11.3471174240112);
+            t2.TargetType = SamTypes.TARGET_SRIC;
+            targets.Add(t2);
+            drawTargets(targets);
         }
     
     }
