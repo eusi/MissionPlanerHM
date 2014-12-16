@@ -31,12 +31,13 @@ namespace MissionPlanner.SmartAir
         /// Constructor
         /// </summary>
         /// <param name="p">The position of the marker</param>
-        public TargetMarker(PointLatLng p, Image image)
+        public TargetMarker(PointLatLng p, Image image,string name)
             : base(p)
         {
             img = image;
             Size = img.Size;
             Offset = new System.Drawing.Point(-Size.Width / 2, -Size.Height / 2);
+            this.ToolTipText = name;
         }
 
         public override void OnRender(Graphics g)

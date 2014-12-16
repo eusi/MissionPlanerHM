@@ -37,6 +37,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel;
 using MissionPlanner.SmartAir;
 using JudgeServerInterface;
+using System.Linq;
 
 namespace MissionPlanner.GCSViews
 {
@@ -131,20 +132,9 @@ namespace MissionPlanner.GCSViews
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
          
-                
-
-                
-
             }
             MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
-
-
             
-            
-            
-           // throw new NotImplementedException();
-
-
         }
 
         private void deleteZone(String name)
@@ -163,17 +153,21 @@ namespace MissionPlanner.GCSViews
         }
 
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
-        {
-
+        {                        
             foreach (var target in targetsToDraw)
             {
+                // remove existing marker
+                var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString());
+                foreach (var existingTarget in existingTargets)                
+                    drawnpolygonsoverlay.Markers.Remove(existingTarget);
+                
+                // add marker
                 var image = getImg(target.TargetType);
                 if(image != null)
-                    drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, image));
+                    drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, image,target.TargetType.ToString()));                    
                 else
                     drawnpolygonsoverlay.Markers.Add(new GMarkerGoogle(target.Coordinates,GMarkerGoogleType.arrow));
             }
-
         }
 
         private Image getImg(SamTypes type)
@@ -205,14 +199,14 @@ namespace MissionPlanner.GCSViews
                 drawnpolygonsoverlay.Polygons.Remove(oldObstacle);
             }
             obstacles.Clear();
-            drawnpolygonsoverlay.Markers.Clear();
+            //drawnpolygonsoverlay.Markers.Clear();
 
             List<StationaryObstacle> stationary = obstacleToDraw.StationaryObstacles;
 
             foreach (var newObstacle in stationary)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
-                newCircle.Fill =  new SolidBrush(Color.FromArgb(255 , Color.Red));
+                newCircle.Fill =  new SolidBrush(Color.FromArgb(180 , Color.Red));
                 newCircle.Stroke = new Pen(Color.Red, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
@@ -223,7 +217,7 @@ namespace MissionPlanner.GCSViews
             foreach (var newObstacle in moving)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
-                newCircle.Fill = new SolidBrush(Color.FromArgb(255, Color.Red));
+                newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.Red, 1);
                 drawnpolygonsoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);

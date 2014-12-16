@@ -29,18 +29,38 @@ namespace MissionPlanner.SmartAir
         }
         int iMaxError = 5;
         int iErrorCounter = 0;
+        int iMover = 0;
+        
+        bool limitReached = false;
         public void GetAndSendInfo()
         {
-            //List<TimeSpan> timetable = new List<TimeSpan>();
+           
             while (running)
             {
                 try
                 {
-                    //Stopwatch stopWatch = new Stopwatch();
-                    //stopWatch.Start();
+                 
                    
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
+                foreach (var moving in obstacles.MovingObstacles)
+                {
+                    moving.Latitude += 0.00001 * iMover;
+                    moving.Longitude += 0.00001 * iMover;
+                }
+                if (iMover >= 500 && !limitReached)
+                    limitReached = true;
+
+                if (iMover < 0 && limitReached)
+                    limitReached = false;
+               
+                if(!limitReached)
+                    iMover++;
+
+                if (limitReached)
+                    iMover--;
+
+                
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
                 SmartAir.SmartAirData.Instance.LatestObstacles = obstacles;
 
@@ -54,8 +74,7 @@ namespace MissionPlanner.SmartAir
                     
                 iErrorCounter = 0;
 
-                //stopWatch.Stop();
-                //timetable.Add(stopWatch.Elapsed);
+               
                 }
                 catch (Exception)
                 {
@@ -67,15 +86,8 @@ namespace MissionPlanner.SmartAir
                     
                     
                 }
-            }
-            
-            //foreach (var ts in timetable)
-            //{
-            //      // Format and display the TimeSpan value.
-
-            //    times += ts.ToString() + "|||";
-                
-            //}
+            }            
+           
         }
 
     }
