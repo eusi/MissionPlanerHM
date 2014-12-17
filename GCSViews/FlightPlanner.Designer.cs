@@ -120,7 +120,6 @@
             this.btnSmartAir = new MissionPlanner.Controls.MyButton();
             this.chkAutoLoiterInterrupt = new System.Windows.Forms.CheckBox();
             this.panelMap = new System.Windows.Forms.Panel();
-            this.label7 = new System.Windows.Forms.Label();
             this.pnlSmartAir = new BSE.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.nudIntervall = new System.Windows.Forms.NumericUpDown();
@@ -762,7 +761,6 @@
             // 
             // panelMap
             // 
-            this.panelMap.Controls.Add(this.label7);
             this.panelMap.Controls.Add(this.pnlSmartAir);
             this.panelMap.Controls.Add(this.lbl_distance);
             this.panelMap.Controls.Add(this.lbl_homedist);
@@ -774,11 +772,6 @@
             this.panelMap.ForeColor = System.Drawing.SystemColors.ControlText;
             this.panelMap.Name = "panelMap";
             this.panelMap.Resize += new System.EventHandler(this.panelMap_Resize);
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
             // 
             // pnlSmartAir
             // 
@@ -1675,6 +1668,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AZ;
         private System.Windows.Forms.DataGridViewTextBoxColumn Task;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLoiterInterruptAllowed;
-        private System.Windows.Forms.Label label7;
     }
 }

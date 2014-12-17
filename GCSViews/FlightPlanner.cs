@@ -303,7 +303,7 @@ namespace MissionPlanner.GCSViews
 
         public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
         {
-            label7.Text = serverInfo.ServerTime;
+   
 
         }
 
