@@ -36,7 +36,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        void setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
+        bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
 
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        void setZones(List<Zone> newZones);
+        bool setZones(List<Zone> newZones);
 
         /// <summary>
         /// This method gets the current zones.
@@ -97,7 +97,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        void setTargets(List<Target> targets);
+        bool setTargets(List<Target> targets);
 
         /// <summary>
         /// This method gets the targets.
@@ -106,6 +106,14 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         Dictionary<SamTypes, List<Target>> getTargets();
+
+        /// <summary>
+        /// This method checks if the service is reachable.
+        /// </summary>
+        /// <returns>true, if connection is established</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        bool testConnection();
 
         /// <summary>
         /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.

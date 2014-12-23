@@ -45,7 +45,7 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
                
-        public void SetNewWayPoints(List<Locationwp> waypoints, bool append)
+        public void setNewWayPoints(List<Locationwp> waypoints, bool append)
         {
 
             try
@@ -61,12 +61,13 @@ namespace MissionPlanner.GCSViews
                 if (port.BaseStream.IsOpen)
                 {
                     BUT_write_Click(null, null);
+                   
                 }
               
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("Can't open file! " + ex.ToString());
+                CustomMessageBox.Show("Cannot import route: " + ex.ToString());
             }
 
         }
@@ -341,7 +342,12 @@ namespace MissionPlanner.GCSViews
                 {
                     smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
 
-                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), new WebHttpBinding(), "");
+                    var binding = new WebHttpBinding();
+                    //binding.OpenTimeout = new TimeSpan(0, 10, 0);
+                    //binding.CloseTimeout = new TimeSpan(0, 10, 0);
+                    //binding.SendTimeout = new TimeSpan(0, 10, 0);
+                    //binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
+                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), binding, "");
                     ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
                     stp.HttpHelpPageEnabled = false;
                     stp.IncludeExceptionDetailInFaults = true;
@@ -354,7 +360,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-
+                // to do log
                 MessageBox.Show(ex.Message);
 
             }
@@ -379,7 +385,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-
+                // to do log
                 MessageBox.Show(ex.Message);
 
             }
@@ -412,7 +418,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-
+                // to do log
                 MessageBox.Show(ex.Message);
             }
 
@@ -424,8 +430,7 @@ namespace MissionPlanner.GCSViews
                 JSWorker.Stop();
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
-            //Thread.Sleep(1000);
-            //MessageBox.Show(JudgeServerWorker.times);
+           
         }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
@@ -2112,7 +2117,7 @@ namespace MissionPlanner.GCSViews
                         temp.param3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                         temp.param4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
 
-                    
+                       
 
                         if (temp.command == item.command &&
                             temp.x == item.x &&
@@ -2156,7 +2161,7 @@ namespace MissionPlanner.GCSViews
                 for (int a = 0; a < Commands.Rows.Count - 0; a++)
                 {
                     ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / Commands.Rows.Count, "Setting WP " + a);
-
+                    
                     Locationwp temp = new Locationwp();
                     if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("UNKNOWN"))
                     {

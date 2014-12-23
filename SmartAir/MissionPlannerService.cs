@@ -23,7 +23,7 @@ namespace MissionPlanner.SmartAir
         /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
-        public void setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective)
+        public bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective)
         {
             try
             {
@@ -58,13 +58,16 @@ namespace MissionPlanner.SmartAir
 
                 SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
                  
-                MissionPlanner.GCSViews.FlightPlanner.instance.SetNewWayPoints(waypoints, append);
+                MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, append);
                 SmartAirData.Instance.LoadNextRoute(SmartAirData.Instance.NextWPIndexFromAutopilot);
-                
+
+                return true;
             }
             catch (Exception ex)
             {
                 CustomMessageBox.Show(ex.Message);
+                // to do log
+                return false;
             }
         }
 
@@ -74,18 +77,30 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of waypoints.</returns>
         public List<Locationwp> getWayPoints()
         {
-            return MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
+            try
+            {
+                return MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return null;
+            }
+            
 
         }
 
         /// <summary>
         /// This methods sets a new zone in the mission planner map. 
         /// </summary>
-        /// <param name="zonePoints">The coordinates (Lat/Lng) of the zone with color and name.</param>   
-        public void setZones(List<Zone> newZones)
+        /// <param name="newZones">The new zones to be set.</param>   
+        /// <returns>Successful, or not.</returns>
+        public bool setZones(List<Zone> newZones)
         {
-            lock (SmartAirData.Instance.Zones)
+            try
             {
+                
                 foreach (var zone in newZones)
                 {
                     if (SmartAirData.Instance.Zones.ContainsKey(zone.ZoneType))
@@ -95,9 +110,17 @@ namespace MissionPlanner.SmartAir
                         SmartAirData.Instance.Zones.Add(zone.ZoneType, zone);
                     }
                 }
-            }
-            MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
 
+                MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return false;
+            }
         }
 
         /// <summary>
@@ -106,7 +129,18 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of zones.</returns>
         public Dictionary<SamTypes,Zone> getZones()
         {
-            return SmartAirData.Instance.Zones;
+            try
+            {
+                return SmartAirData.Instance.Zones;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+               
+                return null;
+            }
+            
         }
 
 
@@ -115,8 +149,19 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         /// <returns>The coordinates with Lat/Lng/Alt </returns>
         public UAVPosition getUAVPosition()
-        {        
-            return SmartAirData.Instance.UAVPosition;          
+        {
+            try
+            {
+                
+                return SmartAirData.Instance.UAVPosition;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+
+                return null;
+            }
         }
              
 
@@ -126,33 +171,51 @@ namespace MissionPlanner.SmartAir
         /// <returns>The obstacles.</returns>
         public Obstacles getObstacles()
         {
-            return SmartAirData.Instance.LatestObstacles;
+            try
+            {
+
+
+                return SmartAirData.Instance.LatestObstacles;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+
+                return null;
+            }
         }
 
         /// <summary>
         /// This method sets a list of targets.
         /// </summary>
         /// <param name="targets">The coordinates with Lat/Lng. and name</param>       
-        public void setTargets(List<Target> targets)
+        public bool setTargets(List<Target> targets)
         {
-            // there can be more than one target each category eg off axis task --> group targets by type and save to dict            
-            foreach (var targetsGroupedByType in targets.GroupBy(x => x.TargetType))
+            try
             {
-                lock (SmartAirData.Instance.Targets)
-                {
-
+                // there can be more than one target each category eg off axis task --> group targets by type and save to dict            
+                foreach (var targetsGroupedByType in targets.GroupBy(x => x.TargetType))
+                {                    
                     if (SmartAirData.Instance.Targets.ContainsKey(targetsGroupedByType.Key))
-                    {                        
+                    {
                         SmartAirData.Instance.Targets[targetsGroupedByType.Key] = targetsGroupedByType.ToList();
                     }
                     else
                     {
                         SmartAirData.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
                     }
-                    
                 }
+                MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
+                return true;
             }
-            MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
+            catch (Exception ex)
+            {
+
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return false;
+            }
         }
 
         /// <summary>
@@ -160,8 +223,18 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         /// <returns>Indicates if the stopping process was sucessful.</returns>
         public bool stopLoiter()
-        {            
-           return SmartAirData.Instance.stopLoiter();
+        {
+            try
+            {
+                return SmartAirData.Instance.stopLoiter();
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return false;
+            }
+          
         }
 
         /// <summary>
@@ -170,7 +243,17 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of targets.</returns>
         public Dictionary<SamTypes,List<Target>> getTargets()
         {
-            return SmartAirData.Instance.Targets;
+            
+            try
+            {
+                return SmartAirData.Instance.Targets;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return null;
+            }
         }
 
         public void createTestData()
@@ -181,6 +264,13 @@ namespace MissionPlanner.SmartAir
       
         #endregion
 
-
+        /// <summary>
+        /// This method checks if the service is reachable.
+        /// </summary>
+        /// <returns>true, if connection is established</returns>
+        public bool testConnection()
+        {
+            return true;
+        }
     }
 }
