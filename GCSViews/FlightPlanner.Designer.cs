@@ -214,6 +214,7 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblServerInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -761,6 +762,7 @@
             // 
             // panelMap
             // 
+            this.panelMap.Controls.Add(this.lblServerInfo);
             this.panelMap.Controls.Add(this.pnlSmartAir);
             this.panelMap.Controls.Add(this.lbl_distance);
             this.panelMap.Controls.Add(this.lbl_homedist);
@@ -1472,6 +1474,11 @@
             this.timer1.Interval = 600;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lblServerInfo
+            // 
+            resources.ApplyResources(this.lblServerInfo, "lblServerInfo");
+            this.lblServerInfo.Name = "lblServerInfo";
+            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1668,5 +1675,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn AZ;
         private System.Windows.Forms.DataGridViewTextBoxColumn Task;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLoiterInterruptAllowed;
+        private System.Windows.Forms.Label lblServerInfo;
     }
 }

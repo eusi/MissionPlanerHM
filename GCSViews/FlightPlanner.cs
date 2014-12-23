@@ -298,107 +298,15 @@ namespace MissionPlanner.GCSViews
         {
             // to do
 
-
         }
 
         public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
         {
-   
+          //  this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
 
         }
 
-        //public bool stopLoiter()
-        //{
-        //    var nextWPIndexFromAutopilot = SmartAirData.Instance.NextWPIndexFromAutopilot;
-
-        //    // important table in auto pilot has one wp more! home location is index 0!
-        //    if (nextWPIndexFromAutopilot <= 0)
-        //    {
-        //        // next wp is home location --> home location is loiter by default --> nothing to do 
-        //        return false;
-        //    }
-
-        //    // calc index in datagrid (table in auto pilot has one wp more! home location is index 0!)
-        //    int dataGridWPIndex = ((int)nextWPIndexFromAutopilot) - 1;
-
-        //    // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
-        //    if (Commands.Rows.Count > dataGridWPIndex + 1)
-        //    {
-        //        try
-        //        {
-        //            // check if next wp is loitering and is allowed to interrupt 
-        //            var rowNextIndex = Commands.Rows[dataGridWPIndex];
-        //            if (rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString() ||
-        //                rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TIME.ToString() ||
-        //                rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_TURNS.ToString())
-        //            {
-        //                // skip loiter, jump to next wp and send it to autopilot (use here index from autopilot!) 
-        //                MainV2.comPort.setWPCurrent((ushort)(nextWPIndexFromAutopilot + 1));          
-
-        //                return true;
-
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return false;
-        //        }
-
-
-        //    }
-
-        //    return false;
-
-        //}
-        ///// <summary>
-        ///// This method works only when autopilot waypoint table is in sync with mission planner wp table
-        ///// </summary>
-        ///// <param name="nextWPIndexFromAutopilot"></param>
-        //public void NewWaypointReachedEvent(float nextWPIndexFromAutopilot)
-        //{
-        //    if (chkAutoLoiterInterrupt.Checked)
-        //    {
-              
-        //        // important table in auto pilot has one wp more! home location is index 0!
-        //        if (nextWPIndexFromAutopilot <= 0)
-        //        {
-        //            // next wp is home location --> home location is loiter by default --> nothing to do 
-        //            return;
-        //        }
-
-        //        // calc index in datagrid (table in auto pilot has one wp more! home location is index 0!)
-        //        int dataGridWPIndex = ((int)nextWPIndexFromAutopilot)-1;
-
-        //        // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
-        //        if (Commands.Rows.Count > dataGridWPIndex+1)
-        //        {
-        //            try
-        //            {
-        //                // check if wp is loitering and is allowed to interrupt 
-        //                var rowNextIndex = Commands.Rows[dataGridWPIndex];
-        //                if (rowNextIndex!=null&&rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value != null && (bool)rowNextIndex.Cells[IsLoiterInterruptAllowed.Index].Value && rowNextIndex.Cells[Command.Index].Value == MAVLink.MAV_CMD.LOITER_UNLIM.ToString())
-        //                {
-        //                    // skip loiter, jump to next wp and send it to autopilot (use here index from autopilot!) 
-        //                    MainV2.comPort.setWPCurrent((ushort)(nextWPIndexFromAutopilot + 1));                            
-
-        //                }
-
-        //            }
-        //            catch (Exception ex)
-        //            {
-
-        //                throw ex;
-        //            }
-
-                    
-        //        }
-        //    }
-
         
-        //}
-        
-        // controls
         private void btnSmartAir_Click(object sender, EventArgs e)
         {
             pnlSmartAir.Visible = true;
