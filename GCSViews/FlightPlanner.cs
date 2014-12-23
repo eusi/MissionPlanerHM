@@ -296,7 +296,20 @@ namespace MissionPlanner.GCSViews
         }
         public void hideWaypoint(int wpIndexToHide)
         {
-            // to do
+            try
+            {
+                int index = 3;
+                fullpointlist.RemoveAt(index);
+                RegenerateWPRoute(fullpointlist);
+
+                int remove = (index - 1) * 2;
+                objectsoverlay.Markers.RemoveAt(remove);
+                objectsoverlay.Markers.RemoveAt(remove);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
 
@@ -6598,22 +6611,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-      
-     
-            List<Target> targets = new List<Target>();
-            Target t1 = new Target();
-            t1.Coordinates = new PointLatLng(47.2593689233598,11.3431477546692);
-            t1.TargetType = SamTypes.TARGET_EMERGENT;
-            targets.Add(t1);
-
-            Target t2 = new Target();
-            t2.Coordinates = new PointLatLng(47.2619319329718,11.3471174240112);
-            t2.TargetType = SamTypes.TARGET_SRIC;
-            targets.Add(t2);
-            drawTargets(targets);
-        }
     
     }
 }
