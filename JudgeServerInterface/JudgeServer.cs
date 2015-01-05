@@ -15,14 +15,16 @@ namespace JudgeServerInterface
         private String password;
         private String server;
 
-        enum ServerLinks {
+        public IRestResponse LastResponse;
+
+        public enum ServerLinks {
             Login,
             ServerInfo,
             Obstacles,
             Telemetry
         }
 
-        Dictionary<ServerLinks, String> serverLinks = new Dictionary<ServerLinks, string>() {
+        private Dictionary<ServerLinks, String> serverLinks = new Dictionary<ServerLinks, string>() {
             {ServerLinks.Login, "/api/login"},
             {ServerLinks.ServerInfo, "/api/interop/server_info"},
             {ServerLinks.Obstacles, "/api/interop/obstacles"},
@@ -41,20 +43,20 @@ namespace JudgeServerInterface
                     request.AddParameter(p.Key, p.Value);
             }
 
-            IRestResponse response = httpClient.Execute(request);
+            LastResponse = httpClient.Execute(request);
 
-            if (response.StatusCode == 0)
+            if (LastResponse.StatusCode == 0)
                 throw new TimeoutException("Timeout for http request!");
-            if (response.StatusCode == HttpStatusCode.BadRequest)
-                throw new InvalidRequest(response.Content);
-            if (response.StatusCode == HttpStatusCode.NotFound)
-                throw new InvalidUrl(response.Content);
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-                throw new InternalServerError(response.Content);
-            if (response.StatusCode != HttpStatusCode.OK)
-                throw new UnknownError(response.Content);
+            if (LastResponse.StatusCode == HttpStatusCode.BadRequest)
+                throw new InvalidRequest(LastResponse.Content);
+            if (LastResponse.StatusCode == HttpStatusCode.NotFound)
+                throw new InvalidUrl(LastResponse.Content);
+            if (LastResponse.StatusCode == HttpStatusCode.InternalServerError)
+                throw new InternalServerError(LastResponse.Content);
+            if (LastResponse.StatusCode != HttpStatusCode.OK)
+                throw new UnknownError(LastResponse.Content);
 
-            return response;
+            return LastResponse;
         }
 
         public void Connect(string server, string userName, string password)

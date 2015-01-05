@@ -5,22 +5,22 @@ using System.Text;
 
 namespace JudgeServerInterface
 {
-    class InvalidRequest : Exception
+    public class InvalidRequest : Exception
     {
         public InvalidRequest(String message) : base(message) { }
     }
 
-    class InvalidUrl : Exception
+    public class InvalidUrl : Exception
     {
         public InvalidUrl(String message) : base(message) { }
     }
 
-    class InternalServerError : Exception
+    public class InternalServerError : Exception
     {
         public InternalServerError(String message) : base(message) { }
     }
 
-    class UnknownError : Exception
+    public class UnknownError : Exception
     {
         public UnknownError(String message) : base(message) { }
     }
