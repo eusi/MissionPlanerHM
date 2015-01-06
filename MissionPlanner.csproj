@@ -250,6 +250,12 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="GCSViews\ExternalFlightData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCSViews\ExternalFlightData.designer.cs">
+      <DependentUpon>ExternalFlightData.cs</DependentUpon>
+    </Compile>
     <Compile Include="SmartAir\JudgeServerWorker.cs" />
     <Compile Include="SmartAir\SamTypes.cs" />
     <Compile Include="SmartAir\SmartAirData.cs" />
@@ -798,6 +804,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.zh-TW.resx">
       <DependentUpon>ConfigTradHeli.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ExternalFlightData.resx">
+      <DependentUpon>ExternalFlightData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\FlightData.zh-Hant.resx">
       <DependentUpon>FlightData.cs</DependentUpon>

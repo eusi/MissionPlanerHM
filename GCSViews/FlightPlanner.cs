@@ -396,10 +396,7 @@ namespace MissionPlanner.GCSViews
             pnlSmartAir.Visible = false;
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            SmartAir.SmartAirData.Instance.createTestData();
-        }
+ 
 
 
         JudgeServerWorker JSWorker;
@@ -6614,6 +6611,22 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
                 }
             }
+        }
+
+        private void btnOpenExternalFlightData_Click(object sender, EventArgs e)
+        {
+            // Open Flight Data Window
+            var FlightData = new GCSViews.FlightData();
+
+            ExternalFlightData fd = new ExternalFlightData();
+            fd.Show();
+            fd.TopLevel = true;
+            fd.Visible = true;
+
+            var FlightDataSwitcher = new MainSwitcher(fd);
+
+            FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
+            FlightDataSwitcher.ShowScreen("FlightData");
         }
 
     
