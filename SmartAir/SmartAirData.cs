@@ -8,6 +8,9 @@ using System.Drawing;
 
 namespace MissionPlanner.SmartAir
 {
+    /// <summary>
+    /// This class (singleton) is a container for smart air data. 
+    /// </summary>
     public class SmartAirData
     {
         private static volatile SmartAirData instance;

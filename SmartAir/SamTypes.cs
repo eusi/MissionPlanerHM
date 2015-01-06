@@ -5,6 +5,9 @@ using System.Text;
 
 namespace MissionPlanner.SmartAir
 {
+    /// <summary>
+    /// Includes all types of smart air project. Has to be in sync with mission control.
+    /// </summary>
     public enum SamTypes
     {
         UNKNOWN = 0,

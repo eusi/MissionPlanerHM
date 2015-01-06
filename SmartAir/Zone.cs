@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace MissionPlanner.SmartAir
 {
+    /// <summary>
+    /// This class represents a smartair zone eg no fly zone.
+    /// </summary>
     [DataContract]
     public class Zone
     {

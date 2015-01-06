@@ -1709,6 +1709,15 @@
   <data name="&gt;&gt;lblServerInfo.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="nudIntervall.Location" type="System.Drawing.Point, System.Drawing">
+    <value>91, 76</value>
+  </data>
+  <data name="nudIntervall.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="nudIntervall.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
   <data name="&gt;&gt;nudIntervall.Name" xml:space="preserve">
     <value>nudIntervall</value>
   </data>
@@ -1720,6 +1729,18 @@
   </data>
   <data name="&gt;&gt;nudIntervall.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="myLabel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 76</value>
+  </data>
+  <data name="myLabel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 23</value>
+  </data>
+  <data name="myLabel5.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="myLabel5.Text" xml:space="preserve">
+    <value>Intervall</value>
   </data>
   <data name="&gt;&gt;myLabel5.Name" xml:space="preserve">
     <value>myLabel5</value>
@@ -1733,6 +1754,18 @@
   <data name="&gt;&gt;myLabel5.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="myLabel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 48</value>
+  </data>
+  <data name="myLabel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 23</value>
+  </data>
+  <data name="myLabel4.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="myLabel4.Text" xml:space="preserve">
+    <value>PW</value>
+  </data>
   <data name="&gt;&gt;myLabel4.Name" xml:space="preserve">
     <value>myLabel4</value>
   </data>
@@ -1744,6 +1777,18 @@
   </data>
   <data name="&gt;&gt;myLabel4.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="txtJSPassword.Location" type="System.Drawing.Point, System.Drawing">
+    <value>218, 48</value>
+  </data>
+  <data name="txtJSPassword.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 20</value>
+  </data>
+  <data name="txtJSPassword.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="txtJSPassword.Text" xml:space="preserve">
+    <value>testpass</value>
   </data>
   <data name="&gt;&gt;txtJSPassword.Name" xml:space="preserve">
     <value>txtJSPassword</value>
@@ -1757,6 +1802,18 @@
   <data name="&gt;&gt;txtJSPassword.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="myLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 46</value>
+  </data>
+  <data name="myLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 23</value>
+  </data>
+  <data name="myLabel3.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="myLabel3.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
   <data name="&gt;&gt;myLabel3.Name" xml:space="preserve">
     <value>myLabel3</value>
   </data>
@@ -1768,6 +1825,18 @@
   </data>
   <data name="&gt;&gt;myLabel3.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="myLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 24</value>
+  </data>
+  <data name="myLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 23</value>
+  </data>
+  <data name="myLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="myLabel2.Text" xml:space="preserve">
+    <value>URL</value>
   </data>
   <data name="&gt;&gt;myLabel2.Name" xml:space="preserve">
     <value>myLabel2</value>
@@ -1781,6 +1850,18 @@
   <data name="&gt;&gt;myLabel2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
+  <data name="txtJSUser.Location" type="System.Drawing.Point, System.Drawing">
+    <value>54, 49</value>
+  </data>
+  <data name="txtJSUser.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 20</value>
+  </data>
+  <data name="txtJSUser.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="txtJSUser.Text" xml:space="preserve">
+    <value>testuser</value>
+  </data>
   <data name="&gt;&gt;txtJSUser.Name" xml:space="preserve">
     <value>txtJSUser</value>
   </data>
@@ -1792,6 +1873,24 @@
   </data>
   <data name="&gt;&gt;txtJSUser.ZOrder" xml:space="preserve">
     <value>6</value>
+  </data>
+  <data name="btnJSStop.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btnJSStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnJSStop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>215, 104</value>
+  </data>
+  <data name="btnJSStop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 23</value>
+  </data>
+  <data name="btnJSStop.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="btnJSStop.Text" xml:space="preserve">
+    <value>Disconnect</value>
   </data>
   <data name="&gt;&gt;btnJSStop.Name" xml:space="preserve">
     <value>btnJSStop</value>
@@ -1805,6 +1904,18 @@
   <data name="&gt;&gt;btnJSStop.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="txtJSUrl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>54, 24</value>
+  </data>
+  <data name="txtJSUrl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>262, 20</value>
+  </data>
+  <data name="txtJSUrl.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="txtJSUrl.Text" xml:space="preserve">
+    <value>http://10.28.2.161:8080</value>
+  </data>
   <data name="&gt;&gt;txtJSUrl.Name" xml:space="preserve">
     <value>txtJSUrl</value>
   </data>
@@ -1816,6 +1927,21 @@
   </data>
   <data name="&gt;&gt;txtJSUrl.ZOrder" xml:space="preserve">
     <value>8</value>
+  </data>
+  <data name="btnJSStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnJSStart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>54, 105</value>
+  </data>
+  <data name="btnJSStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 23</value>
+  </data>
+  <data name="btnJSStart.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnJSStart.Text" xml:space="preserve">
+    <value>Connect</value>
   </data>
   <data name="&gt;&gt;btnJSStart.Name" xml:space="preserve">
     <value>btnJSStart</value>
@@ -1839,7 +1965,7 @@
     <value>9</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
-    <value>Interface MissionControl</value>
+    <value>Interface Judge Server</value>
   </data>
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
@@ -2227,252 +2353,6 @@
   </data>
   <data name="&gt;&gt;panelMap.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="nudIntervall.Location" type="System.Drawing.Point, System.Drawing">
-    <value>91, 76</value>
-  </data>
-  <data name="nudIntervall.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 20</value>
-  </data>
-  <data name="nudIntervall.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;nudIntervall.Name" xml:space="preserve">
-    <value>nudIntervall</value>
-  </data>
-  <data name="&gt;&gt;nudIntervall.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nudIntervall.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;nudIntervall.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="myLabel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 76</value>
-  </data>
-  <data name="myLabel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 23</value>
-  </data>
-  <data name="myLabel5.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="myLabel5.Text" xml:space="preserve">
-    <value>Intervall</value>
-  </data>
-  <data name="&gt;&gt;myLabel5.Name" xml:space="preserve">
-    <value>myLabel5</value>
-  </data>
-  <data name="&gt;&gt;myLabel5.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyLabel, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myLabel5.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;myLabel5.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="myLabel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>179, 48</value>
-  </data>
-  <data name="myLabel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 23</value>
-  </data>
-  <data name="myLabel4.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="myLabel4.Text" xml:space="preserve">
-    <value>PW</value>
-  </data>
-  <data name="&gt;&gt;myLabel4.Name" xml:space="preserve">
-    <value>myLabel4</value>
-  </data>
-  <data name="&gt;&gt;myLabel4.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyLabel, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myLabel4.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;myLabel4.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="txtJSPassword.Location" type="System.Drawing.Point, System.Drawing">
-    <value>218, 48</value>
-  </data>
-  <data name="txtJSPassword.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 20</value>
-  </data>
-  <data name="txtJSPassword.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="txtJSPassword.Text" xml:space="preserve">
-    <value>testpass</value>
-  </data>
-  <data name="&gt;&gt;txtJSPassword.Name" xml:space="preserve">
-    <value>txtJSPassword</value>
-  </data>
-  <data name="&gt;&gt;txtJSPassword.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtJSPassword.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;txtJSPassword.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="myLabel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 46</value>
-  </data>
-  <data name="myLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 23</value>
-  </data>
-  <data name="myLabel3.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="myLabel3.Text" xml:space="preserve">
-    <value>User</value>
-  </data>
-  <data name="&gt;&gt;myLabel3.Name" xml:space="preserve">
-    <value>myLabel3</value>
-  </data>
-  <data name="&gt;&gt;myLabel3.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyLabel, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myLabel3.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;myLabel3.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="myLabel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 24</value>
-  </data>
-  <data name="myLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 23</value>
-  </data>
-  <data name="myLabel2.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="myLabel2.Text" xml:space="preserve">
-    <value>URL</value>
-  </data>
-  <data name="&gt;&gt;myLabel2.Name" xml:space="preserve">
-    <value>myLabel2</value>
-  </data>
-  <data name="&gt;&gt;myLabel2.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyLabel, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;myLabel2.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;myLabel2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="txtJSUser.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 49</value>
-  </data>
-  <data name="txtJSUser.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 20</value>
-  </data>
-  <data name="txtJSUser.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="txtJSUser.Text" xml:space="preserve">
-    <value>testuser</value>
-  </data>
-  <data name="&gt;&gt;txtJSUser.Name" xml:space="preserve">
-    <value>txtJSUser</value>
-  </data>
-  <data name="&gt;&gt;txtJSUser.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtJSUser.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;txtJSUser.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="btnJSStop.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="btnJSStop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnJSStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>215, 104</value>
-  </data>
-  <data name="btnJSStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 23</value>
-  </data>
-  <data name="btnJSStop.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="btnJSStop.Text" xml:space="preserve">
-    <value>Disconnect</value>
-  </data>
-  <data name="&gt;&gt;btnJSStop.Name" xml:space="preserve">
-    <value>btnJSStop</value>
-  </data>
-  <data name="&gt;&gt;btnJSStop.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnJSStop.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;btnJSStop.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="txtJSUrl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 24</value>
-  </data>
-  <data name="txtJSUrl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 20</value>
-  </data>
-  <data name="txtJSUrl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="txtJSUrl.Text" xml:space="preserve">
-    <value>http://10.28.2.161:8080</value>
-  </data>
-  <data name="&gt;&gt;txtJSUrl.Name" xml:space="preserve">
-    <value>txtJSUrl</value>
-  </data>
-  <data name="&gt;&gt;txtJSUrl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txtJSUrl.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;txtJSUrl.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="btnJSStart.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnJSStart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>54, 105</value>
-  </data>
-  <data name="btnJSStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 23</value>
-  </data>
-  <data name="btnJSStart.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="btnJSStart.Text" xml:space="preserve">
-    <value>Connect</value>
-  </data>
-  <data name="&gt;&gt;btnJSStart.Name" xml:space="preserve">
-    <value>btnJSStart</value>
-  </data>
-  <data name="&gt;&gt;btnJSStart.Type" xml:space="preserve">
-    <value>MissionPlanner.Controls.MyButton, MissionPlanner.Controls, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;btnJSStart.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;btnJSStart.ZOrder" xml:space="preserve">
-    <value>9</value>
   </data>
   <data name="myLabel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 21</value>

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace MissionPlanner.SmartAir
 {
+    /// <summary>
+    /// This class represents a smart air target eg air drop.
+    /// </summary>
     [DataContract]
     public class Target
     {

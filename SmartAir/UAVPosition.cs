@@ -6,6 +6,9 @@ using System.Text;
 
 namespace MissionPlanner.SmartAir
 {
+    /// <summary>
+    /// This class includes the coordinates of the uav. (lat,lng,alt,timeStamp)
+    /// </summary>
     [Serializable]
     public class UAVPosition : PointLatLngAlt
     {

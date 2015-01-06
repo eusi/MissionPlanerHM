@@ -17,7 +17,7 @@ namespace MissionPlanner.SmartAir
         /// <summary>
         /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
         /// </summary>
-        /// <returns>Indicates if the stopping process was sucessful.</returns>
+        /// <returns>true, if the stopping process was sucessful.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         bool stopLoiter();
@@ -29,6 +29,7 @@ namespace MissionPlanner.SmartAir
         /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
+        /// <returns>true, if the operation was sucessful.</returns>
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
@@ -36,7 +37,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective); // HomePoint, WPRadius (45), LoiterRadius(45), Default alt (100) 
+        bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective);  
 
 
         /// <summary>
@@ -49,9 +50,10 @@ namespace MissionPlanner.SmartAir
 
         /// <summary>
         /// <summary>
-        /// This methods sets a new zone in the mission planner map. 
+        /// This methods sets new zones in the mission planner map. 
         /// </summary>
-        /// <param name="zonePoints">The coordinates (Lat/Lng) of the zone with color and name.</param>   
+        /// <param name="zonePoints">The coordinates (Lat/Lng) of the zone with color and name.</param>
+        /// <returns>true, if the operation was sucessful.</returns>
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
@@ -90,6 +92,7 @@ namespace MissionPlanner.SmartAir
         /// This method sets a list of targets.
         /// </summary>
         /// <param name="targets">The coordinates with Lat/Lng. and name</param>       
+        /// <returns>true, if the operation was sucessful.</returns>
         [OperationContract()]
         [WebInvoke(
             Method = "POST",

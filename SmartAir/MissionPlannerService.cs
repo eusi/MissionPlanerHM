@@ -14,15 +14,33 @@ namespace MissionPlanner.SmartAir
 {
     public class MissionPlannerService : IMissionPlannerService
     {
-               
-        # region interface to the mission control
         /// <summary>
-        /// This method adds new waypoints to the mission planner.  
+        /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
+        /// </summary>
+        /// <returns>true, if the stopping process was sucessful.</returns>
+        public bool stopLoiter()
+        {
+            try
+            {
+                return SmartAirData.Instance.stopLoiter();
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// This methods adds new waypoints to the mission planner.  
         /// </summary>
         /// <param name="waypoints">The waypoints to add.</param>
         /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
+        /// <returns>true, if the operation was sucessful.</returns>
         public bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective)
         {
             try
@@ -92,10 +110,11 @@ namespace MissionPlanner.SmartAir
         }
 
         /// <summary>
-        /// This methods sets a new zone in the mission planner map. 
+        /// <summary>
+        /// This methods sets new zones in the mission planner map. 
         /// </summary>
-        /// <param name="newZones">The new zones to be set.</param>   
-        /// <returns>Successful, or not.</returns>
+        /// <param name="zonePoints">The coordinates (Lat/Lng) of the zone with color and name.</param>
+        /// <returns>true, if the operation was sucessful.</returns>
         public bool setZones(List<Zone> newZones)
         {
             try
@@ -189,7 +208,8 @@ namespace MissionPlanner.SmartAir
         /// <summary>
         /// This method sets a list of targets.
         /// </summary>
-        /// <param name="targets">The coordinates with Lat/Lng. and name</param>       
+        /// <param name="targets">The coordinates with Lat/Lng. and name</param>
+        /// <returns>true, if the operation was sucessful.</returns>
         public bool setTargets(List<Target> targets)
         {
             try
@@ -218,24 +238,7 @@ namespace MissionPlanner.SmartAir
             }
         }
 
-        /// <summary>
-        /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
-        /// </summary>
-        /// <returns>Indicates if the stopping process was sucessful.</returns>
-        public bool stopLoiter()
-        {
-            try
-            {
-                return SmartAirData.Instance.stopLoiter();
-            }
-            catch (Exception ex)
-            {
-                CustomMessageBox.Show(ex.Message);
-                // to do log
-                return false;
-            }
-          
-        }
+      
 
         /// <summary>
         /// This method gets the targets.
@@ -256,14 +259,6 @@ namespace MissionPlanner.SmartAir
             }
         }
 
-        public void createTestData()
-        {
-            SmartAirData.Instance.createTestData();
-        }
-
-      
-        #endregion
-
         /// <summary>
         /// This method checks if the service is reachable.
         /// </summary>
@@ -272,5 +267,15 @@ namespace MissionPlanner.SmartAir
         {
             return true;
         }
+
+        /// <summary>
+        /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.
+        /// </summary>       
+        public void createTestData()
+        {
+            SmartAirData.Instance.createTestData();
+        }
+
+       
     }
 }

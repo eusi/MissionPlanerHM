@@ -8,13 +8,28 @@ using System.Threading;
 
 namespace MissionPlanner.SmartAir
 { 
-    
+    /// <summary>
+    /// This worker polls the jude server interface in the given intervall and calls the required methods.  
+    /// </summary>
     public class JudgeServerWorker
     {
         bool running = true;
         JudgeServer js;
         int intervall = 100;
-      //  public static string times = "";
+
+        public int Intervall
+        {
+            get { return intervall; }
+            set { intervall = value; }
+        }
+
+   /// <summary>
+        /// Create a judge server worker for polling the jude server interface.
+   /// </summary>
+   /// <param name="url">The judge server url.</param>
+   /// <param name="user">the user.</param>
+   /// <param name="password">the password.</param>
+   /// <param name="intervall">the polling intervall.</param>
         public JudgeServerWorker(string url, string user, string password,int intervall)
         {
             js = new JudgeServer();
@@ -23,15 +38,25 @@ namespace MissionPlanner.SmartAir
 
         }
 
+        /// <summary>
+        /// Stops the worker.
+        /// </summary>
         public void Stop()
         {
             running = false;
         }
         int iMaxError = 5;
         int iErrorCounter = 0;
-        int iMover = 0;
-        
-        bool limitReached = false;
+
+        // used for simulate moving
+        //  int iMover = 0;
+        // bool limitReached = false;
+
+       
+
+        /// <summary>
+        /// This worker polls the jude server interface in the given intervall and calls the methods GetObstacles, GetServerInfo, setUASTelemetry.
+        /// </summary>
         public void GetAndSendInfo()
         {
            
@@ -43,22 +68,23 @@ namespace MissionPlanner.SmartAir
                    
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
-                foreach (var moving in obstacles.MovingObstacles)
-                {
-                    moving.Latitude += 0.00001 * iMover;
-                    moving.Longitude += 0.00001 * iMover;
-                }
-                if (iMover >= 500 && !limitReached)
-                    limitReached = true;
+                
+                //foreach (var moving in obstacles.MovingObstacles)
+                //{
+                //    moving.Latitude += 0.00001 * iMover;
+                //    moving.Longitude += 0.00001 * iMover;
+                //}
+                //if (iMover >= 500 && !limitReached)
+                //    limitReached = true;
 
-                if (iMover < 0 && limitReached)
-                    limitReached = false;
+                //if (iMover < 0 && limitReached)
+                //    limitReached = false;
                
-                if(!limitReached)
-                    iMover++;
+                //if(!limitReached)
+                //    iMover++;
 
-                if (limitReached)
-                    iMover--;
+                //if (limitReached)
+                //    iMover--;
 
                 
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
