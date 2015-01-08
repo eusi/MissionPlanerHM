@@ -299,13 +299,16 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                int index = 3;
-                fullpointlist.RemoveAt(index);
-                RegenerateWPRoute(fullpointlist);
+                if (wpIndexToHide > 0)
+                {
+                    fullpointlist.RemoveAt(1);
+                    RegenerateWPRoute(fullpointlist);
 
-                int remove = (index - 1) * 2;
-                objectsoverlay.Markers.RemoveAt(remove);
-                objectsoverlay.Markers.RemoveAt(remove);
+
+                    objectsoverlay.Markers.RemoveAt(2);
+                    objectsoverlay.Markers.RemoveAt(2);
+                }
+                
             }
             catch (Exception ex)
             {
