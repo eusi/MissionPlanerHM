@@ -8,44 +8,72 @@ using System.Web.Script.Serialization;
 
 namespace JudgeServerInterface
 {
+    /// <summary>
+    /// Represents a json string with the server informations
+    /// </summary>
     public class JsonServerInfo
     {
         public String message;
         public String message_timestamp;
     }
 
+    /// <summary>
+    /// Represents a json string with the server message
+    /// </summary>
     public class JsonServerMessage
     {
         public JsonServerInfo server_info;
         public string server_time;
     }
 
+    /// <summary>
+    /// Represents a json string with an basic obstacle
+    /// </summary>
     public class JsonObstacle
     {
         public String latitude;
         public String longitude;
     }
-
+    
+    /// <summary>
+    /// represents a json string with a stationary obstacle
+    /// </summary>
     public class JsonStationaryObstacle : JsonObstacle
     {
         public String cylinder_radius;
         public String cylinder_height;
     }
 
+    /// <summary>
+    /// represents a json string with an moving obstacle
+    /// </summary>
     public class JsonMovingObstacle : JsonObstacle
     {
         public String altitude_msl;
         public String sphere_radius;
     }
 
+    /// <summary>
+    /// represents a json string with lists of moving an stationary obstacles
+    /// </summary>
     public class JsonObstaclesMessage
     {
         public List<JsonStationaryObstacle> stationary_obstacles;
         public List<JsonMovingObstacle> moving_obstacles;
     }
 
+    /// <summary>
+    /// deserializes an json string into the matching object
+    /// </summary>
     public static class JsonDeserializer
     {
+        /// <summary>
+        /// Generic method to deserialize a given json string into the matching
+        /// representatino object of this json string
+        /// </summary>
+        /// <typeparam name="T">Type of Representation Object of the Json string</typeparam>
+        /// <param name="json">Json string</param>
+        /// <returns>Representation object of the string</returns>
         private static T Deserialize<T>(String json) where T : new()
         {
             T obj = new T();
@@ -55,6 +83,11 @@ namespace JudgeServerInterface
             return jss.Deserialize<T>(json);
         }
 
+        /// <summary>
+        /// Build ServerInfo-Object from an given json string
+        /// </summary>
+        /// <param name="json">json string which represents the server informations</param>
+        /// <returns>ServerInfo-Object which represents the json string</returns>
         public static ServerInfo GetServerInfo(String json) {
             ServerInfo si = new ServerInfo();
 
@@ -67,6 +100,11 @@ namespace JudgeServerInterface
             return si;
         }
 
+        /// <summary>
+        /// Build Obstacles-Object from an given json string
+        /// </summary>
+        /// <param name="json">json string which represents the obstacles</param>
+        /// <returns>Obstacles-Object which represents the json string</returns>
         public static Obstacles GetObstacles(String json) {
             Obstacles obs = new Obstacles();
 

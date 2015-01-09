@@ -6,9 +6,15 @@ using JudgeServerInterface;
 
 namespace JSUnitTests
 {
+    /// <summary>
+    /// Unit tests for the json parser
+    /// </summary>
     [TestClass]
     public class JsonsParserTests
     {
+        /// <summary>
+        /// testing if the json parser for the server information is working correct
+        /// </summary>
         [TestMethod]
         public void TestServerInfoParser()
         {
@@ -22,6 +28,9 @@ namespace JSUnitTests
             Assert.AreEqual<String>(si.ServerTime, serverTime);
         }
 
+        /// <summary>
+        /// testing if the json parser for the obstacles is working correct
+        /// </summary>
         [TestMethod]
         public void TestObstacleParser()
         {

@@ -8,6 +8,9 @@ using JudgeServerInterface;
 
 namespace JSTest
 {
+    /// <summary>
+    /// Testprogramm for a simple test if the judge server interface works
+    /// </summary>
     class Program
     {
         static void Main(string[] args)
