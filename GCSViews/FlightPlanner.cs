@@ -301,12 +301,33 @@ namespace MissionPlanner.GCSViews
             {
                 if (wpIndexToHide > 0)
                 {
-                    fullpointlist.RemoveAt(1);
+
+
+                    int index = 1;
+                    PointLatLngAlt current = fullpointlist[index];
+                    while(hidepointlist.Contains(current)) {
+                        index++;
+                        current = fullpointlist[index];
+                    }
+                    hidepointlist.Add(current);
+
+
+  
+                    foreach (var demon in hidepointlist)
+                    {
+                        fullpointlist.Remove(demon);
+
+                    }
+
+                    for (int i = 1; i <= index; i++)
+                    {
+                        objectsoverlay.Markers.RemoveAt(2);
+                        objectsoverlay.Markers.RemoveAt(2);
+                    }
                     RegenerateWPRoute(fullpointlist);
 
 
-                    objectsoverlay.Markers.RemoveAt(2);
-                    objectsoverlay.Markers.RemoveAt(2);
+
                 }
                 
             }
@@ -461,6 +482,8 @@ namespace MissionPlanner.GCSViews
 
         public List<PointLatLngAlt> pointlist = new List<PointLatLngAlt>(); // used to calc distance
         public List<PointLatLngAlt> fullpointlist = new List<PointLatLngAlt>();
+        public List<PointLatLngAlt> hidepointlist = new List<PointLatLngAlt>();
+        public List<GMapMarker> hidemarkers = new List<GMapMarker>();
         public GMapRoute route = new GMapRoute("wp route");
         public GMapRoute homeroute = new GMapRoute("home route");
         static public Object thisLock = new Object();
