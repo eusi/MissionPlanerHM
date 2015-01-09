@@ -6,6 +6,10 @@ using System.Text;
 
 namespace JSUnitTests
 {
+    /// <summary>
+    /// Mock-Up of the real JudgeServer for unit testing purpose
+    /// for testing the response string and response code can be set
+    /// </summary>
     public class JudgeServerStub
     {
         public HttpListenerRequest LastRequest;
@@ -14,6 +18,11 @@ namespace JSUnitTests
         private readonly String _responseString;
         private readonly HttpStatusCode _responseStatusCode;
 
+        /// <summary>
+        /// Initialise the JudgeServer-MockUp
+        /// </summary>
+        /// <param name="responseString">response string of the JudgeServer-MockUP</param>
+        /// <param name="responseStatusCode">Response code of the JudgeServer-MockUp</param>
         public JudgeServerStub(String responseString, HttpStatusCode responseStatusCode)
         {
             if (!HttpListener.IsSupported)
@@ -32,6 +41,9 @@ namespace JSUnitTests
             _listener.Start();
         }
 
+        /// <summary>
+        /// starts the JudgeServer-MockUp
+        /// </summary>
         public void Run()
         {
             ThreadPool.QueueUserWorkItem((o) =>
@@ -64,6 +76,9 @@ namespace JSUnitTests
             });
         }
 
+        /// <summary>
+        /// Stops the JudgeServer-MockUp
+        /// </summary>
         public void Stop()
         {
             _listener.Stop();

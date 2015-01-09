@@ -7,9 +7,15 @@ using RestSharp;
 
 namespace JSUnitTests
 {
+    /// <summary>
+    /// Unit tests for the JudgeServerInterface
+    /// </summary>
     [TestClass]
     public class JudgeServerTest
     {
+        /// <summary>
+        /// test if a correct request is working
+        /// </summary>
         [TestMethod]
         public void TestOKRequest()
         {
@@ -26,6 +32,9 @@ namespace JSUnitTests
             Assert.AreEqual<HttpStatusCode>(js.LastResponse.StatusCode, HttpStatusCode.OK);
         }
 
+        /// <summary>
+        /// test if a request with an time out throws the right exception
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TimeoutException))]
         public void TestTimeOutException()
@@ -34,6 +43,9 @@ namespace JSUnitTests
             js.Connect("http://localhost:8080", "", "");
         }
 
+        /// <summary>
+        /// test if a invalid request throws the right exception
+        /// </summary>
         [TestMethod]
         public void TestInvalidRequest()
         {
@@ -52,6 +64,9 @@ namespace JSUnitTests
             jss.Stop();
         }
 
+        /// <summary>
+        /// test if a request with an non exising url throws the right exception
+        /// </summary>
         [TestMethod]
         public void TestNotFoundRequest()
         {
@@ -72,6 +87,9 @@ namespace JSUnitTests
             jss.Stop();
         }
 
+        /// <summary>
+        /// test if a request with an internal server error throws the right exception
+        /// </summary>
         [TestMethod]
         public void TestInternalServerErrorRequest()
         {

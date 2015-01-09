@@ -9,6 +9,9 @@ using RestSharp;
 
 namespace JudgeServerInterface
 {
+    /// <summary>
+    /// Implementation of the Interface for the communication with the JudgeServer
+    /// </summary>
     public class JudgeServer : IJudgeServer
     {
         private String username;
@@ -33,6 +36,12 @@ namespace JudgeServerInterface
 
         private RestClient httpClient;
 
+        /// <summary>
+        /// Creates and handles a request to the JudgeServer
+        /// </summary>
+        /// <param name="app">Application which is requested on the JudgeServer</param>
+        /// <param name="post_parameters">List of parameters which are sent to the judge server</param>
+        /// <returns>Response of the JudgeServer</returns>
         private IRestResponse Request(ServerLinks app, List<KeyValuePair<String, String>> post_parameters=null) {
             RestRequest request;
 
@@ -59,6 +68,12 @@ namespace JudgeServerInterface
             return LastResponse;
         }
 
+        /// <summary>
+        /// Opens a connection to the JudgeServer and authenticates at the JudgeServer
+        /// </summary>
+        /// <param name="server">URL of the JudgeServer</param>
+        /// <param name="userName">username for authentification</param>
+        /// <param name="password">password for autehntification</param>
         public void Connect(string server, string userName, string password)
         {
             this.server = server;
@@ -74,6 +89,10 @@ namespace JudgeServerInterface
             this.Request(ServerLinks.Login, post_parameters);
         }
 
+        /// <summary>
+        /// Fetches the server informations from the JudgeServer
+        /// </summary>
+        /// <returns>server informations</returns>
         public ServerInfo GetServerInfo()
         {
             ServerInfo si = new ServerInfo();
@@ -86,6 +105,10 @@ namespace JudgeServerInterface
             return si;
         }
 
+        /// <summary>
+        /// Fetches the Obstacles from the JudgeServer
+        /// </summary>
+        /// <returns>Obstacles</returns>
         public JudgeServerInterface.Obstacles GetObstacles()
         {
             Obstacles obs = new Obstacles();
@@ -98,6 +121,13 @@ namespace JudgeServerInterface
             return obs;
         }
 
+        /// <summary>
+        /// Send the telemetry data of the airplane to the JudgeServer
+        /// </summary>
+        /// <param name="latitude">Latitude of the airplane</param>
+        /// <param name="longitude">Longitude of the airplane</param>
+        /// <param name="altitude">Altitude of the airplane in MSL</param>
+        /// <param name="heading">Heading of the airplane</param>
         public void setUASTelemetry(double latitude, double longitude, double altitude, double heading)
         {
             CultureInfo culture = new CultureInfo("en-US");
