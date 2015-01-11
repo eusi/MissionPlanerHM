@@ -299,9 +299,7 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                SmartAirData.Instance.Wind = new Wind();
-                SmartAirData.Instance.Wind.Velocity = 2;
-                SmartAirData.Instance.Wind.Direction = 1;
+               
                 return SmartAirData.Instance.Wind;
             }
             catch (Exception ex)

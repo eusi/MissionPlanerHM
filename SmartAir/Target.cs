@@ -31,13 +31,6 @@ namespace MissionPlanner.SmartAir
             set { targetType = value; }
         }
 
-         SmartAirColor color;
-
-         [DataMember]
-        public SmartAirColor Color
-         {
-             get { return color; }
-             set { color = value; }
-         }
+        
     }
 }
