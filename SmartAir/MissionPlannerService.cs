@@ -162,7 +162,6 @@ namespace MissionPlanner.SmartAir
             
         }
 
-
         /// <summary>
         /// Gets the current position of the UAV.
         /// </summary>
@@ -181,8 +180,7 @@ namespace MissionPlanner.SmartAir
 
                 return null;
             }
-        }
-             
+        }             
 
         /// <summary>
         /// This methods retrieves the latest positions of the stationary and moving obstacles. 
@@ -236,9 +234,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 return false;
             }
-        }
-
-      
+        }      
 
         /// <summary>
         /// This method gets the targets.
@@ -276,6 +272,44 @@ namespace MissionPlanner.SmartAir
             SmartAirData.Instance.createTestData();
         }
 
-       
+        /// <summary>
+        /// Gets the next waypoint of the plane.
+        /// </summary>
+        /// <returns>The waypoint.</returns>
+        public Locationwp getNextWaypoint()
+        {
+            try
+            {
+                return SmartAirData.Instance.getNextWaypoint();
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return null;
+            }
+           
+        }
+
+        /// <summary>
+        /// Gets the direction and velocity of the current wind.
+        /// </summary>
+        /// <returns>The wind.</returns>
+        public Wind getWind()
+        {
+            try
+            {
+                SmartAirData.Instance.Wind = new Wind();
+                SmartAirData.Instance.Wind.Velocity = 2;
+                SmartAirData.Instance.Wind.Direction = 1;
+                return SmartAirData.Instance.Wind;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.Message);
+                // to do log
+                return null;
+            }
+        }
     }
 }

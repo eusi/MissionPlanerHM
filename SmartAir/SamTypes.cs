@@ -24,10 +24,11 @@ namespace MissionPlanner.SmartAir
         TASK_EMERGENT = 22,
         TASK_AIRDROP = 23,
         TASK_OFFAXIS = 24,
-        TASK_IR = 25,
-        TASK_WAYPOINT = 26,
-        TASK_SRIC = 27,
-        ENUM_END = 666
+        TASK_IR_STATIC = 25,
+        TASK_IR_DYNAMIC = 26,
+        TASK_WAYPOINT = 27,
+        TASK_SRIC = 28,
+        ENUM_END = 99
 
 
     }

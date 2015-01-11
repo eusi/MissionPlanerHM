@@ -94,7 +94,8 @@ namespace MissionPlanner.SmartAir
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);
 
                 var position= SmartAir.SmartAirData.Instance.UAVPosition;
-                js.setUASTelemetry(position.Lat,position.Lng,position.Alt,position.Yaw);
+                if (position != null)
+                    js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
 
                 Thread.Sleep(intervall);
                     

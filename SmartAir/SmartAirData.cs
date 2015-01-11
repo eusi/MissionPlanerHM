@@ -44,7 +44,7 @@ namespace MissionPlanner.SmartAir
 
         List<ProposedRoute> receivedRoutes = new List<ProposedRoute>();
 
-        UAVPosition _UAVPosition = new UAVPosition();
+        UAVPosition _UAVPosition;
 
         Dictionary<SamTypes, Zone> zones = new Dictionary<SamTypes, Zone>();
 
@@ -57,6 +57,10 @@ namespace MissionPlanner.SmartAir
         List<Locationwp> wayPointsTableOfAutoPilot = new List<Locationwp>();
 
         bool autoLoadRoutes = true;
+
+        Wind wind = null;
+
+      
 
      
 
@@ -77,6 +81,22 @@ namespace MissionPlanner.SmartAir
                 if (value == true)
                     LoadNextRoute(this.nextWPIndexFromAutopilot);
             }
+        }
+
+        public Locationwp getNextWaypoint() {
+
+            
+                if (wayPointsTableOfAutoPilot != null && wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot)
+                {
+                    return wayPointsTableOfAutoPilot[(int)this.nextWPIndexFromAutopilot];
+
+
+                }
+                else
+                    return null;
+            
+        
+        
         }
 
         public List<Locationwp> WayPointsTableOfAutoPilot
@@ -260,6 +280,15 @@ namespace MissionPlanner.SmartAir
            
 
 
+        }
+
+        /// <summary>
+        /// Current wind.
+        /// </summary>
+        public Wind Wind
+        {
+            get { return wind; }
+            set { wind = value; }
         }
 
         #endregion
