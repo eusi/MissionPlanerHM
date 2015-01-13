@@ -12,6 +12,7 @@ using System.Net; // dns, ip address
 using System.Net.Sockets; // tcplistner
 using GMap.NET;
 using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.ToolTips;
 using System.Globalization; // language
 using GMap.NET.WindowsForms.Markers;
 using System.Resources;
@@ -201,20 +202,28 @@ namespace MissionPlanner.GCSViews
 
             foreach (var oldObstacle in obstacles)
             {
-                drawnpolygonsoverlay.Polygons.Remove(oldObstacle);
+                obstaclesoverlay.Polygons.Remove(oldObstacle);
             }
             obstacles.Clear();
-            //drawnpolygonsoverlay.Markers.Clear();
+            obstaclesoverlay.Markers.Clear();
 
             List<StationaryObstacle> stationary = obstacleToDraw.StationaryObstacles;
+          
 
             foreach (var newObstacle in stationary)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
                 newCircle.Fill =  new SolidBrush(Color.FromArgb(180 , Color.Red));
                 newCircle.Stroke = new Pen(Color.White, 1);
-                drawnpolygonsoverlay.Polygons.Add(newCircle);
+
+                obstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
+
+                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude),GMarkerGoogleType.blue_small);
+                marker.ToolTip = new GMapRoundedToolTip(marker);
+                marker.ToolTipText = newObstacle.CylinderHeight.ToString();
+                obstaclesoverlay.Markers.Add(marker);
+               
             }
 
             List<MovingObstacle> moving = obstacleToDraw.MovingObstacles;
@@ -224,8 +233,12 @@ namespace MissionPlanner.GCSViews
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.White, 1);
-                drawnpolygonsoverlay.Polygons.Add(newCircle);
+                obstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
+                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.red_small);
+                marker.ToolTip = new GMapRoundedToolTip(marker);
+                marker.ToolTipText = newObstacle.Altitude.ToString();
+                obstaclesoverlay.Markers.Add(marker);
  
             }
 
@@ -857,6 +870,9 @@ namespace MissionPlanner.GCSViews
 
             drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
             MainMap.Overlays.Add(drawnpolygonsoverlay);
+
+            obstaclesoverlay = new GMapOverlay("drawnobstacles");
+            MainMap.Overlays.Add(obstaclesoverlay);
 
 
             MainMap.Overlays.Add(poioverlay);
@@ -2864,6 +2880,7 @@ namespace MissionPlanner.GCSViews
         public static GMapOverlay airportsoverlay; 
         public static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
         GMapOverlay drawnpolygonsoverlay;
+        GMapOverlay obstaclesoverlay;
         GMapOverlay kmlpolygonsoverlay;
         GMapOverlay geofenceoverlay;
         static GMapOverlay rallypointoverlay;
@@ -6653,6 +6670,26 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
             FlightDataSwitcher.ShowScreen("FlightData");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            JudgeServerInterface.Obstacles obstacles = new JudgeServerInterface.Obstacles();
+            List<StationaryObstacle> list = new List<StationaryObstacle>();
+            StationaryObstacle obstacle = new StationaryObstacle();
+            obstacle.Latitude = 47.2619975;
+            obstacle.Longitude = 11.3540268;
+            obstacle.CylinderRadius = 10;
+            obstacle.CylinderHeight = 50;
+            list.Add(obstacle);
+            StationaryObstacle obstacle2 = new StationaryObstacle();
+            obstacle2.Latitude = 47.26;
+            obstacle2.Longitude = 11.354;
+            obstacle2.CylinderRadius = 20;
+            obstacle2.CylinderHeight = 59;
+            list.Add(obstacle2);
+            obstacles.StationaryObstacles = list;
+            drawObstacles(obstacles);
         }
 
     
