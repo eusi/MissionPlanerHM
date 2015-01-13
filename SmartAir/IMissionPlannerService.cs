@@ -19,7 +19,7 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         /// <returns>true, if the stopping process was sucessful.</returns>
         [OperationContract()]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         bool stopLoiter();
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.WrappedRequest,
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
@@ -46,7 +46,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of waypoints.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat=WebMessageFormat.Json)]
-        List<Locationwp> getWayPoints();
+        List<Locationwp> getWayPoints();              
 
         /// <summary>
         /// <summary>
@@ -57,7 +57,7 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.WrappedRequest,
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
@@ -96,7 +96,7 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebInvoke(
             Method = "POST",
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.WrappedRequest,
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
@@ -115,7 +115,7 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         /// <returns>true, if connection is established</returns>
         [OperationContract()]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         bool testConnection();
 
         /// <summary>
@@ -124,6 +124,23 @@ namespace MissionPlanner.SmartAir
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         void createTestData();
+
+        /// <summary>
+        /// Gets the next waypoint of the plane.
+        /// </summary>
+        /// <returns>The waypoint.</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        Locationwp getNextWaypoint();
+
+
+        /// <summary>
+        /// Gets the direction and velocity of the current wind.
+        /// </summary>
+        /// <returns>The wind.</returns>
+        [OperationContract()]
+        [WebGet(ResponseFormat = WebMessageFormat.Json)]
+        Wind getWind();
 
     }
 }

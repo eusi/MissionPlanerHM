@@ -44,7 +44,7 @@ namespace MissionPlanner.SmartAir
 
         List<ProposedRoute> receivedRoutes = new List<ProposedRoute>();
 
-        UAVPosition _UAVPosition = new UAVPosition();
+        UAVPosition _UAVPosition;
 
         Dictionary<SamTypes, Zone> zones = new Dictionary<SamTypes, Zone>();
 
@@ -57,6 +57,10 @@ namespace MissionPlanner.SmartAir
         List<Locationwp> wayPointsTableOfAutoPilot = new List<Locationwp>();
 
         bool autoLoadRoutes = true;
+
+        Wind wind = null;
+
+      
 
      
 
@@ -77,6 +81,22 @@ namespace MissionPlanner.SmartAir
                 if (value == true)
                     LoadNextRoute(this.nextWPIndexFromAutopilot);
             }
+        }
+
+        public Locationwp getNextWaypoint() {
+
+            
+                if (wayPointsTableOfAutoPilot != null && wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot)
+                {
+                    return wayPointsTableOfAutoPilot[(int)this.nextWPIndexFromAutopilot];
+
+
+                }
+                else
+                    return null;
+            
+        
+        
         }
 
         public List<Locationwp> WayPointsTableOfAutoPilot
@@ -254,12 +274,21 @@ namespace MissionPlanner.SmartAir
 
 
             targets = new Dictionary<SamTypes, List<Target>>();
-            targets.Add(SamTypes.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SamTypes.TARGET_AIRDROP, Color = new SmartAirColor(100, 0, 0, 0) }});
-            targets.Add(SamTypes.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SamTypes.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SamTypes.TARGET_OFFAXIS, Color = new SmartAirColor(100, 100, 100, 0) } });
-            targets.Add(SamTypes.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SamTypes.TARGET_SRIC, Color = new SmartAirColor(100, 0, 100, 0) }});
+            targets.Add(SamTypes.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SamTypes.TARGET_AIRDROP }});
+            targets.Add(SamTypes.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SamTypes.TARGET_OFFAXIS,  }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SamTypes.TARGET_OFFAXIS } });
+            targets.Add(SamTypes.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SamTypes.TARGET_SRIC,  }});
            
 
 
+        }
+
+        /// <summary>
+        /// Current wind.
+        /// </summary>
+        public Wind Wind
+        {
+            get { return wind; }
+            set { wind = value; }
         }
 
         #endregion
