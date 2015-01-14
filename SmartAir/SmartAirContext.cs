@@ -42,7 +42,7 @@ namespace MissionPlanner.SmartAir
         #region private attibutes
         Obstacles latestObstacles = new Obstacles();
 
-        List<ProposedRoute> receivedRoutes = new List<ProposedRoute>();
+        List<Route> receivedRoutes = new List<Route>();
 
         UAVPosition _UAVPosition;
 
@@ -127,7 +127,7 @@ namespace MissionPlanner.SmartAir
             set { latestObstacles = value; }
         }
 
-        public List<ProposedRoute> ReceivedRoutes
+        public List<Route> ReceivedRoutes
         {
             get { return receivedRoutes; }
             set { 

@@ -74,7 +74,7 @@ namespace MissionPlanner.SmartAir
                 }
 
 
-                SmartAirContext.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
+                SmartAirContext.Instance.ReceivedRoutes.Add(new Route() { WayPoints = waypoints, Append = append, Objective = objective });
                  
                 MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, append);
                 SmartAirContext.Instance.LoadNextRoute(SmartAirContext.Instance.NextWPIndexFromAutopilot);
