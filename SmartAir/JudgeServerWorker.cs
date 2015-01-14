@@ -88,12 +88,12 @@ namespace MissionPlanner.SmartAir
 
                 
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
-                SmartAir.SmartAirData.Instance.LatestObstacles = obstacles;
+                SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;
 
                 var serverTime = js.GetServerInfo();
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);
 
-                var position= SmartAir.SmartAirData.Instance.UAVPosition;
+                var position= SmartAir.SmartAirContext.Instance.UAVPosition;
                 if (position != null)
                     js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
 

@@ -9,20 +9,20 @@ using System.Drawing;
 namespace MissionPlanner.SmartAir
 {
     /// <summary>
-    /// This class (singleton) is a container for smart air data. 
+    /// This class (singleton) includes smart air data and functions. 
     /// </summary>
-    public class SmartAirData
+    public class SmartAirContext
     {
-        private static volatile SmartAirData instance;
+        private static volatile SmartAirContext instance;
         private static object syncRoot = new Object();
         
 
-        private SmartAirData()
+        private SmartAirContext()
         { 
         
         }
 
-        public static SmartAirData Instance
+        public static SmartAirContext Instance
         {
             get
             {
@@ -31,7 +31,7 @@ namespace MissionPlanner.SmartAir
                     lock (syncRoot)
                     {
                         if (instance == null)
-                            instance = new SmartAirData();
+                            instance = new SmartAirContext();
                     }
                 }
 
@@ -46,9 +46,9 @@ namespace MissionPlanner.SmartAir
 
         UAVPosition _UAVPosition;
 
-        Dictionary<SamTypes, Zone> zones = new Dictionary<SamTypes, Zone>();
+        Dictionary<SamType, Zone> zones = new Dictionary<SamType, Zone>();
 
-        Dictionary<SamTypes, List<Target>> targets = new Dictionary<SamTypes, List<Target>>();
+        Dictionary<SamType, List<Target>> targets = new Dictionary<SamType, List<Target>>();
 
         float lastWPIndexFromAutopilot = 0;
 
@@ -60,12 +60,6 @@ namespace MissionPlanner.SmartAir
 
         Wind wind = null;
 
-      
-
-     
-
-        
-
         #endregion
 
         #region Properties
@@ -75,8 +69,6 @@ namespace MissionPlanner.SmartAir
             get { return autoLoadRoutes; }
             set
             {
-
-
                 autoLoadRoutes = value;
                 if (value == true)
                     LoadNextRoute(this.nextWPIndexFromAutopilot);
@@ -122,81 +114,8 @@ namespace MissionPlanner.SmartAir
 
             }
         }
-
-        /// <summary>
-        /// This method works only when autopilot waypoint table is in sync with mission planner wp table
-        /// </summary>
-        /// <param name="nextWPIndex"></param>
-        public void LoadNextRoute(float nextWPIndex)
-        {
-            if (AutoLoadRoutes)
-            {
-                
-                int iNextWPIndex = (int)nextWPIndex;
-
-                // check if the waypoint has a following way point in the current table --> if not, loiter is not interrupted --> loiter until next WP is available
-                if (wayPointsTableOfAutoPilot.Count > iNextWPIndex + 1)
-                {
-                    try
-                    {
-                        
-                        // check if current wp is loitering and is allowed to interrupt 
-                        var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
-                        if (currentWP != null&&currentWP.IsLoiterInterruptAllowed && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
-                        {
-                            // skip loiter, jump to next wp and send it to autopilot 
-                            MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));                            
-
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw ex;
-                    }
-
-                    
-                }
-            }
-
-        
-        }
-
-        public bool stopLoiter()
-        {
-             
-            // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
-            if (wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot + 1)
-            {
-                try
-                {
-                    int iNextWPIndex = (int)nextWPIndexFromAutopilot;
-
-                    var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
-                    if (currentWP != null && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
-                    {
-                        // skip loiter, jump to next wp and send it to autopilot 
-                        MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
-                        return true;
-
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-
-
-            }
-
-            return false;
-
-        }
-
-
-        public Dictionary<SamTypes,Zone> Zones
+              
+        public Dictionary<SamType,Zone> Zones
         {
             get { return zones; }
             set { zones = value; }
@@ -217,7 +136,7 @@ namespace MissionPlanner.SmartAir
             }
         }
 
-        public Dictionary<SamTypes, List<Target>> Targets
+        public Dictionary<SamType, List<Target>> Targets
         {
             get { return targets; }
             set { targets = value; }
@@ -258,7 +177,7 @@ namespace MissionPlanner.SmartAir
 
 
 
-            zones = new Dictionary<SamTypes,Zone>();
+            zones = new Dictionary<SamType,Zone>();
             var temp = new List<GMap.NET.PointLatLng>();
             temp.Add(new GMap.NET.PointLatLng(1, 1));
             temp.Add(new GMap.NET.PointLatLng(2, 2));
@@ -267,16 +186,16 @@ namespace MissionPlanner.SmartAir
 
 
 
-            zones.Add(SamTypes.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SamTypes.ZONE_NO_FLIGHT });
-            zones.Add(SamTypes.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamTypes.ZONE_EMERGENT });
-            zones.Add(SamTypes.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamTypes.ZONE_SEARCH_AREA });
+            zones.Add(SamType.ZONE_NO_FLIGHT,new Zone() { ZonePoints = temp, Color = new SmartAirColor(255,255,255,255), ZoneType=SamType.ZONE_NO_FLIGHT });
+            zones.Add(SamType.ZONE_EMERGENT, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamType.ZONE_EMERGENT });
+            zones.Add(SamType.ZONE_SEARCH_AREA, new Zone() { ZonePoints = temp, Color = new SmartAirColor(255, 255, 255, 255), ZoneType = SamType.ZONE_SEARCH_AREA });
 
 
 
-            targets = new Dictionary<SamTypes, List<Target>>();
-            targets.Add(SamTypes.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SamTypes.TARGET_AIRDROP }});
-            targets.Add(SamTypes.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SamTypes.TARGET_OFFAXIS,  }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SamTypes.TARGET_OFFAXIS } });
-            targets.Add(SamTypes.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SamTypes.TARGET_SRIC,  }});
+            targets = new Dictionary<SamType, List<Target>>();
+            targets.Add(SamType.TARGET_AIRDROP,new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(1, 1), TargetType = SamType.TARGET_AIRDROP }});
+            targets.Add(SamType.TARGET_OFFAXIS, new List<Target>() { new Target() { Coordinates = new GMap.NET.PointLatLng(2, 2), TargetType = SamType.TARGET_OFFAXIS,  }, new Target() { Coordinates = new GMap.NET.PointLatLng(4, 4), TargetType = SamType.TARGET_OFFAXIS } });
+            targets.Add(SamType.TARGET_SRIC, new List<Target>() { new Target(){ Coordinates = new GMap.NET.PointLatLng(3, 3), TargetType = SamType.TARGET_SRIC,  }});
            
 
 
@@ -293,6 +212,80 @@ namespace MissionPlanner.SmartAir
 
         #endregion
 
-   
+        #region Methods
+        /// <summary>
+        /// This method works only when autopilot waypoint table is in sync with mission planner wp table
+        /// </summary>
+        /// <param name="nextWPIndex"></param>
+        public void LoadNextRoute(float nextWPIndex)
+        {
+            if (AutoLoadRoutes)
+            {
+
+                int iNextWPIndex = (int)nextWPIndex;
+
+                // check if the waypoint has a following way point in the current table --> if not, loiter is not interrupted --> loiter until next WP is available
+                if (wayPointsTableOfAutoPilot.Count > iNextWPIndex + 1)
+                {
+                    try
+                    {
+
+                        // check if current wp is loitering and is allowed to interrupt 
+                        var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
+                        if (currentWP != null && currentWP.IsLoiterInterruptAllowed && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
+                        {
+                            // skip loiter, jump to next wp and send it to autopilot 
+                            MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                        // to do log
+                    }
+
+
+                }
+            }
+
+
+        }
+
+        public bool stopLoiter()
+        {
+
+            // check if the waypoint has a following way point in the grid --> if not, loiter is not interrupted --> loiter until next WP is available
+            if (wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot + 1)
+            {
+                try
+                {
+                    int iNextWPIndex = (int)nextWPIndexFromAutopilot;
+
+                    var currentWP = wayPointsTableOfAutoPilot[iNextWPIndex];
+                    if (currentWP != null && currentWP.id == (byte)MAVLink.MAV_CMD.LOITER_UNLIM)
+                    {
+                        // skip loiter, jump to next wp and send it to autopilot 
+                        MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
+                        return true;
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
+
+            }
+
+            return false;
+
+        }
+
+        #endregion
+
     }
 }

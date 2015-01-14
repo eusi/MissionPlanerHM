@@ -37,7 +37,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective);  
+        bool setWayPoints(List<Locationwp> waypoints, bool append, SamType objective);  
 
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of zones.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Dictionary<SamTypes, Zone> getZones();
+        Dictionary<SamType, Zone> getZones();
 
         /// <summary>
         /// This method gets the current position of the UAV.
@@ -108,7 +108,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>A list of targets.</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Dictionary<SamTypes, List<Target>> getTargets();
+        Dictionary<SamType, List<Target>> getTargets();
 
         /// <summary>
         /// This method checks if the service is reachable.

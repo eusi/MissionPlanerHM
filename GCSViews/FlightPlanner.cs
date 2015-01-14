@@ -175,21 +175,21 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private Image getImg(SamTypes type)
+        private Image getImg(SamType type)
         {
             switch (type)
             {
-                case SamTypes.TARGET_AIRDROP:
+                case SamType.TARGET_AIRDROP:
                     return Image.FromFile("SmartAir\\Resources\\airdrop_icon.png");
-                case SamTypes.TARGET_IR_DYNAMIC:
+                case SamType.TARGET_IR_DYNAMIC:
                     return Image.FromFile("SmartAir\\Resources\\ir_dynamic_icon.png");
-                case SamTypes.TARGET_IR_STATIC:
+                case SamType.TARGET_IR_STATIC:
                     return Image.FromFile("SmartAir\\Resources\\ir_static_icon.png");
-                case SamTypes.TARGET_OFFAXIS:
+                case SamType.TARGET_OFFAXIS:
                     return Image.FromFile("SmartAir\\Resources\\offaxis_icon.png");
-                case SamTypes.TARGET_SRIC:
+                case SamType.TARGET_SRIC:
                     return Image.FromFile("SmartAir\\Resources\\sric_icon.png");
-                case SamTypes.TARGET_EMERGENT:
+                case SamType.TARGET_EMERGENT:
                     return Image.FromFile("SmartAir\\Resources\\emergent_icon.png");
                 default:
                     return null;
@@ -457,9 +457,9 @@ namespace MissionPlanner.GCSViews
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
         {
             if (chkAutoLoiterInterrupt.Checked == true)
-                SmartAirData.Instance.AutoLoadRoutes = true;
+                SmartAirContext.Instance.AutoLoadRoutes = true;
             else
-                SmartAirData.Instance.AutoLoadRoutes = false;
+                SmartAirContext.Instance.AutoLoadRoutes = false;
 
         }
         #endregion
@@ -2282,7 +2282,7 @@ namespace MissionPlanner.GCSViews
                 {
 
                 }
-                SmartAirData.Instance.WayPointsTableOfAutoPilot=tempWPList;
+                SmartAirContext.Instance.WayPointsTableOfAutoPilot=tempWPList;
                 ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done.");
             }
             catch (Exception ex) { log.Error(ex); MainV2.comPort.giveComport = false; throw; }
