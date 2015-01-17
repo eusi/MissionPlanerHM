@@ -921,7 +921,7 @@
     <value>NoControl</value>
   </data>
   <data name="splitter1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 324</value>
+    <value>0, 352</value>
   </data>
   <data name="splitter1.Size" type="System.Drawing.Size, System.Drawing">
     <value>769, 3</value>
@@ -1086,7 +1086,7 @@
     <value>Bottom</value>
   </data>
   <data name="panelWaypoints.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 327</value>
+    <value>0, 355</value>
   </data>
   <data name="panelWaypoints.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
@@ -1122,7 +1122,7 @@
     <value>766, 0</value>
   </data>
   <data name="splitter2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>3, 324</value>
+    <value>3, 352</value>
   </data>
   <data name="splitter2.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -1397,28 +1397,31 @@
   <data name="&gt;&gt;chkAutoLoiterInterrupt.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="hideWaypoints.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="hideWaypoints.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 413</value>
   </data>
-  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 23</value>
+  <data name="hideWaypoints.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 17</value>
   </data>
-  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+  <data name="hideWaypoints.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
   </data>
-  <data name="button1.Text" xml:space="preserve">
-    <value>button1</value>
+  <data name="hideWaypoints.Text" xml:space="preserve">
+    <value>HideWaypoints</value>
   </data>
-  <data name="&gt;&gt;button1.Name" xml:space="preserve">
-    <value>button1</value>
+  <data name="&gt;&gt;hideWaypoints.Name" xml:space="preserve">
+    <value>hideWaypoints</value>
   </data>
-  <data name="&gt;&gt;button1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;hideWaypoints.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;hideWaypoints.Parent" xml:space="preserve">
     <value>flowLayoutPanel1</value>
   </data>
-  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;hideWaypoints.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="flowLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -1428,7 +1431,7 @@
     <value>1, 22</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 438</value>
+    <value>129, 466</value>
   </data>
   <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -1455,7 +1458,7 @@
     <value>21, 21</value>
   </data>
   <data name="panelAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 461</value>
+    <value>131, 489</value>
   </data>
   <data name="panelAction.TabIndex" type="System.Int32, mscorlib">
     <value>50</value>
@@ -2484,7 +2487,7 @@
     <value>0, 0</value>
   </data>
   <data name="MainMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>729, 320</value>
+    <value>729, 348</value>
   </data>
   <data name="MainMap.TabIndex" type="System.Int32, mscorlib">
     <value>45</value>
@@ -2514,7 +2517,7 @@
     <value>Vertical</value>
   </data>
   <data name="trackBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 300</value>
+    <value>45, 328</value>
   </data>
   <data name="trackBar1.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
@@ -2574,7 +2577,7 @@
     <value>27, 27</value>
   </data>
   <data name="panelMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>769, 327</value>
+    <value>769, 355</value>
   </data>
   <data name="panelMap.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -2601,7 +2604,7 @@
     <value>0, 0</value>
   </data>
   <data name="panelBASE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>900, 461</value>
+    <value>900, 489</value>
   </data>
   <data name="panelBASE.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -2631,7 +2634,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>900, 461</value>
+    <value>900, 489</value>
   </data>
   <data name="&gt;&gt;Command.Name" xml:space="preserve">
     <value>Command</value>

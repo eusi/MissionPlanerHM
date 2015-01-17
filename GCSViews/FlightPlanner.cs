@@ -45,7 +45,7 @@ namespace MissionPlanner.GCSViews
     public partial class FlightPlanner : MyUserControl, IDeactivate, IActivate
     {
         #region SmartAir
-               
+
         public void setNewWayPoints(List<Locationwp> waypoints, bool append)
         {
 
@@ -219,10 +219,10 @@ namespace MissionPlanner.GCSViews
                 obstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
 
-                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude),GMarkerGoogleType.blue_small);
-                marker.ToolTip = new GMapRoundedToolTip(marker);
-                marker.ToolTipText = newObstacle.CylinderHeight.ToString();
+                Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
+                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.CylinderHeight.ToString());
                 obstaclesoverlay.Markers.Add(marker);
+ 
                
             }
 
@@ -235,10 +235,10 @@ namespace MissionPlanner.GCSViews
                 newCircle.Stroke = new Pen(Color.White, 1);
                 obstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
-                GMarkerGoogle marker = new GMarkerGoogle(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), GMarkerGoogleType.red_small);
-                marker.ToolTip = new GMapRoundedToolTip(marker);
-                marker.ToolTipText = newObstacle.Altitude.ToString();
+                Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
+                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.SphereRadius.ToString());
                 obstaclesoverlay.Markers.Add(marker);
+
  
             }
 
@@ -310,29 +310,21 @@ namespace MissionPlanner.GCSViews
         }
         public void hideWaypoint(int wpIndexToHide)
         {
+           
             try
             {
-                if (wpIndexToHide > 0)
+                if (wpIndexToHide > 0 && hideWaypoints.Checked)
                 {
 
-
-                    int index = 1;
-                    PointLatLngAlt current = fullpointlist[index];
-                    while(hidepointlist.Contains(current)) {
-                        index++;
-                        current = fullpointlist[index];
-                    }
-                    hidepointlist.Add(current);
-
-
+                    writeKML();
   
-                    foreach (var demon in hidepointlist)
+                    for (int i = 1; i <= wpIndexToHide; i++ ) 
                     {
-                        fullpointlist.Remove(demon);
+                        fullpointlist.RemoveAt(1);
 
                     }
 
-                    for (int i = 1; i <= index; i++)
+                    for (int i = 1; i <= wpIndexToHide; i++)
                     {
                         objectsoverlay.Markers.RemoveAt(2);
                         objectsoverlay.Markers.RemoveAt(2);
@@ -6672,24 +6664,12 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             FlightDataSwitcher.ShowScreen("FlightData");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void hideWaypoints_CheckedChanged(object sender, EventArgs e)
         {
-            JudgeServerInterface.Obstacles obstacles = new JudgeServerInterface.Obstacles();
-            List<StationaryObstacle> list = new List<StationaryObstacle>();
-            StationaryObstacle obstacle = new StationaryObstacle();
-            obstacle.Latitude = 47.2619975;
-            obstacle.Longitude = 11.3540268;
-            obstacle.CylinderRadius = 10;
-            obstacle.CylinderHeight = 50;
-            list.Add(obstacle);
-            StationaryObstacle obstacle2 = new StationaryObstacle();
-            obstacle2.Latitude = 47.26;
-            obstacle2.Longitude = 11.354;
-            obstacle2.CylinderRadius = 20;
-            obstacle2.CylinderHeight = 59;
-            list.Add(obstacle2);
-            obstacles.StationaryObstacles = list;
-            drawObstacles(obstacles);
+            if (!this.hideWaypoints.Checked)
+            {
+                writeKML();
+            }
         }
 
     

@@ -119,6 +119,7 @@
             this.BUT_saveWPFile = new MissionPlanner.Controls.MyButton();
             this.btnSmartAir = new MissionPlanner.Controls.MyButton();
             this.chkAutoLoiterInterrupt = new System.Windows.Forms.CheckBox();
+            this.hideWaypoints = new System.Windows.Forms.CheckBox();
             this.panelMap = new System.Windows.Forms.Panel();
             this.lblServerInfo = new System.Windows.Forms.Label();
             this.pnlSmartAir = new BSE.Windows.Forms.Panel();
@@ -215,7 +216,6 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -684,7 +684,7 @@
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.btnSmartAir);
             this.flowLayoutPanel1.Controls.Add(this.chkAutoLoiterInterrupt);
-            this.flowLayoutPanel1.Controls.Add(this.button1);
+            this.flowLayoutPanel1.Controls.Add(this.hideWaypoints);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
@@ -761,6 +761,13 @@
             this.chkAutoLoiterInterrupt.Name = "chkAutoLoiterInterrupt";
             this.chkAutoLoiterInterrupt.UseVisualStyleBackColor = true;
             this.chkAutoLoiterInterrupt.CheckedChanged += new System.EventHandler(this.chkAutoLoiterInterrupt_CheckedChanged);
+            // 
+            // hideWaypoints
+            // 
+            resources.ApplyResources(this.hideWaypoints, "hideWaypoints");
+            this.hideWaypoints.Name = "hideWaypoints";
+            this.hideWaypoints.UseVisualStyleBackColor = true;
+            this.hideWaypoints.CheckedChanged += new System.EventHandler(this.hideWaypoints_CheckedChanged);
             // 
             // panelMap
             // 
@@ -1481,13 +1488,6 @@
             this.timer1.Interval = 600;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1685,6 +1685,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Task;
         private System.Windows.Forms.DataGridViewCheckBoxColumn IsLoiterInterruptAllowed;
         private System.Windows.Forms.Label lblServerInfo;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox hideWaypoints;
     }
 }
