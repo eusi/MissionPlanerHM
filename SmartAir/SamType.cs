@@ -28,6 +28,7 @@ namespace MissionPlanner.SmartAir
         TASK_IR_DYNAMIC = 26,
         TASK_WAYPOINT = 27,
         TASK_SRIC = 28,
+        MANUAL = 91,
         ENUM_END = 99
 
 

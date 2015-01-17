@@ -21,7 +21,9 @@ namespace MissionPlanner.SmartAir
         { 
         
         }
-
+        /// <summary>
+        /// Gets the current instance for the context.
+        /// </summary>
         public static SmartAirContext Instance
         {
             get
@@ -40,30 +42,64 @@ namespace MissionPlanner.SmartAir
         }
         
         #region private attibutes
+
+        /// <summary>
+        /// Includes the latest obstacles received from the judge server.
+        /// </summary>
         Obstacles latestObstacles = new Obstacles();
 
+        /// <summary>
+        /// A history of all routes(waypoints) received from mc.  
+        /// </summary>
         List<Route> receivedRoutes = new List<Route>();
 
+        /// <summary>
+        /// Includes the latest position of the drone received from autopilot.
+        /// </summary>
         UAVPosition _UAVPosition;
 
+        /// <summary>
+        /// Dictionary of all zones received from mc.
+        /// </summary>
         Dictionary<SamType, Zone> zones = new Dictionary<SamType, Zone>();
 
+        /// <summary>
+        /// Dictionary of all targets received from mc.
+        /// </summary>
         Dictionary<SamType, List<Target>> targets = new Dictionary<SamType, List<Target>>();
 
+        /// <summary>
+        /// Represents the last waypoint index received from autopilot.
+        /// </summary>
         float lastWPIndexFromAutopilot = 0;
 
+        /// <summary>
+        /// Represents the next waypoint index received from autopilot.
+        /// </summary>
         float nextWPIndexFromAutopilot = 0;
 
+        /// <summary>
+        /// Clone of the waypoint list of the waypoint table of the view Flight Planner.
+        /// </summary>
         List<Locationwp> wayPointsTableOfAutoPilot = new List<Locationwp>();
 
+        /// <summary>
+        /// Indicates if auto routing is activated. If activated waypoints with loiter unlimited and IsAutoInterrupt-Flag=true will be skipped automatically.  
+        /// </summary>
         bool autoLoadRoutes = true;
 
+        /// <summary>
+        /// Includes the current wind data received from autopilot.
+        /// </summary>
         Wind wind = null;
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Indicates if auto routing is activated. If activated waypoints with loiter unlimited and IsAutoInterrupt-Flag=true will be skipped automatically.  
+        /// </summary>
         public bool AutoLoadRoutes
         {
             get { return autoLoadRoutes; }
@@ -75,6 +111,10 @@ namespace MissionPlanner.SmartAir
             }
         }
 
+        /// <summary>
+        /// Gets the next waypoint.
+        /// </summary>
+        /// <returns>The waypoint.</returns>
         public Locationwp getNextWaypoint() {
 
             
@@ -91,12 +131,18 @@ namespace MissionPlanner.SmartAir
         
         }
 
+        /// <summary>
+        /// Clone of the waypoint list of the waypoint table of the view Flight Planner.
+        /// </summary>
         public List<Locationwp> WayPointsTableOfAutoPilot
         {
             get { return wayPointsTableOfAutoPilot; }
             set { wayPointsTableOfAutoPilot = value; }
         }
 
+        /// <summary>
+        /// Represents the next waypoint index received from autopilot.
+        /// </summary>
         public float NextWPIndexFromAutopilot
         {
             get { return nextWPIndexFromAutopilot; }
@@ -114,19 +160,27 @@ namespace MissionPlanner.SmartAir
 
             }
         }
-              
+
+        /// <summary>
+        /// Dictionary of all zones received from mc.
+        /// </summary>
         public Dictionary<SamType,Zone> Zones
         {
             get { return zones; }
             set { zones = value; }
         }
 
+        /// <summary>
+        /// Includes the latest obstacles received from the judge server.
+        /// </summary>
         public Obstacles LatestObstacles
         {
             get { return latestObstacles; }
             set { latestObstacles = value; }
         }
-
+        /// <summary>
+        /// A history of all routes(waypoints) received from mc.  
+        /// </summary>
         public List<Route> ReceivedRoutes
         {
             get { return receivedRoutes; }
@@ -136,12 +190,18 @@ namespace MissionPlanner.SmartAir
             }
         }
 
+        /// <summary>
+        /// Dictionary of all targets received from mc.
+        /// </summary>
         public Dictionary<SamType, List<Target>> Targets
         {
             get { return targets; }
             set { targets = value; }
         }
 
+        /// <summary>
+        /// Includes the latest position of the drone received from autopilot.
+        /// </summary>
         public UAVPosition UAVPosition
         {
             get { return _UAVPosition; }
@@ -214,9 +274,9 @@ namespace MissionPlanner.SmartAir
 
         #region Methods
         /// <summary>
-        /// This method works only when autopilot waypoint table is in sync with mission planner wp table
+        /// This method loads the next route if auto routings is activated. It works only when autopilot waypoint table is in sync with mission planner wp table.
         /// </summary>
-        /// <param name="nextWPIndex"></param>
+        /// <param name="nextWPIndex">The next waypoint index of the autopilot.</param>
         public void LoadNextRoute(float nextWPIndex)
         {
             if (AutoLoadRoutes)
@@ -253,6 +313,10 @@ namespace MissionPlanner.SmartAir
 
         }
 
+        /// <summary>
+        /// Stops the loitering of the plane.
+        /// </summary>
+        /// <returns></returns>
         public bool stopLoiter()
         {
 

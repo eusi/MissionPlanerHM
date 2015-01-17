@@ -49,6 +49,7 @@ namespace MissionPlanner.SmartAir
                 foreach (var wp in waypoints)
                 {
                     wp.objective = objective.ToString();
+                    wp.samType = (int)objective;
                 }
                 
                 var lastWP = waypoints.LastOrDefault();
@@ -68,6 +69,7 @@ namespace MissionPlanner.SmartAir
                     clone.p3 = lastWP.p3;
                     clone.p4 = lastWP.p4;
                     clone.objective = objective.ToString();
+                    clone.samType = (int)objective;
                     waypoints.Add(clone);
 
 

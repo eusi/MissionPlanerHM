@@ -23,6 +23,7 @@ namespace MissionPlanner.Utilities
         [NonSerialized]
         public bool IsLoiterInterruptAllowed;
         [NonSerialized]
-        public string objective;
+        public string objective = "MANUAL";        
+        public int samType = 91;
     };
 }
