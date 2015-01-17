@@ -22,7 +22,7 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                return SmartAirData.Instance.stopLoiter();
+                return SmartAirContext.Instance.stopLoiter();
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace MissionPlanner.SmartAir
         /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
         /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
         /// <returns>true, if the operation was sucessful.</returns>
-        public bool setWayPoints(List<Locationwp> waypoints, bool append, SamTypes objective)
+        public bool setWayPoints(List<Locationwp> waypoints, bool append, SamType objective)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace MissionPlanner.SmartAir
                 foreach (var wp in waypoints)
                 {
                     wp.objective = objective.ToString();
+                    wp.samType = (int)objective;
                 }
                 
                 var lastWP = waypoints.LastOrDefault();
@@ -68,16 +69,17 @@ namespace MissionPlanner.SmartAir
                     clone.p3 = lastWP.p3;
                     clone.p4 = lastWP.p4;
                     clone.objective = objective.ToString();
+                    clone.samType = (int)objective;
                     waypoints.Add(clone);
 
 
                 }
 
 
-                SmartAirData.Instance.ReceivedRoutes.Add(new ProposedRoute() { WayPoints = waypoints, Append = append, Objective = objective });
+                SmartAirContext.Instance.ReceivedRoutes.Add(new Route() { WayPoints = waypoints, Append = append, Objective = objective });
                  
                 MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, append);
-                SmartAirData.Instance.LoadNextRoute(SmartAirData.Instance.NextWPIndexFromAutopilot);
+                SmartAirContext.Instance.LoadNextRoute(SmartAirContext.Instance.NextWPIndexFromAutopilot);
 
                 return true;
             }
@@ -122,11 +124,11 @@ namespace MissionPlanner.SmartAir
                 
                 foreach (var zone in newZones)
                 {
-                    if (SmartAirData.Instance.Zones.ContainsKey(zone.ZoneType))
-                        SmartAirData.Instance.Zones[zone.ZoneType] = zone;
+                    if (SmartAirContext.Instance.Zones.ContainsKey(zone.ZoneType))
+                        SmartAirContext.Instance.Zones[zone.ZoneType] = zone;
                     else
                     {
-                        SmartAirData.Instance.Zones.Add(zone.ZoneType, zone);
+                        SmartAirContext.Instance.Zones.Add(zone.ZoneType, zone);
                     }
                 }
 
@@ -146,11 +148,11 @@ namespace MissionPlanner.SmartAir
         /// This method gets the zones.
         /// </summary>
         /// <returns>A list of zones.</returns>
-        public Dictionary<SamTypes,Zone> getZones()
+        public Dictionary<SamType,Zone> getZones()
         {
             try
             {
-                return SmartAirData.Instance.Zones;
+                return SmartAirContext.Instance.Zones;
             }
             catch (Exception ex)
             {
@@ -171,7 +173,7 @@ namespace MissionPlanner.SmartAir
             try
             {
                 
-                return SmartAirData.Instance.UAVPosition;
+                return SmartAirContext.Instance.UAVPosition;
             }
             catch (Exception ex)
             {
@@ -192,7 +194,7 @@ namespace MissionPlanner.SmartAir
             {
 
 
-                return SmartAirData.Instance.LatestObstacles;
+                return SmartAirContext.Instance.LatestObstacles;
             }
             catch (Exception ex)
             {
@@ -215,13 +217,13 @@ namespace MissionPlanner.SmartAir
                 // there can be more than one target each category eg off axis task --> group targets by type and save to dict            
                 foreach (var targetsGroupedByType in targets.GroupBy(x => x.TargetType))
                 {                    
-                    if (SmartAirData.Instance.Targets.ContainsKey(targetsGroupedByType.Key))
+                    if (SmartAirContext.Instance.Targets.ContainsKey(targetsGroupedByType.Key))
                     {
-                        SmartAirData.Instance.Targets[targetsGroupedByType.Key] = targetsGroupedByType.ToList();
+                        SmartAirContext.Instance.Targets[targetsGroupedByType.Key] = targetsGroupedByType.ToList();
                     }
                     else
                     {
-                        SmartAirData.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
+                        SmartAirContext.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
                     }
                 }
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
@@ -240,12 +242,12 @@ namespace MissionPlanner.SmartAir
         /// This method gets the targets.
         /// </summary>
         /// <returns>A list of targets.</returns>
-        public Dictionary<SamTypes,List<Target>> getTargets()
+        public Dictionary<SamType,List<Target>> getTargets()
         {
             
             try
             {
-                return SmartAirData.Instance.Targets;
+                return SmartAirContext.Instance.Targets;
             }
             catch (Exception ex)
             {
@@ -269,7 +271,7 @@ namespace MissionPlanner.SmartAir
         /// </summary>       
         public void createTestData()
         {
-            SmartAirData.Instance.createTestData();
+            SmartAirContext.Instance.createTestData();
         }
 
         /// <summary>
@@ -280,7 +282,7 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                return SmartAirData.Instance.getNextWaypoint();
+                return SmartAirContext.Instance.getNextWaypoint();
             }
             catch (Exception ex)
             {
@@ -300,7 +302,7 @@ namespace MissionPlanner.SmartAir
             try
             {
                
-                return SmartAirData.Instance.Wind;
+                return SmartAirContext.Instance.Wind;
             }
             catch (Exception ex)
             {

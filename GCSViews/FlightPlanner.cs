@@ -105,7 +105,7 @@ namespace MissionPlanner.GCSViews
                 temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString());
                 temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString());
                 temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist;
-
+                temp.samType = (int)Enum.Parse(typeof(SamType), Commands.Rows[a].Cells[Task.Index].Value.ToString());
 
                 if (temp.id == 99)
                     temp.id = 0;
@@ -176,21 +176,21 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private Image getImg(SamTypes type)
+        private Image getImg(SamType type)
         {
             switch (type)
             {
-                case SamTypes.TARGET_AIRDROP:
+                case SamType.TARGET_AIRDROP:
                     return Image.FromFile("SmartAir\\Resources\\airdrop_icon.png");
-                case SamTypes.TARGET_IR_DYNAMIC:
+                case SamType.TARGET_IR_DYNAMIC:
                     return Image.FromFile("SmartAir\\Resources\\ir_dynamic_icon.png");
-                case SamTypes.TARGET_IR_STATIC:
+                case SamType.TARGET_IR_STATIC:
                     return Image.FromFile("SmartAir\\Resources\\ir_static_icon.png");
-                case SamTypes.TARGET_OFFAXIS:
+                case SamType.TARGET_OFFAXIS:
                     return Image.FromFile("SmartAir\\Resources\\offaxis_icon.png");
-                case SamTypes.TARGET_SRIC:
+                case SamType.TARGET_SRIC:
                     return Image.FromFile("SmartAir\\Resources\\sric_icon.png");
-                case SamTypes.TARGET_EMERGENT:
+                case SamType.TARGET_EMERGENT:
                     return Image.FromFile("SmartAir\\Resources\\emergent_icon.png");
                 default:
                     return null;
@@ -343,9 +343,18 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        delegate void UpdateLabelDelegate(ServerInfo info);
+
         public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
         {
-          //  this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
+
+            if (InvokeRequired)
+            {
+                Invoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
+                return;
+            }
+                     
+            this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
 
         }
 
@@ -429,15 +438,15 @@ namespace MissionPlanner.GCSViews
 
 
         JudgeServerWorker JSWorker;
+      
 
         private void btnJSStart_Click(object sender, EventArgs e)
         {
             try
-            {
-
-
+            {                
                 JSWorker = new JudgeServerWorker(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
                 Thread JSWorkerThread = new Thread(new ThreadStart(JSWorker.GetAndSendInfo));
+             
                 JSWorkerThread.Start();
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
@@ -453,7 +462,8 @@ namespace MissionPlanner.GCSViews
         private void btnJSStop_Click(object sender, EventArgs e)
         {
             if (JSWorker != null)
-                JSWorker.Stop();
+                JSWorker.Stop();               
+            
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
            
@@ -462,9 +472,9 @@ namespace MissionPlanner.GCSViews
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
         {
             if (chkAutoLoiterInterrupt.Checked == true)
-                SmartAirData.Instance.AutoLoadRoutes = true;
+                SmartAirContext.Instance.AutoLoadRoutes = true;
             else
-                SmartAirData.Instance.AutoLoadRoutes = false;
+                SmartAirContext.Instance.AutoLoadRoutes = false;
 
         }
         #endregion
@@ -2230,6 +2240,15 @@ namespace MissionPlanner.GCSViews
                     temp.p3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                     temp.p4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
 
+                    var taskValue = Commands.Rows[a].Cells[Task.Index].Value;
+                    if (taskValue != null)
+                    {
+                        SamType tmp;
+                        if(Enum.TryParse(taskValue.ToString(), out tmp))
+                            temp.samType = (int)tmp;
+                    }
+                   
+
                     if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
                         temp.IsLoiterInterruptAllowed = (bool)Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value;
                     else
@@ -2290,7 +2309,7 @@ namespace MissionPlanner.GCSViews
                 {
 
                 }
-                SmartAirData.Instance.WayPointsTableOfAutoPilot=tempWPList;
+                SmartAirContext.Instance.WayPointsTableOfAutoPilot=tempWPList;
                 ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done.");
             }
             catch (Exception ex) { log.Error(ex); MainV2.comPort.giveComport = false; throw; }

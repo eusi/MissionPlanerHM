@@ -8,7 +8,7 @@ namespace MissionPlanner.SmartAir
     /// <summary>
     /// Includes all types of smart air project. Has to be in sync with mission control.
     /// </summary>
-    public enum SamTypes
+    public enum SamType
     {
         UNKNOWN = 0,
         ZONE_NO_FLIGHT = 1,
@@ -28,6 +28,7 @@ namespace MissionPlanner.SmartAir
         TASK_IR_DYNAMIC = 26,
         TASK_WAYPOINT = 27,
         TASK_SRIC = 28,
+        MANUAL = 91,
         ENUM_END = 99
 
 

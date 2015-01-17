@@ -1211,21 +1211,21 @@ namespace MissionPlanner
                 // update form
                 try
                 {
-                    if (SmartAir.SmartAirData.Instance.UAVPosition == null)
-                        SmartAir.SmartAirData.Instance.UAVPosition = new SmartAir.UAVPosition();
-                    SmartAir.SmartAirData.Instance.UAVPosition.Alt = this.alt;
-                    SmartAir.SmartAirData.Instance.UAVPosition.Lat = this.lat;
-                    SmartAir.SmartAirData.Instance.UAVPosition.Lng = this.lng;
-                    SmartAir.SmartAirData.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
-                    SmartAir.SmartAirData.Instance.UAVPosition.Yaw = this.yaw;
+                    if (SmartAir.SmartAirContext.Instance.UAVPosition == null)
+                        SmartAir.SmartAirContext.Instance.UAVPosition = new SmartAir.UAVPosition();
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Alt = this.alt;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Lat = this.lat;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Lng = this.lng;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Yaw = this.yaw;
 
-                    if (SmartAir.SmartAirData.Instance.Wind == null)
-                        SmartAir.SmartAirData.Instance.Wind = new SmartAir.Wind();
+                    if (SmartAir.SmartAirContext.Instance.Wind == null)
+                        SmartAir.SmartAirContext.Instance.Wind = new SmartAir.Wind();
 
-                    SmartAir.SmartAirData.Instance.Wind.Direction = this.wind_dir;
-                    SmartAir.SmartAirData.Instance.Wind.Velocity = this.wind_vel;
+                    SmartAir.SmartAirContext.Instance.Wind.Direction = this.wind_dir;
+                    SmartAir.SmartAirContext.Instance.Wind.Velocity = this.wind_vel;
 
-                    SmartAir.SmartAirData.Instance.NextWPIndexFromAutopilot = this.wpno;
+                    SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot = this.wpno;
                     if (bs != null)
                     {
                         bs.DataSource = this;

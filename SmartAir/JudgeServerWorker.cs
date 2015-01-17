@@ -23,13 +23,14 @@ namespace MissionPlanner.SmartAir
             set { intervall = value; }
         }
 
-   /// <summary>
+
+        /// <summary>
         /// Create a judge server worker for polling the jude server interface.
-   /// </summary>
-   /// <param name="url">The judge server url.</param>
-   /// <param name="user">the user.</param>
-   /// <param name="password">the password.</param>
-   /// <param name="intervall">the polling intervall.</param>
+        /// </summary>
+        /// <param name="url">The judge server url.</param>
+        /// <param name="user">the user.</param>
+        /// <param name="password">the password.</param>
+        /// <param name="intervall">the polling intervall.</param>
         public JudgeServerWorker(string url, string user, string password,int intervall)
         {
             js = new JudgeServer();
@@ -48,11 +49,7 @@ namespace MissionPlanner.SmartAir
         int iMaxError = 5;
         int iErrorCounter = 0;
 
-        // used for simulate moving
-        //  int iMover = 0;
-        // bool limitReached = false;
-
-       
+           
 
         /// <summary>
         /// This worker polls the jude server interface in the given intervall and calls the methods GetObstacles, GetServerInfo, setUASTelemetry.
@@ -69,31 +66,14 @@ namespace MissionPlanner.SmartAir
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
                 
-                //foreach (var moving in obstacles.MovingObstacles)
-                //{
-                //    moving.Latitude += 0.00001 * iMover;
-                //    moving.Longitude += 0.00001 * iMover;
-                //}
-                //if (iMover >= 500 && !limitReached)
-                //    limitReached = true;
-
-                //if (iMover < 0 && limitReached)
-                //    limitReached = false;
-               
-                //if(!limitReached)
-                //    iMover++;
-
-                //if (limitReached)
-                //    iMover--;
-
-                
+                                
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
-                SmartAir.SmartAirData.Instance.LatestObstacles = obstacles;
+                SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;
 
                 var serverTime = js.GetServerInfo();
-                MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);
+                MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);    
 
-                var position= SmartAir.SmartAirData.Instance.UAVPosition;
+                var position= SmartAir.SmartAirContext.Instance.UAVPosition;
                 if (position != null)
                     js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
 
@@ -103,7 +83,7 @@ namespace MissionPlanner.SmartAir
 
                
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     // to do logging
                     iErrorCounter++;
@@ -118,4 +98,5 @@ namespace MissionPlanner.SmartAir
         }
 
     }
+ 
 }

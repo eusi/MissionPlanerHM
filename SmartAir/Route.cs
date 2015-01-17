@@ -7,9 +7,9 @@ using System.Text;
 namespace MissionPlanner.SmartAir
 {
     /// <summary>
-    /// This class represents a route, proposed by the mission control. 
+    /// This class represents a route, received from mission control. 
     /// </summary>
-   public class ProposedRoute
+   public class Route
    {
        List<Locationwp> wayPoints = new List<Locationwp>();
 
@@ -22,12 +22,12 @@ namespace MissionPlanner.SmartAir
            set { wayPoints = value; }
        }
 
-       SamTypes objective;
+       SamType objective;
 
        /// <summary>
        /// The objective of the route.
        /// </summary>
-       public SamTypes Objective
+       public SamType Objective
        {
            get { return objective; }
            set { objective = value; }

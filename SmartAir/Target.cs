@@ -22,10 +22,10 @@ namespace MissionPlanner.SmartAir
         }
 
 
-        SamTypes targetType;
+        SamType targetType;
 
          [DataMember]
-        public SamTypes TargetType
+        public SamType TargetType
         {
             get { return targetType; }
             set { targetType = value; }

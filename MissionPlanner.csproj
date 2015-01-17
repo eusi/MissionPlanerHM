@@ -257,8 +257,8 @@
       <DependentUpon>ExternalFlightData.cs</DependentUpon>
     </Compile>
     <Compile Include="SmartAir\JudgeServerWorker.cs" />
-    <Compile Include="SmartAir\SamTypes.cs" />
-    <Compile Include="SmartAir\SmartAirData.cs" />
+    <Compile Include="SmartAir\SamType.cs" />
+    <Compile Include="SmartAir\SmartAirContext.cs" />
     <Compile Include="SmartAir\TargetMarker.cs" />
     <Compile Include="SmartAir\UAVPosition.cs" />
     <Compile Include="SmartAir\SmartAirColor.cs" />
@@ -552,7 +552,7 @@
     <Compile Include="ScriptConsole.Designer.cs">
       <DependentUpon>ScriptConsole.cs</DependentUpon>
     </Compile>
-    <Compile Include="SmartAir\ProposedRoute.cs" />
+    <Compile Include="SmartAir\Route.cs" />
     <Compile Include="SmartAir\Target.cs" />
     <Compile Include="SmartAir\Wind.cs" />
     <Compile Include="SmartAir\Zone.cs" />
