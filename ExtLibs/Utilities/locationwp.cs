@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace MissionPlanner.Utilities
@@ -23,7 +24,8 @@ namespace MissionPlanner.Utilities
         [NonSerialized]
         public bool IsLoiterInterruptAllowed;
         [NonSerialized]
-        public string objective = "MANUAL";        
+        public string objective = "MANUAL";
+        [OptionalFieldAttribute]
         public int samType = 91;
     };
 }

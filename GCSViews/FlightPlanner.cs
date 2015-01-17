@@ -104,7 +104,7 @@ namespace MissionPlanner.GCSViews
                 temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString());
                 temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString());
                 temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist;
-
+                temp.samType = (int)Enum.Parse(typeof(SamType), Commands.Rows[a].Cells[Task.Index].Value.ToString());
 
                 if (temp.id == 99)
                     temp.id = 0;
@@ -2221,6 +2221,15 @@ namespace MissionPlanner.GCSViews
                     temp.p2 = (float)(double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString()));
                     temp.p3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                     temp.p4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
+
+                    var taskValue = Commands.Rows[a].Cells[Task.Index].Value;
+                    if (taskValue != null)
+                    {
+                        SamType tmp;
+                        if(Enum.TryParse(taskValue.ToString(), out tmp))
+                            temp.samType = (int)tmp;
+                    }
+                   
 
                     if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
                         temp.IsLoiterInterruptAllowed = (bool)Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value;
