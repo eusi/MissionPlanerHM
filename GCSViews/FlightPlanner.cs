@@ -338,9 +338,18 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        delegate void UpdateLabelDelegate(ServerInfo info);
+
         public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
         {
-          //  this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
+
+            if (InvokeRequired)
+            {
+                Invoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
+                return;
+            }
+                     
+            this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
 
         }
 
@@ -424,15 +433,15 @@ namespace MissionPlanner.GCSViews
 
 
         JudgeServerWorker JSWorker;
+      
 
         private void btnJSStart_Click(object sender, EventArgs e)
         {
             try
-            {
-
-
+            {                
                 JSWorker = new JudgeServerWorker(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
                 Thread JSWorkerThread = new Thread(new ThreadStart(JSWorker.GetAndSendInfo));
+             
                 JSWorkerThread.Start();
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
@@ -448,7 +457,8 @@ namespace MissionPlanner.GCSViews
         private void btnJSStop_Click(object sender, EventArgs e)
         {
             if (JSWorker != null)
-                JSWorker.Stop();
+                JSWorker.Stop();               
+            
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
            
