@@ -1218,6 +1218,7 @@ namespace MissionPlanner
                     SmartAir.SmartAirContext.Instance.UAVPosition.Lng = this.lng;
                     SmartAir.SmartAirContext.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
                     SmartAir.SmartAirContext.Instance.UAVPosition.Yaw = this.yaw;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Distance = this.wp_dist;
 
                     if (SmartAir.SmartAirContext.Instance.Wind == null)
                         SmartAir.SmartAirContext.Instance.Wind = new SmartAir.Wind();

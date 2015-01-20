@@ -23,6 +23,8 @@ namespace MissionPlanner.SmartAir
         }
         public string Ts;
 
+        [NonSerialized]
+        public float Distance;
         
         public float Yaw;
     }

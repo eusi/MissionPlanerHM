@@ -27,5 +27,9 @@ namespace MissionPlanner.Utilities
         public string objective = "MANUAL";
         [OptionalFieldAttribute]
         public int samType = 91;
+        [OptionalFieldAttribute]
+        public float distance = 0;
+        
+       
     };
 }

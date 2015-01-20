@@ -29,6 +29,7 @@ namespace MissionPlanner.SmartAir
         TASK_WAYPOINT = 27,
         TASK_SRIC = 28,
         MANUAL = 91,
+        HOME = 92,
         ENUM_END = 99
 
 

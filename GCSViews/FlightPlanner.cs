@@ -2121,6 +2121,7 @@ namespace MissionPlanner.GCSViews
                     home.lat = (double.Parse(TXT_homelat.Text));
                     home.lng = (double.Parse(TXT_homelng.Text));
                     home.alt = (float.Parse(TXT_homealt.Text) / MainV2.comPort.MAV.cs.multiplierdist); // use saved home
+                    home.samType = 92;
                 }
                 catch { throw new Exception("Your home location is invalid"); }
 
@@ -2245,8 +2246,14 @@ namespace MissionPlanner.GCSViews
                     {
                         SamType tmp;
                         if(Enum.TryParse(taskValue.ToString(), out tmp))
-                            temp.samType = (int)tmp;
+                           temp.samType = (int)tmp;
+                        else                        
+                            temp.samType = 91;
+                        
                     }
+                    else                    
+                      temp.samType = 91;
+                    
                    
 
                     if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
