@@ -71,7 +71,7 @@ namespace MissionPlanner.GCSViews
 //                CustomMessageBox.Show("Cannot import route: " + ex.ToString());
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
             }
 
@@ -324,7 +324,7 @@ namespace MissionPlanner.GCSViews
             {
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
             }
 
@@ -334,14 +334,31 @@ namespace MissionPlanner.GCSViews
 
         public void drawServerTime(JudgeServerInterface.ServerInfo serverInfo)
         {
-
-            if (InvokeRequired)
+            try
             {
-                Invoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
-                return;
+                if (InvokeRequired)
+                {
+                    Invoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
+                    return;
+                }
+                if (serverInfo != null)
+                {
+                    if (serverInfo.ServerTime != null)
+                        this.lblServerTime.Text = "ServerTimer: " + (serverInfo.ServerTime.Length > 5 ? serverInfo.ServerTime.Substring(0, serverInfo.ServerTime.Length - 3) : serverInfo.ServerTime);
+                    if (serverInfo.MessageTimeStamp != null)
+                        this.lblMessageTime.Text = "MessageTime: " + (serverInfo.MessageTimeStamp.Length > 5 ? serverInfo.MessageTimeStamp.Substring(0, serverInfo.ServerTime.Length - 3) : serverInfo.MessageTimeStamp);
+                    if (serverInfo.ServerMessage != null)
+                        this.lblServerInfo.Text = "Server Message: " + serverInfo.ServerMessage;
+                }
             }
-                     
-            this.lblServerInfo.Text = serverInfo.ServerTime + " " + serverInfo.ServerMessage;   
+            catch (Exception ex)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
+                }
+
+            }
 
         }
 
@@ -386,10 +403,10 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
- //               MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
             }
         }
@@ -414,10 +431,10 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
- //               MessageBox.Show(ex.Message);
+               MessageBox.Show(ex.Message);
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
             }
         }
@@ -447,10 +464,10 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
-//                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
             }
 

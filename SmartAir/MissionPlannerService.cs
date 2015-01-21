@@ -30,7 +30,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return false;
             }
@@ -93,7 +93,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return false;
             }
@@ -107,16 +107,17 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                return MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
+                
+                var wayPoints =MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
+                return wayPoints;
             }
             catch (Exception ex)
             {
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
+ 
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
-                }
+                    file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
+                } 
                 return null;
             }
             
@@ -154,7 +155,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return false;
             }
@@ -176,7 +177,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                
                 return null;
@@ -201,7 +202,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
 
                 return null;
@@ -226,7 +227,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
 
                 return null;
@@ -264,7 +265,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return false;
             }
@@ -287,7 +288,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return null;
             }
@@ -326,7 +327,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return null;
             }
@@ -350,7 +351,7 @@ namespace MissionPlanner.SmartAir
                 // to do log
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                 {
-                    file.WriteLine(ex.Message);
+                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                 }
                 return null;
             }

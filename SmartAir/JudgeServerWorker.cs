@@ -88,7 +88,7 @@ namespace MissionPlanner.SmartAir
                     // to do logging
                     using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
                     {
-                        file.WriteLine(ex.Message);
+                       file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
                     }
                     iErrorCounter++;
                     if(iMaxError==iErrorCounter) 
