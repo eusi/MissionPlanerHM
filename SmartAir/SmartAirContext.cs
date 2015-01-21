@@ -117,18 +117,18 @@ namespace MissionPlanner.SmartAir
         /// <returns>The waypoint.</returns>
         public Locationwp getNextWaypoint() {
 
-            
-                if (wayPointsTableOfAutoPilot != null && wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot)
-                {
-                    return wayPointsTableOfAutoPilot[(int)this.nextWPIndexFromAutopilot];
 
+            if (wayPointsTableOfAutoPilot != null && wayPointsTableOfAutoPilot.Count > this.nextWPIndexFromAutopilot)
+            {
+                var nextWPOfTable = wayPointsTableOfAutoPilot[(int)this.nextWPIndexFromAutopilot];
+             
+                if (UAVPosition != null )
+                    nextWPOfTable.distance = UAVPosition.Distance;
 
-                }
-                else
-                    return null;
-            
-        
-        
+                return nextWPOfTable;
+            }
+            else
+                return null;   
         }
 
         /// <summary>
