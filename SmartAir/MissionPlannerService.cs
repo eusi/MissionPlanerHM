@@ -26,8 +26,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return false;
             }
 
@@ -85,8 +89,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return false;
             }
         }
@@ -103,8 +111,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return null;
             }
             
@@ -138,8 +150,12 @@ namespace MissionPlanner.SmartAir
             catch (Exception ex)
             {
 
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return false;
             }
         }
@@ -156,8 +172,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                
                 return null;
             }
@@ -179,6 +199,10 @@ namespace MissionPlanner.SmartAir
             {
                 CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
 
                 return null;
             }
@@ -200,6 +224,10 @@ namespace MissionPlanner.SmartAir
             {
                 CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
 
                 return null;
             }
@@ -232,8 +260,12 @@ namespace MissionPlanner.SmartAir
             catch (Exception ex)
             {
 
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return false;
             }
         }      
@@ -251,8 +283,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+ //               CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return null;
             }
         }
@@ -286,8 +322,12 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
+//                CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return null;
             }
            
@@ -308,6 +348,10 @@ namespace MissionPlanner.SmartAir
             {
                 CustomMessageBox.Show(ex.Message);
                 // to do log
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
                 return null;
             }
         }

@@ -86,6 +86,10 @@ namespace MissionPlanner.SmartAir
                 catch (Exception ex)
                 {
                     // to do logging
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                    {
+                        file.WriteLine(ex.Message);
+                    }
                     iErrorCounter++;
                     if(iMaxError==iErrorCounter) 
                         running = false;

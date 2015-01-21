@@ -68,7 +68,11 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("Cannot import route: " + ex.ToString());
+//                CustomMessageBox.Show("Cannot import route: " + ex.ToString());
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
             }
 
         }
@@ -288,26 +292,6 @@ namespace MissionPlanner.GCSViews
 
         }
 
-        private GMapPolygon createCircle2(double lat, double lng, double radius, int segments)
-        {
-            List<PointLatLng> gpollist = new List<PointLatLng>();
-
-            double seg = Math.PI * 2 / segments;
-
-            int y = 0;
-            for (int i = 0; i < segments; i++)
-            {
-                double theta = seg * i;
-                double a = lat + Math.Cos(theta) * radius;
-                double b = lng + Math.Sin(theta) * radius;
-
-                PointLatLng gpoi = new PointLatLng(a, b);
-
-                gpollist.Add(gpoi);
-            }
-            GMapPolygon gpol = new GMapPolygon(gpollist, "pol");
-            return gpol;
-        }
         public void hideWaypoint(int wpIndexToHide)
         {
            
@@ -338,7 +322,10 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
             }
 
         }
@@ -399,8 +386,11 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
-                MessageBox.Show(ex.Message);
-
+ //               MessageBox.Show(ex.Message);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
             }
         }
 
@@ -424,8 +414,11 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
-                MessageBox.Show(ex.Message);
-
+ //               MessageBox.Show(ex.Message);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
             }
         }
 
@@ -454,7 +447,11 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {
                 // to do log
-                MessageBox.Show(ex.Message);
+//                MessageBox.Show(ex.Message);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
+                {
+                    file.WriteLine(ex.Message);
+                }
             }
 
         }
