@@ -46,6 +46,7 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
 
+
         public void setNewWayPoints(List<Locationwp> waypoints, bool append)
         {
 
@@ -134,6 +135,7 @@ namespace MissionPlanner.GCSViews
 
                 polygon.Fill = new SolidBrush(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
                 polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue),3);
+      
 
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
@@ -201,47 +203,44 @@ namespace MissionPlanner.GCSViews
             }
         }
         
+        
+
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
 
-            foreach (var oldObstacle in obstacles)
+            if (stationaryobstaclesoverlay.Markers.Count != obstacleToDraw.StationaryObstacles.Count)
             {
-                obstaclesoverlay.Polygons.Remove(oldObstacle);
-            }
-            obstacles.Clear();
-            obstaclesoverlay.Markers.Clear();
+                stationaryobstaclesoverlay.Polygons.Clear();
+                stationaryobstaclesoverlay.Markers.Clear();
+                foreach (var newObstacle in obstacleToDraw.StationaryObstacles)
+                {
+                    GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
+                    newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Red));
+                    newCircle.Stroke = new Pen(Color.White, 1);
 
-            List<StationaryObstacle> stationary = obstacleToDraw.StationaryObstacles;
-          
+                    stationaryobstaclesoverlay.Polygons.Add(newCircle);
+                    obstacles.Add(newCircle);
 
-            foreach (var newObstacle in stationary)
-            {
-                GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
-                newCircle.Fill =  new SolidBrush(Color.FromArgb(180 , Color.Red));
-                newCircle.Stroke = new Pen(Color.White, 1);
 
-                obstaclesoverlay.Polygons.Add(newCircle);
-                obstacles.Add(newCircle);
-
-                Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
-                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.CylinderHeight.ToString());
-                obstaclesoverlay.Markers.Add(marker);
- 
-               
+                    Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
+                    GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.CylinderHeight.ToString() + " feets");
+                    stationaryobstaclesoverlay.Markers.Add(marker);
+                }
             }
 
-            List<MovingObstacle> moving = obstacleToDraw.MovingObstacles;
+            movingobstaclesoverlay.Polygons.Clear();
+            movingobstaclesoverlay.Markers.Clear();
 
-            foreach (var newObstacle in moving)
+            foreach (var newObstacle in obstacleToDraw.MovingObstacles)
             {
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.White, 1);
-                obstaclesoverlay.Polygons.Add(newCircle);
+                movingobstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
                 Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
-                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.SphereRadius.ToString());
-                obstaclesoverlay.Markers.Add(marker);
+                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.SphereRadius.ToString() + " feets");
+                movingobstaclesoverlay.Markers.Add(marker);
 
  
             }
@@ -887,8 +886,11 @@ namespace MissionPlanner.GCSViews
             drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
             MainMap.Overlays.Add(drawnpolygonsoverlay);
 
-            obstaclesoverlay = new GMapOverlay("drawnobstacles");
-            MainMap.Overlays.Add(obstaclesoverlay);
+            stationaryobstaclesoverlay = new GMapOverlay("stationaryobstacles");
+            MainMap.Overlays.Add(stationaryobstaclesoverlay);
+
+            movingobstaclesoverlay = new GMapOverlay("movingobstacles");
+            MainMap.Overlays.Add(movingobstaclesoverlay);
 
 
             MainMap.Overlays.Add(poioverlay);
@@ -2912,7 +2914,8 @@ namespace MissionPlanner.GCSViews
         public static GMapOverlay airportsoverlay; 
         public static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
         GMapOverlay drawnpolygonsoverlay;
-        GMapOverlay obstaclesoverlay;
+        GMapOverlay stationaryobstaclesoverlay;
+        GMapOverlay movingobstaclesoverlay;
         GMapOverlay kmlpolygonsoverlay;
         GMapOverlay geofenceoverlay;
         static GMapOverlay rallypointoverlay;
