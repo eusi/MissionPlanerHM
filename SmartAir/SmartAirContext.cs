@@ -22,7 +22,7 @@ namespace MissionPlanner.SmartAir
         
         }
         /// <summary>
-        /// Gets the current instance for the context.
+        /// Gets the current instance of the context.
         /// </summary>
         public static SmartAirContext Instance
         {
@@ -79,7 +79,7 @@ namespace MissionPlanner.SmartAir
         float nextWPIndexFromAutopilot = 0;
 
         /// <summary>
-        /// Clone of the waypoint list of the waypoint table of the view Flight Planner.
+        /// Clone of the waypoint table of the Flight Plan view .
         /// </summary>
         List<Locationwp> wayPointsTableOfAutoPilot = new List<Locationwp>();
 
