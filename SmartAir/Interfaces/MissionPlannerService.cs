@@ -1,10 +1,11 @@
 ﻿
-
 using JudgeServerInterface;
+using log4net;
 using MissionPlanner.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Windows.Forms;
@@ -14,6 +15,8 @@ namespace MissionPlanner.SmartAir
 {
     public class MissionPlannerService : IMissionPlannerService
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// This methods stops the loitering of the UAV and sets the next waypoint (if available).
         /// </summary>
@@ -22,16 +25,15 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                return SmartAirContext.Instance.stopLoiter();
+                var result = SmartAirContext.Instance.stopLoiter();
+                if (result)
+                    log.Info("Loitering successfully stopped");
+
+                return result;
             }
             catch (Exception ex)
             {
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
                 return false;
             }
 
@@ -89,12 +91,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Fatal("Importing received waypoints failded.",ex);
                 return false;
             }
         }
@@ -113,11 +110,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
- 
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                    file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                } 
+                log.Error(ex);
                 return null;
             }
             
@@ -144,19 +137,15 @@ namespace MissionPlanner.SmartAir
                         SmartAirContext.Instance.Zones.Add(zone.ZoneType, zone);
                     }
                 }
+                log.Info("New zones received: " + newZones.Select(x => x.ZoneType.ToString()));
 
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
+               
                 return true;
             }
             catch (Exception ex)
             {
-
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
                 return false;
             }
         }
@@ -173,13 +162,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
-               
+                log.Error(ex);               
                 return null;
             }
             
@@ -198,13 +181,8 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
-
+              
+                log.Error(ex);
                 return null;
             }
         }             
@@ -223,13 +201,8 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
-
+               
+                log.Error(ex);
                 return null;
             }
         }
@@ -255,18 +228,14 @@ namespace MissionPlanner.SmartAir
                         SmartAirContext.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
                     }
                 }
+                log.Info("New targets received: " + targets.Select(x => x.TargetType.ToString()));
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
                 return true;
             }
             catch (Exception ex)
             {
 
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
                 return false;
             }
         }      
@@ -284,12 +253,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
- //               CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
                 return null;
             }
         }
@@ -323,12 +287,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-//                CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex); 
                 return null;
             }
            
@@ -347,12 +306,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex.Message);
-                // to do log
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
                 return null;
             }
         }

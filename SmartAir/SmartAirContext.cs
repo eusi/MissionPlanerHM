@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using log4net;
+using System.Reflection;
 
 namespace MissionPlanner.SmartAir
 {
@@ -15,7 +17,7 @@ namespace MissionPlanner.SmartAir
     {
         private static volatile SmartAirContext instance;
         private static object syncRoot = new Object();
-        
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private SmartAirContext()
         { 
@@ -296,6 +298,7 @@ namespace MissionPlanner.SmartAir
                         {
                             // skip loiter, jump to next wp and send it to autopilot 
                             MainV2.comPort.setWPCurrent((ushort)(iNextWPIndex + 1));
+                            log.Info("Next route loaded successfully.");
 
                         }
 
@@ -303,7 +306,7 @@ namespace MissionPlanner.SmartAir
                     catch (Exception ex)
                     {
 
-                        // to do log
+                        log.Error("Error loading next route",ex);
                     }
 
 
@@ -335,15 +338,22 @@ namespace MissionPlanner.SmartAir
                         return true;
 
                     }
+                    else
+                    {
+                        log.Error("The drone does not loiter atm. Manual stop is not possible.");
+                    }
 
                 }
                 catch (Exception ex)
                 {
+                    log.Error("Error stop loiter", ex);
                     return false;
                 }
 
 
             }
+            else
+                log.Error("Loitering cannot be stopped, since there isn't any next waypoint available.");
 
             return false;
 

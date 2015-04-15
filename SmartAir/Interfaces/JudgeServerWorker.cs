@@ -1,8 +1,10 @@
 ﻿using JudgeServerInterface;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -13,6 +15,7 @@ namespace MissionPlanner.SmartAir
     /// </summary>
     public class JudgeServerWorker
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         bool running = true;
         JudgeServer js;
         int intervall = 100;
@@ -65,18 +68,21 @@ namespace MissionPlanner.SmartAir
                    
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
-                
-                                
+                log.Info("Judge server obstacles received.");
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
                 SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;
 
                 var serverTime = js.GetServerInfo();
+                log.Info("Judge server time received.");
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);    
 
                 var position= SmartAir.SmartAirContext.Instance.UAVPosition;
                 if (position != null)
+                {
                     js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
-
+                    log.Info("Current position was sent to judge server.");
+                }
+                    
                 Thread.Sleep(intervall);
                     
                 iErrorCounter = 0;
@@ -85,15 +91,13 @@ namespace MissionPlanner.SmartAir
                 }
                 catch (Exception ex)
                 {
-                    // to do logging
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                    {
-                       file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                    }
+                    log.Error("Connection to judge server failed.",ex);
                     iErrorCounter++;
                     if(iMaxError==iErrorCounter) 
                         running = false;
-
+                    else
+                        Thread.Sleep(intervall);
+                    
                     
                     
                 }

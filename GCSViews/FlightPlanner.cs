@@ -52,7 +52,7 @@ namespace MissionPlanner.GCSViews
 
             try
             {
-
+                
                 processToScreen(waypoints, append, false,false);
 
                 writeKML();
@@ -65,15 +65,11 @@ namespace MissionPlanner.GCSViews
                     BUT_write_Click(null, null);
                    
                 }
-              
+                log.Info("Waypoints successfully set.");
             }
             catch (Exception ex)
             {
-//                CustomMessageBox.Show("Cannot import route: " + ex.ToString());
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
             }
 
         }
@@ -127,6 +123,7 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
+            
             foreach (var zones in zonesToDraw)
             {
 
@@ -321,10 +318,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
             }
 
         }
@@ -352,10 +346,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
 
             }
 
@@ -395,18 +386,14 @@ namespace MissionPlanner.GCSViews
                     smartAirWSHost.Open();
                     this.btnStopWS.Enabled = true;
                     this.btnStartWS.Enabled = false;
-
+                    log.Info("SAM REST service started.");
                 }
 
             }
             catch (Exception ex)
-            {
-                // to do log
+            {               
                 MessageBox.Show(ex.Message);
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
             }
         }
 
@@ -426,15 +413,12 @@ namespace MissionPlanner.GCSViews
                 smartAirWSHost = null;
                 this.btnStopWS.Enabled = false;
                 this.btnStartWS.Enabled = true;
+                log.Info("SAM REST service stopped.");
             }
             catch (Exception ex)
-            {
-                // to do log
+            {               
                MessageBox.Show(ex.Message);
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+               log.Error(ex);
             }
         }
 
@@ -459,15 +443,13 @@ namespace MissionPlanner.GCSViews
                 JSWorkerThread.Start();
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
+                log.Info("Connection to judge server established");
             }
             catch (Exception ex)
             {
-                // to do log
+                log.Error(ex);
                 MessageBox.Show(ex.Message);
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"logs\\Error.log", true))
-                {
-                   file.WriteLine(DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString()   + "| Message: " + ex.Message + "| StackTrace: " + ex.StackTrace );
-                }
+                log.Error(ex);
             }
 
         }
@@ -479,15 +461,23 @@ namespace MissionPlanner.GCSViews
             
             btnJSStart.Enabled = true;
             btnJSStop.Enabled = false;
+            log.Info("Connection to judge server closed.");
            
         }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
         {
             if (chkAutoLoiterInterrupt.Checked == true)
+            {
                 SmartAirContext.Instance.AutoLoadRoutes = true;
+                log.Info("Auto routing turned on.");
+            }
+
             else
+            {
                 SmartAirContext.Instance.AutoLoadRoutes = false;
+                log.Info("Auto routing turned off.");
+            }
 
         }
         #endregion
