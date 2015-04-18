@@ -25,6 +25,8 @@ using log4net;
 using System.Reflection;
 using MissionPlanner.Log;
 using GMap.NET.MapProviders;
+using System.ComponentModel;
+using log4net.Core;
 
 // written by michael oborne
 namespace MissionPlanner.GCSViews
@@ -163,11 +165,72 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        #region Logging
+        private static BindingList<LoggingEvent> _logEntries = new BindingList<LoggingEvent>();
+        delegate void DrawLogEntryDelegate(LoggingEvent info);
+
+        public void drawLogEntry(LoggingEvent logEntry)
+        {
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new DrawLogEntryDelegate(drawLogEntry), logEntry);
+                return;
+            }
+            if (_logEntries != null && logEntry != null  )
+            {
+                _logEntries.Insert(0, logEntry);
+                //if (this.grdEvents.Rows.Count > 0)
+                //    this.grdEvents.FirstDisplayedScrollingRowIndex = 0;
+                if (_logEntries.Count > 500)
+                    _logEntries.RemoveAt(501);
+            }
+
+
+        }
+
+        private void grdEvents_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            if (this.grdEvents.Rows.Count > 0)
+                this.grdEvents.FirstDisplayedScrollingRowIndex = 0;
+        }
+
+        private void grdEvents_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Info)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Fatal)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.DarkRed;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Error)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.White;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Debug)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
+        }
+
+
+
+
+
+
+        #endregion
+
         public FlightData()
         {
             log.Info("Ctor Start");
 
             InitializeComponent();
+            
 
             log.Info("Components Done");
 
@@ -176,6 +239,10 @@ namespace MissionPlanner.GCSViews
             //    _serializer.SavePath = Application.StartupPath + Path.DirectorySeparatorChar + "FDscreen.xml";
             //    dockContainer1.PreviewRenderer = new PreviewRenderer();
             //
+            this.grdEvents.AutoGenerateColumns = false;
+            this.grdEvents.GridColor = Color.White;
+            this.grdEvents.DataSource = _logEntries;
+
             mymap = gMapControl1;
             myhud = hud1;
             MainHcopy = MainH;
@@ -3178,6 +3245,8 @@ namespace MissionPlanner.GCSViews
 
             //thisthread.Join();
         }
+
+      
 
     }
 }

@@ -12,6 +12,7 @@ namespace MissionPlanner.Utilities
     [Serializable]
     public class Locationwp
     {
+        public int wpId;
         public byte id;				// command id
         public byte options;
         public float p1;				// param 1

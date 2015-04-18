@@ -256,14 +256,22 @@
     <Compile Include="GCSViews\ExternalFlightData.designer.cs">
       <DependentUpon>ExternalFlightData.cs</DependentUpon>
     </Compile>
-    <Compile Include="SmartAir\JudgeServerWorker.cs" />
-    <Compile Include="SmartAir\SamType.cs" />
+    <Compile Include="SmartAir\Interfaces\JudgeServerWorker.cs" />
+    <Compile Include="SmartAir\DomainObjects\SamType.cs" />
+    <Compile Include="SmartAir\Logging\LogEntry.cs" />
+    <Compile Include="SmartAir\Logging\SmartAirAppender.cs" />
+    <Compile Include="SmartAir\Logging\SmartAirLogger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SmartAir\Logging\SmartAirLogger.Designer.cs">
+      <DependentUpon>SmartAirLogger.cs</DependentUpon>
+    </Compile>
     <Compile Include="SmartAir\SmartAirContext.cs" />
-    <Compile Include="SmartAir\TargetMarker.cs" />
-    <Compile Include="SmartAir\UAVPosition.cs" />
-    <Compile Include="SmartAir\SmartAirColor.cs" />
-    <Compile Include="SmartAir\MissionPlannerService.cs" />
-    <Compile Include="SmartAir\IMissionPlannerService.cs" />
+    <Compile Include="SmartAir\DomainObjects\TargetMarker.cs" />
+    <Compile Include="SmartAir\DomainObjects\UAVPosition.cs" />
+    <Compile Include="SmartAir\DomainObjects\SmartAirColor.cs" />
+    <Compile Include="SmartAir\Interfaces\MissionPlannerService.cs" />
+    <Compile Include="SmartAir\Interfaces\IMissionPlannerService.cs" />
     <Compile Include="Antenna\Tracker.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -552,10 +560,10 @@
     <Compile Include="ScriptConsole.Designer.cs">
       <DependentUpon>ScriptConsole.cs</DependentUpon>
     </Compile>
-    <Compile Include="SmartAir\Route.cs" />
-    <Compile Include="SmartAir\Target.cs" />
-    <Compile Include="SmartAir\Wind.cs" />
-    <Compile Include="SmartAir\Zone.cs" />
+    <Compile Include="SmartAir\DomainObjects\Route.cs" />
+    <Compile Include="SmartAir\DomainObjects\Target.cs" />
+    <Compile Include="SmartAir\DomainObjects\Wind.cs" />
+    <Compile Include="SmartAir\DomainObjects\Zone.cs" />
     <Compile Include="Swarm\FollowPathControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -919,6 +927,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ScriptConsole.zh-TW.resx">
       <DependentUpon>ScriptConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SmartAir\Logging\SmartAirLogger.resx">
+      <DependentUpon>SmartAirLogger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Warnings\WarningControl.resx">
       <DependentUpon>WarningControl.cs</DependentUpon>

@@ -39,6 +39,7 @@ using System.ServiceModel;
 using MissionPlanner.SmartAir;
 using JudgeServerInterface;
 using System.Linq;
+using log4net.Core;
 
 namespace MissionPlanner.GCSViews
 {
@@ -46,6 +47,7 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
 
+        
 
         public void setNewWayPoints(List<Locationwp> waypoints, bool append)
         {
@@ -937,6 +939,8 @@ namespace MissionPlanner.GCSViews
 
             Up.Image = global::MissionPlanner.Properties.Resources.up;
             Down.Image = global::MissionPlanner.Properties.Resources.down;
+
+          
         }
 
         void updateCMDParams()
@@ -6703,6 +6707,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             {
                 writeKML();
             }
+        }
+
+        private void panelWaypoints_CloseClick(object sender, EventArgs e)
+        {
+
         }
 
     
