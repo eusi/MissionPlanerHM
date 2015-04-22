@@ -71,7 +71,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Error setting new waypoints.",ex);
             }
 
         }
@@ -320,7 +320,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Hide waypoint failed.", ex);
             }
 
         }
@@ -333,7 +333,7 @@ namespace MissionPlanner.GCSViews
             {
                 if (InvokeRequired)
                 {
-                    Invoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
+                    this.BeginInvoke(new UpdateLabelDelegate(drawServerTime), serverInfo);
                     return;
                 }
                 if (serverInfo != null)
@@ -348,7 +348,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Draw server time failed.",ex);
 
             }
 
@@ -389,13 +389,14 @@ namespace MissionPlanner.GCSViews
                     this.btnStopWS.Enabled = true;
                     this.btnStartWS.Enabled = false;
                     log.Info("SAM REST service started.");
+                
                 }
 
             }
             catch (Exception ex)
             {               
                 MessageBox.Show(ex.Message);
-                log.Error(ex);
+                log.Error("Starting REST service failed.",ex);
             }
         }
 
@@ -420,7 +421,7 @@ namespace MissionPlanner.GCSViews
             catch (Exception ex)
             {               
                MessageBox.Show(ex.Message);
-               log.Error(ex);
+               log.Error("Error stopping REST service.",ex);
             }
         }
 
@@ -449,21 +450,32 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+
+                log.Error("Judge Server connection error.", ex); 
                 MessageBox.Show(ex.Message);
-                log.Error(ex);
+                
             }
 
         }
 
         private void btnJSStop_Click(object sender, EventArgs e)
         {
-            if (JSWorker != null)
-                JSWorker.Stop();               
-            
-            btnJSStart.Enabled = true;
-            btnJSStop.Enabled = false;
-            log.Info("Connection to judge server closed.");
+            try
+            {
+                if (JSWorker != null)
+                    JSWorker.Stop();
+
+                btnJSStart.Enabled = true;
+                btnJSStop.Enabled = false;
+                log.Info("Connection to judge server closed.");
+            }
+            catch (Exception ex)
+            {
+
+                log.Error("Error stopping judge server.", ex);
+                MessageBox.Show(ex.Message);
+
+            }
            
         }
 

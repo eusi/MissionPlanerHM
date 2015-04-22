@@ -33,7 +33,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Stop loiter failed",ex);
                 return false;
             }
 
@@ -91,7 +91,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Fatal("Importing received waypoints failded.",ex);
+                log.Fatal("Importing received waypoints failed.",ex);
                 return false;
             }
         }
@@ -110,7 +110,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Error getting waypoints",ex);
                 return null;
             }
             
@@ -145,7 +145,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Error setting zones.", ex);
                 return false;
             }
         }
@@ -162,7 +162,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);               
+                log.Error("Get zones failed.", ex);               
                 return null;
             }
             
@@ -182,7 +182,7 @@ namespace MissionPlanner.SmartAir
             catch (Exception ex)
             {
               
-                log.Error(ex);
+                log.Error("Get UAV position failed.",ex);
                 return null;
             }
         }             
@@ -201,8 +201,8 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-               
-                log.Error(ex);
+
+                log.Error("Get obstacles failed.", ex);
                 return null;
             }
         }
@@ -235,7 +235,7 @@ namespace MissionPlanner.SmartAir
             catch (Exception ex)
             {
 
-                log.Error(ex);
+                log.Error("Set targets failed", ex);
                 return false;
             }
         }      
@@ -253,7 +253,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Get targets failed.", ex);
                 return null;
             }
         }
@@ -287,7 +287,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex); 
+                log.Error("Get next waypoint failed.", ex); 
                 return null;
             }
            
@@ -306,7 +306,7 @@ namespace MissionPlanner.SmartAir
             }
             catch (Exception ex)
             {
-                log.Error(ex);
+                log.Error("Get wind failed.", ex);
                 return null;
             }
         }

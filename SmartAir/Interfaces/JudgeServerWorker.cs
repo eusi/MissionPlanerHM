@@ -37,7 +37,10 @@ namespace MissionPlanner.SmartAir
         public JudgeServerWorker(string url, string user, string password,int intervall)
         {
             js = new JudgeServer();
+            
             js.Connect(url, user, password);
+            log.Info("Judge server connection established.");
+            running = true;
             this.intervall = intervall;
 
         }
@@ -49,6 +52,7 @@ namespace MissionPlanner.SmartAir
         {
             running = false;
         }
+
         int iMaxError = 5;
         int iErrorCounter = 0;
 
@@ -59,7 +63,7 @@ namespace MissionPlanner.SmartAir
         /// </summary>
         public void GetAndSendInfo()
         {
-           
+  
             while (running)
             {
                 try
@@ -68,30 +72,31 @@ namespace MissionPlanner.SmartAir
                    
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
-                log.Info("Judge server obstacles received.");
+                //  log.Info("Judge server obstacles received.");
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
                 SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;
 
                 var serverTime = js.GetServerInfo();
-                log.Info("Judge server time received.");
+                //     log.Info("Judge server time received.");
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);    
 
                 var position= SmartAir.SmartAirContext.Instance.UAVPosition;
                 if (position != null)
                 {
                     js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
-                    log.Info("Current position was sent to judge server.");
+                //          log.Info("Current position was sent to judge server.");
                 }
-                    
+
+            
                 Thread.Sleep(intervall);
                     
                 iErrorCounter = 0;
-
+                
                
                 }
                 catch (Exception ex)
                 {
-                    log.Error("Connection to judge server failed.",ex);
+                    log.Fatal("Connection to judge server failed.",ex);
                     iErrorCounter++;
                     if(iMaxError==iErrorCounter) 
                         running = false;

@@ -27,6 +27,7 @@ using MissionPlanner.Log;
 using GMap.NET.MapProviders;
 using System.ComponentModel;
 using log4net.Core;
+using System.Linq;
 
 // written by michael oborne
 namespace MissionPlanner.GCSViews
@@ -166,7 +167,9 @@ namespace MissionPlanner.GCSViews
         }
 
         #region Logging
-        private static BindingList<LoggingEvent> _logEntries = new BindingList<LoggingEvent>();
+        private static BindingList<LoggingEvent> _filteredLogEntries = new BindingList<LoggingEvent>();
+        private static List<LoggingEvent> _fullLogFile = new List<LoggingEvent>();
+
         delegate void DrawLogEntryDelegate(LoggingEvent info);
 
         public void drawLogEntry(LoggingEvent logEntry)
@@ -176,16 +179,55 @@ namespace MissionPlanner.GCSViews
                 this.BeginInvoke(new DrawLogEntryDelegate(drawLogEntry), logEntry);
                 return;
             }
-            if (_logEntries != null && logEntry != null  )
+            if (_filteredLogEntries != null && logEntry != null  )
             {
-                _logEntries.Insert(0, logEntry);
-                //if (this.grdEvents.Rows.Count > 0)
-                //    this.grdEvents.FirstDisplayedScrollingRowIndex = 0;
-                if (_logEntries.Count > 500)
-                    _logEntries.RemoveAt(501);
+                if (this.chkSAMFilter.Checked)
+                {
+
+                    if (logEntry.LoggerName == typeof(MissionPlanner.GCSViews.FlightPlanner).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.MissionPlannerService).ToString()
+                        || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.SmartAirContext).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.JudgeServerWorker).ToString())
+                    {
+                        _filteredLogEntries.Insert(0, logEntry);
+
+                    }
+
+                }
+                else
+                {
+                    _filteredLogEntries.Insert(0, logEntry);
+                }
+                _fullLogFile.Insert(0, logEntry);
+      
+                if (_filteredLogEntries.Count > 500)
+                    _filteredLogEntries.RemoveAt(500);
+
+                if (_filteredLogEntries.Count > 500)
+                    _filteredLogEntries.RemoveAt(500);
             }
 
 
+        }
+
+        private void chkSAMFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSAMFilter.Checked)
+            {
+
+                _filteredLogEntries.Clear();
+                foreach (var filteredEntry in _fullLogFile.Where(x => x.LoggerName == typeof(MissionPlanner.GCSViews.FlightPlanner).ToString() || x.LoggerName == typeof(MissionPlanner.SmartAir.MissionPlannerService).ToString()
+                       || x.LoggerName == typeof(MissionPlanner.SmartAir.SmartAirContext).ToString() || x.LoggerName == typeof(MissionPlanner.SmartAir.JudgeServerWorker).ToString()))
+                {
+                    _filteredLogEntries.Add(filteredEntry);
+                }
+            }
+            else
+            {
+                _filteredLogEntries.Clear();
+                foreach (var entry in _fullLogFile)
+                {
+                    _filteredLogEntries.Add(entry);
+                }
+            }
         }
 
         private void grdEvents_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -216,6 +258,26 @@ namespace MissionPlanner.GCSViews
                 grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
                 grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
             }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Alert)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Critical)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.DarkRed;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Emergency)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.DarkRed;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
+            else if ((Level)(grdEvents.Rows[e.RowIndex].Cells[0].Value) == log4net.Core.Level.Warn)
+            {
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                grdEvents.Rows[e.RowIndex].DefaultCellStyle.ForeColor = Color.Black;
+            }
         }
 
 
@@ -241,7 +303,7 @@ namespace MissionPlanner.GCSViews
             //
             this.grdEvents.AutoGenerateColumns = false;
             this.grdEvents.GridColor = Color.White;
-            this.grdEvents.DataSource = _logEntries;
+            this.grdEvents.DataSource = _filteredLogEntries;
 
             mymap = gMapControl1;
             myhud = hud1;
@@ -3245,6 +3307,8 @@ namespace MissionPlanner.GCSViews
 
             //thisthread.Join();
         }
+
+      
 
       
 
