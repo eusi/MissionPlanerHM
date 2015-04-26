@@ -1211,6 +1211,8 @@ namespace MissionPlanner
                 // update form
                 try
                 {
+
+
                     if (SmartAir.SmartAirContext.Instance.UAVPosition == null)
                         SmartAir.SmartAirContext.Instance.UAVPosition = new SmartAir.UAVPosition();
                     SmartAir.SmartAirContext.Instance.UAVPosition.Alt = this.alt;
@@ -1219,6 +1221,16 @@ namespace MissionPlanner
                     SmartAir.SmartAirContext.Instance.UAVPosition.Ts = this.gpstime.ToString("yyyyMMddHHmmssffff");
                     SmartAir.SmartAirContext.Instance.UAVPosition.Yaw = this.yaw;
                     SmartAir.SmartAirContext.Instance.UAVPosition.Distance = this.wp_dist;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.Airspeed = this.airspeed;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.WindDirection = this.wind_dir;
+                    SmartAir.SmartAirContext.Instance.UAVPosition.WindVelocity = this.wind_vel;
+                    var wp = SmartAir.SmartAirContext.Instance.getNextWaypoint();
+                    if (wp != null)
+                    {
+                        SmartAir.SmartAirContext.Instance.UAVPosition.wpId = wp.wpId;
+                        SmartAir.SmartAirContext.Instance.UAVPosition.routeId = wp.routeId;
+                        SmartAir.SmartAirContext.Instance.UAVPosition.SamType = wp.SamType;
+                    }
 
                     if (SmartAir.SmartAirContext.Instance.Wind == null)
                         SmartAir.SmartAirContext.Instance.Wind = new SmartAir.Wind();
@@ -1278,7 +1290,7 @@ namespace MissionPlanner
                         */
                     }
                 }
-                catch { log.InfoFormat("CurrentState Binding error"); }
+                catch (Exception ex) { log.Error("CurrentState Binding error",ex); }
             }
         }
 

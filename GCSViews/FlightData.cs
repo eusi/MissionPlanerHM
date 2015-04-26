@@ -174,6 +174,7 @@ namespace MissionPlanner.GCSViews
 
         public void drawLogEntry(LoggingEvent logEntry)
         {
+           
             if (InvokeRequired)
             {
                 this.BeginInvoke(new DrawLogEntryDelegate(drawLogEntry), logEntry);

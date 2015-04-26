@@ -43,48 +43,34 @@ namespace MissionPlanner.SmartAir
         /// This methods adds new waypoints to the mission planner.  
         /// </summary>
         /// <param name="waypoints">The waypoints to add.</param>
-        /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
-        /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
-        /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
+        /// <param name="insertionMode">Indicates how to process a imported route with its waypoints.</param>
+        /// <param name="routingMode">Indicates how the auto routing mechanism will handle the new routes.</param> 
         /// <returns>true, if the operation was sucessful.</returns>
-        public bool setWayPoints(List<Locationwp> waypoints, bool append, SamType objective)
+        public bool setWayPoints(List<Locationwp> waypoints,RouteInsertionMode insertionMode, AutoRoutingMode routingMode)
         {
             try
             {
 
-                foreach (var wp in waypoints)
-                {
-                    wp.objective = objective.ToString();
-                    wp.samType = (int)objective;
-                }
-                
-                var lastWP = waypoints.LastOrDefault();
-                // clone last wp
-                if (lastWP != null && ((MAVLink.MAV_CMD) lastWP.id) == MAVLink.MAV_CMD.WAYPOINT)
-                {
-                    
-                    Locationwp clone = new Locationwp();
-                    clone.IsLoiterInterruptAllowed = true;
-                    clone.id = (byte) MAVLink.MAV_CMD.LOITER_UNLIM;
-                    clone.lat = lastWP.lat;
-                    clone.lng = lastWP.lng;
-                    clone.alt = lastWP.alt;
-                    clone.options = lastWP.options;
-                    clone.p1 = lastWP.p1;
-                    clone.p2 = lastWP.p2;
-                    clone.p3 = lastWP.p3;
-                    clone.p4 = lastWP.p4;
-                    clone.objective = objective.ToString();
-                    clone.samType = (int)objective;
-                    waypoints.Add(clone);
 
+                if (routingMode == AutoRoutingMode.InsertAutoLoiter)                
+                   waypoints= AddClone(waypoints);
+                else if (routingMode == AutoRoutingMode.InsertAutoLoiterEachRouteId)
+                {
+
+                    var wpsGrpById = waypoints.GroupBy(x => x.routeId);
+                    waypoints.Clear();
+                    foreach (var route in wpsGrpById)
+                    {
+                        waypoints.AddRange(route);
+                        waypoints= AddClone(waypoints);
+
+                    }
 
                 }
 
+                SmartAirContext.Instance.ReceivedRoutes.Add(new Route() { WayPoints = waypoints, InsertionMode = insertionMode,RoutingMode=routingMode });
 
-                SmartAirContext.Instance.ReceivedRoutes.Add(new Route() { WayPoints = waypoints, Append = append, Objective = objective });
-                 
-                MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, append);
+                MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, insertionMode);
                 SmartAirContext.Instance.LoadNextRoute(SmartAirContext.Instance.NextWPIndexFromAutopilot);
 
                 return true;
@@ -94,6 +80,34 @@ namespace MissionPlanner.SmartAir
                 log.Fatal("Importing received waypoints failed.",ex);
                 return false;
             }
+        }
+
+        private List<Locationwp> AddClone(List<Locationwp> route)
+        {
+            var lastWP = route.LastOrDefault();
+            // clone last wp
+            if (lastWP != null && ((MAVLink.MAV_CMD)lastWP.id) == MAVLink.MAV_CMD.WAYPOINT)
+            {
+
+                Locationwp clone = new Locationwp();
+                clone.IsLoiterInterruptAllowed = true;
+                clone.id = (byte)MAVLink.MAV_CMD.LOITER_UNLIM;
+                clone.lat = lastWP.lat;
+                clone.lng = lastWP.lng;
+                clone.alt = lastWP.alt;
+                clone.options = lastWP.options;
+                clone.p1 = lastWP.p1;
+                clone.p2 = lastWP.p2;
+                clone.p3 = lastWP.p3;
+                clone.p4 = lastWP.p4;
+
+                route.Add(clone);
+
+
+            }
+            return route;
+
+
         }
 
         /// <summary>
@@ -168,11 +182,13 @@ namespace MissionPlanner.SmartAir
             
         }
 
+
+
         /// <summary>
         /// Gets the current position of the UAV.
         /// </summary>
         /// <returns>The coordinates with Lat/Lng/Alt </returns>
-        public UAVPosition getUAVPosition()
+        public UAVPosition getCurrentState()
         {
             try
             {
@@ -275,40 +291,7 @@ namespace MissionPlanner.SmartAir
             SmartAirContext.Instance.createTestData();
         }
 
-        /// <summary>
-        /// Gets the next waypoint of the plane.
-        /// </summary>
-        /// <returns>The waypoint.</returns>
-        public Locationwp getNextWaypoint()
-        {
-            try
-            {
-                return SmartAirContext.Instance.getNextWaypoint();
-            }
-            catch (Exception ex)
-            {
-                log.Error("Get next waypoint failed.", ex); 
-                return null;
-            }
-           
-        }
+        
 
-        /// <summary>
-        /// Gets the direction and velocity of the current wind.
-        /// </summary>
-        /// <returns>The wind.</returns>
-        public Wind getWind()
-        {
-            try
-            {
-               
-                return SmartAirContext.Instance.Wind;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Get wind failed.", ex);
-                return null;
-            }
-        }
     }
 }

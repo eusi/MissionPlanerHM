@@ -24,36 +24,30 @@ namespace MissionPlanner.SmartAir
 
        SamType objective;
 
+
+
+
+       RouteInsertionMode insertionMode = RouteInsertionMode.ClearPendingRoutes;
+
        /// <summary>
-       /// The objective of the route.
+       /// Indicates how to process the imported route with its waypoints.
        /// </summary>
-       public SamType Objective
+       public RouteInsertionMode InsertionMode
        {
-           get { return objective; }
-           set { objective = value; }
+           get { return insertionMode; }
+           set { insertionMode = value; }
        }
 
-       string createdBy;
+
+       AutoRoutingMode routingMode = AutoRoutingMode.InsertAutoLoiter;
 
        /// <summary>
-       /// The team name.
+       /// Indicates how the auto routing mechanism will handle the new routes.
        /// </summary>
-       public string CreatedBy
+       public AutoRoutingMode RoutingMode
        {
-           get { return createdBy; }
-           set { createdBy = value; }
-       }
-
-       bool append;
-
-       /// <summary>
-       /// Indicates, if the existing waypoints should be removed before getting the new waypoints the this route.
-       /// True --> existing waypoints will not be removed.
-       /// </summary>
-       public bool Append
-       {
-           get { return append; }
-           set { append = value; }
+           get { return routingMode; }
+           set { routingMode = value; }
        }
    
    }

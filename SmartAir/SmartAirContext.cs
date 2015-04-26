@@ -124,8 +124,7 @@ namespace MissionPlanner.SmartAir
             {
                 var nextWPOfTable = wayPointsTableOfAutoPilot[(int)this.nextWPIndexFromAutopilot];
              
-                if (UAVPosition != null )
-                    nextWPOfTable.distance = UAVPosition.Distance;
+               
 
                 return nextWPOfTable;
             }

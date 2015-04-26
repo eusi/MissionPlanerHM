@@ -39,7 +39,7 @@ namespace MissionPlanner.SmartAir
             js = new JudgeServer();
             
             js.Connect(url, user, password);
-            log.Info("Judge server connection established.");
+           
             running = true;
             this.intervall = intervall;
 
@@ -72,6 +72,9 @@ namespace MissionPlanner.SmartAir
                    
                 // get, set and draw obstacles
                 var obstacles = js.GetObstacles();
+                if (obstacles != null && obstacles.MovingObstacles != null && obstacles.MovingObstacles.FirstOrDefault()!=null)
+
+                 //   log.Info("Lat:" + obstacles.MovingObstacles.FirstOrDefault().Latitude + " Long:" + obstacles.MovingObstacles.FirstOrDefault().Longitude);
                 //  log.Info("Judge server obstacles received.");
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
                 SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;

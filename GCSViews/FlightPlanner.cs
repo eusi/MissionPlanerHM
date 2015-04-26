@@ -47,15 +47,25 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
 
-        
 
-        public void setNewWayPoints(List<Locationwp> waypoints, bool append)
+
+        public void setNewWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode)
         {
 
             try
             {
-                
-                processToScreen(waypoints, append, false,false);
+
+                if (insertionMode == RouteInsertionMode.ClearAllRoutes)
+                    processToScreen(waypoints, false, false, false);
+                else if (insertionMode == RouteInsertionMode.Append)
+                    processToScreen(waypoints, true, false, false);
+                else if (insertionMode == RouteInsertionMode.ClearPendingRoutes)
+                {
+                    // to do delete pending routes from grid
+                    
+                    processToScreen(waypoints, true, false, false);
+                }
+                                
 
                 writeKML();
 
@@ -108,7 +118,7 @@ namespace MissionPlanner.GCSViews
                 temp.lat = double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString());
                 temp.lng = double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString());
                 temp.alt = float.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist;
-                temp.samType = (int)Enum.Parse(typeof(SamType), Commands.Rows[a].Cells[Task.Index].Value.ToString());
+                temp.SamType = (int)Enum.Parse(typeof(SamType), Commands.Rows[a].Cells[Task.Index].Value.ToString());
 
                 if (temp.id == 99)
                     temp.id = 0;
@@ -232,6 +242,7 @@ namespace MissionPlanner.GCSViews
 
             foreach (var newObstacle in obstacleToDraw.MovingObstacles)
             {
+             
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.White, 1);
@@ -2020,7 +2031,9 @@ namespace MissionPlanner.GCSViews
 
                 log.Info("Done");
             }
-            catch { error = 1; throw; }
+            catch { 
+                error = 1; throw; 
+            }
             try
             {
                 this.Invoke((MethodInvoker)delegate()
@@ -2143,7 +2156,7 @@ namespace MissionPlanner.GCSViews
                     home.lat = (double.Parse(TXT_homelat.Text));
                     home.lng = (double.Parse(TXT_homelng.Text));
                     home.alt = (float.Parse(TXT_homealt.Text) / MainV2.comPort.MAV.cs.multiplierdist); // use saved home
-                    home.samType = 92;
+                    home.SamType = 92;
                 }
                 catch { throw new Exception("Your home location is invalid"); }
 
@@ -2180,7 +2193,7 @@ namespace MissionPlanner.GCSViews
                         temp.param2 = (float)(double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString()));
                         temp.param3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                         temp.param4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
-
+                        
                        
 
                         if (temp.command == item.command &&
@@ -2268,15 +2281,16 @@ namespace MissionPlanner.GCSViews
                     {
                         SamType tmp;
                         if(Enum.TryParse(taskValue.ToString(), out tmp))
-                           temp.samType = (int)tmp;
+                           temp.SamType = (int)tmp;
                         else                        
-                            temp.samType = 91;
+                            temp.SamType = 91;
                         
                     }
                     else                    
-                      temp.samType = 91;
-                    
-                   
+                      temp.SamType = 91;
+
+                    temp.wpId = (int)(int.Parse(Commands.Rows[a].Cells[wpId.Index].Value.ToString()));
+                    temp.routeId = (int)(int.Parse(Commands.Rows[a].Cells[routeId.Index].Value.ToString())); 
 
                     if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
                         temp.IsLoiterInterruptAllowed = (bool)Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value;
@@ -2430,12 +2444,18 @@ namespace MissionPlanner.GCSViews
                 cell.Value = temp.p3;
                 cell = Commands.Rows[i].Cells[Param4.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.p4;
-                var test = (Commands.Rows[i].Cells[IsLoiterInterruptAllowed.Index]);
+             
                 DataGridViewCheckBoxCell IsLoiterInterruptAllowedcell = (Commands.Rows[i].Cells[IsLoiterInterruptAllowed.Index]) as DataGridViewCheckBoxCell;
                 IsLoiterInterruptAllowedcell.Value = temp.IsLoiterInterruptAllowed;
 
+                cell = Commands.Rows[i].Cells[wpId.Index] as DataGridViewTextBoxCell;
+                cell.Value = temp.wpId;
+
+                cell = Commands.Rows[i].Cells[routeId.Index] as DataGridViewTextBoxCell;
+                cell.Value = temp.routeId;
+
                 cell = Commands.Rows[i].Cells[Task.Index] as DataGridViewTextBoxCell;
-                cell.Value = temp.objective;
+                cell.Value = Enum.GetName(typeof(SamType),temp.SamType);
 
 
                 setWPParams();
@@ -2479,6 +2499,8 @@ namespace MissionPlanner.GCSViews
                     {
                         log.Info("remove home from list");
                         Commands.Rows.Remove(Commands.Rows[0]); // remove home row
+                        routeIncludesHomeWayPoint = false;
+                        i--;
                     }
                 }
                 quickadd = false;

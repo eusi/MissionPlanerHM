@@ -24,12 +24,11 @@ namespace MissionPlanner.Utilities
         public float alt;				// Altitude in centimeters (meters * 100)
         [NonSerialized]
         public bool IsLoiterInterruptAllowed;
-        [NonSerialized]
-        public string objective = "MANUAL";
+  
         [OptionalFieldAttribute]
-        public int samType = 91;
-        [OptionalFieldAttribute]
-        public float distance = 0;
+        public int SamType = 91;
+        public int routeId;
+     
         
        
     };

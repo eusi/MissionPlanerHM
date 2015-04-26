@@ -22,13 +22,12 @@ namespace MissionPlanner.SmartAir
         [WebGet(ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
         bool stopLoiter();
 
-        /// <summary>
+         /// <summary>
         /// This methods adds new waypoints to the mission planner.  
         /// </summary>
         /// <param name="waypoints">The waypoints to add.</param>
-        /// <param name="append">Indicates, if the existing waypoints should be removed before getting the new waypoints the this route. True --> existing waypoints will not be removed.</param>
-        /// <param name="objective">The objective of this route. e.g. lawnmower route, drop route</param>
-        /// <param name="createdBy">The team (e.g. Search Group) creating the waypoints. </param>
+        /// <param name="insertionMode">Indicates how to process a imported route with its waypoints.</param>
+        /// <param name="routingMode">Indicates how the auto routing mechanism will handle the new routes.</param> 
         /// <returns>true, if the operation was sucessful.</returns>
         [OperationContract()]
         [WebInvoke(
@@ -37,7 +36,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        bool setWayPoints(List<Locationwp> waypoints, bool append, SamType objective);  
+        bool setWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, AutoRoutingMode routingMode);
 
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>The coordinates with Lat/Lng/Alt and timestamp </returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        UAVPosition getUAVPosition();
+        UAVPosition getCurrentState();
          
 
         /// <summary>
@@ -125,22 +124,7 @@ namespace MissionPlanner.SmartAir
         [WebGet(ResponseFormat = WebMessageFormat.Json)]
         void createTestData();
 
-        /// <summary>
-        /// Gets the next waypoint of the plane.
-        /// </summary>
-        /// <returns>The waypoint.</returns>
-        [OperationContract()]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Locationwp getNextWaypoint();
-
-
-        /// <summary>
-        /// Gets the direction and velocity of the current wind.
-        /// </summary>
-        /// <returns>The wind.</returns>
-        [OperationContract()]
-        [WebGet(ResponseFormat = WebMessageFormat.Json)]
-        Wind getWind();
+        
 
     }
 }

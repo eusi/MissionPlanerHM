@@ -18,8 +18,11 @@ namespace MissionPlanner.Utilities
         public double Lat = 0;
         public double Lng = 0;
         public double Alt = 0;
+        [NonSerialized]
         public string Tag = "";
+        [NonSerialized]
         public string Tag2 = "";
+        [NonSerialized]
         public Color color = Color.White;
 
         const float rad2deg = (float)(180 / Math.PI);
