@@ -95,10 +95,12 @@ namespace MissionPlanner.GCSViews
                     }
 
                     AddBackstageViewPage(new ConfigPlanner(), "Planner");
+                    AddBackstageViewPage(new ConfigSmartAir(), "SmartAir");
                 }
                 else
                 {
                     start = AddBackstageViewPage(new ConfigPlanner(), "Planner");
+                    AddBackstageViewPage(new ConfigSmartAir(), "SmartAir");
                 }
 
                 // remeber last page accessed

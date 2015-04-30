@@ -28,6 +28,7 @@ using System.Speech.Synthesis;
 using MissionPlanner;
 using MissionPlanner.Joystick;
 using System.Collections.ObjectModel;
+using MissionPlanner.GCSViews;
 
 namespace MissionPlanner
 {
@@ -2709,6 +2710,22 @@ namespace MissionPlanner
         private void readonlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MainV2.comPort.ReadOnly = readonlyToolStripMenuItem.Checked;
+        }
+
+        private void externalFlightDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Open Flight Data Window
+            var FlightData = new GCSViews.FlightData();
+
+            ExternalFlightData fd = new ExternalFlightData();
+            fd.Show();
+            fd.TopLevel = true;
+            fd.Visible = true;
+
+            var FlightDataSwitcher = new MainSwitcher(fd);
+
+            FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
+            FlightDataSwitcher.ShowScreen("FlightData");
         }    
     }
 }

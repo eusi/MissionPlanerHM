@@ -54,16 +54,30 @@ namespace MissionPlanner.GCSViews
 
             try
             {
-
+                this.Commands.UseWaitCursor = true;
                 if (insertionMode == RouteInsertionMode.ClearAllRoutes)
+                    // clear all waypoint before insertion --> set append = false
                     processToScreen(waypoints, false, false, false);
                 else if (insertionMode == RouteInsertionMode.Append)
+                    // append only --> set append = true 
                     processToScreen(waypoints, true, false, false);
                 else if (insertionMode == RouteInsertionMode.ClearPendingRoutes)
                 {
-                    // to do delete pending routes from grid
+                       // delete pending routes from grid
+                        for (int i = Commands.Rows.Count - 1; i >= 0; i--)
+                        {
+                            var cell = Commands.Rows[i].Cells[routeId.Index] as DataGridViewTextBoxCell;
+                            List<int> receivedRouteIds = waypoints.Select(x => x.routeId).Distinct().ToList();
+                            int routeIdOfCell;
+                            if (cell != null && cell.Value != null && int.TryParse(cell.Value.ToString(), out routeIdOfCell) && receivedRouteIds.Contains(routeIdOfCell))
+                            {
+                                Commands.Rows.RemoveAt(i);
+                            }
+                        }
                     
-                    processToScreen(waypoints, true, false, false);
+                    // append new waypoints                    
+                   processToScreen(waypoints, true, false, false);
+                  
                 }
                                 
 
@@ -77,11 +91,13 @@ namespace MissionPlanner.GCSViews
                     BUT_write_Click(null, null);
                    
                 }
+                this.Commands.UseWaitCursor = false;
                 log.Info("Waypoints successfully set.");
             }
             catch (Exception ex)
             {
                 log.Error("Error setting new waypoints.",ex);
+                this.Commands.UseWaitCursor = false;
             }
 
         }
@@ -388,15 +404,18 @@ namespace MissionPlanner.GCSViews
                     smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
 
                     var binding = new WebHttpBinding();
+                    binding.MaxReceivedMessageSize = 2147000000;
                     //binding.OpenTimeout = new TimeSpan(0, 10, 0);
                     //binding.CloseTimeout = new TimeSpan(0, 10, 0);
                     //binding.SendTimeout = new TimeSpan(0, 10, 0);
                     //binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
                     ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), binding, "");
+                    
                     ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
                     stp.HttpHelpPageEnabled = false;
                     stp.IncludeExceptionDetailInFaults = true;
                     smartAirWSHost.Open();
+                    
                     this.btnStopWS.Enabled = true;
                     this.btnStartWS.Enabled = false;
                     log.Info("SAM REST service started.");
@@ -444,7 +463,7 @@ namespace MissionPlanner.GCSViews
  
 
 
-        JudgeServerWorker JSWorker;
+       public JudgeServerWorker JSWorker;
       
 
         private void btnJSStart_Click(object sender, EventArgs e)
@@ -534,7 +553,7 @@ namespace MissionPlanner.GCSViews
 
         private Dictionary<string, string[]> cmdParamNames = new Dictionary<string, string[]>();
 
-        WebServiceHost smartAirWSHost;
+     public   WebServiceHost smartAirWSHost;
 
         public enum altmode
         {
@@ -3822,6 +3841,19 @@ namespace MissionPlanner.GCSViews
 
         private void clearMissionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            // remove smart air objects
+            movingobstaclesoverlay.Polygons.Clear();
+            movingobstaclesoverlay.Markers.Clear();
+            stationaryobstaclesoverlay.Polygons.Clear();
+            stationaryobstaclesoverlay.Markers.Clear();
+            drawnpolygonsoverlay.Markers.Clear();
+
+            foreach (var zone in SmartAirContext.Instance.Zones)
+            {
+                deleteZone(zone.Key.ToString());
+            }
+
             quickadd = true;
 
             // mono fix

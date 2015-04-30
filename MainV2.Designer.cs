@@ -38,6 +38,7 @@ namespace MissionPlanner
             this.CTX_mainmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.autoHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readonlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuFlightData = new System.Windows.Forms.ToolStripButton();
             this.MenuFlightPlanner = new System.Windows.Forms.ToolStripButton();
             this.MenuInitConfig = new System.Windows.Forms.ToolStripButton();
@@ -50,7 +51,7 @@ namespace MissionPlanner
             this.MenuDonate = new System.Windows.Forms.ToolStripMenuItem();
             this.menu = new MissionPlanner.Controls.MyButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.readonlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.externalFlightDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.CTX_mainmenu.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -84,7 +85,8 @@ namespace MissionPlanner
             this.CTX_mainmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.autoHideToolStripMenuItem,
             this.fullScreenToolStripMenuItem,
-            this.readonlyToolStripMenuItem});
+            this.readonlyToolStripMenuItem,
+            this.externalFlightDataToolStripMenuItem});
             this.CTX_mainmenu.Name = "CTX_mainmenu";
             resources.ApplyResources(this.CTX_mainmenu, "CTX_mainmenu");
             // 
@@ -101,6 +103,13 @@ namespace MissionPlanner
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             resources.ApplyResources(this.fullScreenToolStripMenuItem, "fullScreenToolStripMenuItem");
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.fullScreenToolStripMenuItem_Click);
+            // 
+            // readonlyToolStripMenuItem
+            // 
+            this.readonlyToolStripMenuItem.CheckOnClick = true;
+            this.readonlyToolStripMenuItem.Name = "readonlyToolStripMenuItem";
+            resources.ApplyResources(this.readonlyToolStripMenuItem, "readonlyToolStripMenuItem");
+            this.readonlyToolStripMenuItem.Click += new System.EventHandler(this.readonlyToolStripMenuItem_Click);
             // 
             // MenuFlightData
             // 
@@ -206,12 +215,11 @@ namespace MissionPlanner
             this.panel1.Name = "panel1";
             this.panel1.MouseLeave += new System.EventHandler(this.MainMenu_MouseLeave);
             // 
-            // readonlyToolStripMenuItem
+            // externalFlightDataToolStripMenuItem
             // 
-            this.readonlyToolStripMenuItem.CheckOnClick = true;
-            this.readonlyToolStripMenuItem.Name = "readonlyToolStripMenuItem";
-            resources.ApplyResources(this.readonlyToolStripMenuItem, "readonlyToolStripMenuItem");
-            this.readonlyToolStripMenuItem.Click += new System.EventHandler(this.readonlyToolStripMenuItem_Click);
+            this.externalFlightDataToolStripMenuItem.Name = "externalFlightDataToolStripMenuItem";
+            resources.ApplyResources(this.externalFlightDataToolStripMenuItem, "externalFlightDataToolStripMenuItem");
+            this.externalFlightDataToolStripMenuItem.Click += new System.EventHandler(this.externalFlightDataToolStripMenuItem_Click);
             // 
             // MainV2
             // 
@@ -253,5 +261,6 @@ namespace MissionPlanner
         public System.Windows.Forms.MenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem fullScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem readonlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem externalFlightDataToolStripMenuItem;
     }
 }

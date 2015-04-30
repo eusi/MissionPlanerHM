@@ -250,6 +250,12 @@
     <Compile Include="Antenna\DegreeTracker.cs" />
     <Compile Include="Antenna\ITrackerOutput.cs" />
     <Compile Include="Antenna\Maestro.cs" />
+    <Compile Include="GCSViews\ConfigurationView\ConfigSmartAir.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GCSViews\ConfigurationView\ConfigSmartAir.Designer.cs">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </Compile>
     <Compile Include="GCSViews\ExternalFlightData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -770,6 +776,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigMount.zh-TW.resx">
       <DependentUpon>ConfigMount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.de-DE.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.fr.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.it-IT.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.zh-Hans.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.zh-Hant.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigSmartAir.zh-TW.resx">
+      <DependentUpon>ConfigSmartAir.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigPlanner.zh-Hant.resx">
       <DependentUpon>ConfigPlanner.cs</DependentUpon>

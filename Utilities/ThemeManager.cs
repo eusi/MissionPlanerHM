@@ -183,6 +183,7 @@ namespace MissionPlanner.Utilities
             temp.Add(new GCSViews.ConfigurationView.ConfigMount());
             temp.Add(new GCSViews.ConfigurationView.ConfigOptional());
             temp.Add(new GCSViews.ConfigurationView.ConfigPlanner());
+            temp.Add(new GCSViews.ConfigurationView.ConfigSmartAir());       
             temp.Add(new GCSViews.ConfigurationView.ConfigPlannerAdv());
             temp.Add(new GCSViews.ConfigurationView.ConfigRadioInput());
             temp.Add(new GCSViews.ConfigurationView.ConfigRawParams());

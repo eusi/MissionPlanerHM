@@ -50,7 +50,7 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-
+                
 
                 if (routingMode == AutoRoutingMode.InsertAutoLoiter)                
                    waypoints= AddClone(waypoints);
