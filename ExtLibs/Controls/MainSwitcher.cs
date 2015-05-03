@@ -43,6 +43,19 @@ namespace MissionPlanner.Controls
             Screen.Control.Visible = false;
         }
 
+        public void RemoveScreen(string screenName)
+        {
+            if (screenName == null || screenName.Length== 0)
+                return;
+
+            // remove from list
+            var screen = screens.Where(x=>x.Name==screenName).FirstOrDefault();
+            if (screen != null)
+                screens.Remove(screen);
+
+       
+        }
+
         public void Reload()
         {
             ShowScreen(current.Name);

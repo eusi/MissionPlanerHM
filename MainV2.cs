@@ -87,7 +87,7 @@ namespace MissionPlanner
             public new Image bg = global::MissionPlanner.Properties.Resources.bgdark;
         }
 
-        Controls.MainSwitcher MyView;
+        public Controls.MainSwitcher MyView;
 
         static bool _advanced = false;
         /// <summary>
@@ -1964,7 +1964,7 @@ namespace MissionPlanner
                 AutoHideMenu(bool.Parse(config["menu_autohide"].ToString()));
             }
             catch { }
-
+            
             MyView.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
             MyView.AddScreen(new MainSwitcher.Screen("FlightPlanner", FlightPlanner, true));
             MyView.AddScreen(new MainSwitcher.Screen("HWConfig", new GCSViews.InitialSetup(), false));
@@ -2689,6 +2689,24 @@ namespace MissionPlanner
             //MainMenu.BackgroundImage = MissionPlanner.Properties.Resources.bgdark;
         }
 
+        public void SimulateFlightDataClick()
+        {
+            foreach (ToolStripItem item in MainMenu.Items)
+            {
+                if ("MenuFlightData" == item.Name)
+                {
+                    item.BackColor = ThemeManager.ControlBGColor;
+                }
+                else
+                {
+                    item.BackColor = Color.Transparent;
+                    item.BackgroundImage = MissionPlanner.Properties.Resources.bgdark;//.BackColor = Color.Black;
+                }
+            }
+         
+
+        }
+
         private void fullScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // full screen
@@ -2711,11 +2729,16 @@ namespace MissionPlanner
         {
             MainV2.comPort.ReadOnly = readonlyToolStripMenuItem.Checked;
         }
+        public void enableFlightDataButton(){
+          
+            this.  MenuFlightData.Enabled = true;
+        }
 
         private void externalFlightDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             // Open Flight Data Window
-            var FlightData = new GCSViews.FlightData();
+            MenuFlightData.Enabled = false;
 
             ExternalFlightData fd = new ExternalFlightData();
             fd.Show();
@@ -2726,6 +2749,13 @@ namespace MissionPlanner
 
             FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
             FlightDataSwitcher.ShowScreen("FlightData");
+
+
+
+            if (MyView.current.Name == "FlightData")
+                MyView.current = null;
+            
+
         }    
     }
 }

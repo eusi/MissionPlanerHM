@@ -77,7 +77,24 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             string samRESTURL = "http://localhost:8000/MissionPlannerService";
             if (MainV2.config["samRESTUrl"] != null)
                 samRESTURL = MainV2.config["samRESTUrl"].ToString();
-            this.txtWSUrl.Text = samRESTURL;           
+            this.txtWSUrl.Text = samRESTURL;
+
+            if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Opened)
+            {
+                this.btnStopWS.Enabled = true;
+                this.btnStartWS.Enabled = false;
+            }
+            if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Opened)
+            {
+                this.btnStopWS.Enabled = true;
+                this.btnStartWS.Enabled = false;
+            }
+
+            if (FlightPlanner.instance.JSWorker != null && FlightPlanner.instance.JSWorker.Running)
+            {
+                btnJSStart.Enabled = false;
+                btnJSStop.Enabled = true;
+            }
             startup = false;
         }
 
@@ -223,7 +240,11 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             try
             {
                 if (FlightPlanner.instance.JSWorker != null)
+                {
+
                     FlightPlanner.instance.JSWorker.Stop();
+                    FlightPlanner.instance.JSWorker = null;
+                }
 
                 btnJSStart.Enabled = true;
                 btnJSStop.Enabled = false;
@@ -240,18 +261,18 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void btnOpenExternalFlightData_Click(object sender, EventArgs e)
         {
-            // Open Flight Data Window
-            var FlightData = new GCSViews.FlightData();
+            //// Open Flight Data Window
+            //var FlightData = new GCSViews.FlightData();
 
-            ExternalFlightData fd = new ExternalFlightData();
-            fd.Show();
-            fd.TopLevel = true;
-            fd.Visible = true;
+            //ExternalFlightData fd = new ExternalFlightData();
+            //fd.Show();
+            //fd.TopLevel = true;
+            //fd.Visible = true;
 
-            var FlightDataSwitcher = new MainSwitcher(fd);
+            //var FlightDataSwitcher = new MainSwitcher(fd);
 
-            FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
-            FlightDataSwitcher.ShowScreen("FlightData");
+            //FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
+            //FlightDataSwitcher.ShowScreen("FlightData");
         }
 
       

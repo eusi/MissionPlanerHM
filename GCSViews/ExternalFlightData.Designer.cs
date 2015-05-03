@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(990, 630);
             this.Name = "ExternalFlightData";
             this.Text = "FlightData";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExternalFlightData_FormClosing);
             this.ResumeLayout(false);
 
         }

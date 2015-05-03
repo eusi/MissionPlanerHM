@@ -6753,18 +6753,18 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         private void btnOpenExternalFlightData_Click(object sender, EventArgs e)
         {
-            // Open Flight Data Window
-            var FlightData = new GCSViews.FlightData();
+            //// Open Flight Data Window
+            //var FlightData = new GCSViews.FlightData();
 
-            ExternalFlightData fd = new ExternalFlightData();
-            fd.Show();
-            fd.TopLevel = true;
-            fd.Visible = true;
+            //ExternalFlightData fd = new ExternalFlightData();
+            //fd.Show();
+            //fd.TopLevel = true;
+            //fd.Visible = true;
 
-            var FlightDataSwitcher = new MainSwitcher(fd);
+            //var FlightDataSwitcher = new MainSwitcher(fd);
 
-            FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
-            FlightDataSwitcher.ShowScreen("FlightData");
+            //FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
+            //FlightDataSwitcher.ShowScreen("FlightData");
         }
 
         private void hideWaypoints_CheckedChanged(object sender, EventArgs e)

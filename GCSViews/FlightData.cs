@@ -28,6 +28,7 @@ using GMap.NET.MapProviders;
 using System.ComponentModel;
 using log4net.Core;
 using System.Linq;
+using System.Diagnostics;
 
 // written by michael oborne
 namespace MissionPlanner.GCSViews
@@ -36,7 +37,7 @@ namespace MissionPlanner.GCSViews
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool threadrun = false;
+        public bool threadrun = false;
         int tickStart = 0;
         RollingPointPairList list1 = new RollingPointPairList(1200);
         RollingPointPairList list2 = new RollingPointPairList(1200);
@@ -765,7 +766,7 @@ namespace MissionPlanner.GCSViews
             hud1.doResize();
 
             thisthread = new Thread(mainloop);
-            thisthread.Name = "FD Mainloop";
+            thisthread.Name = "Flight Data Thread";
             thisthread.IsBackground = true;
             thisthread.Start();
         }
@@ -802,6 +803,8 @@ namespace MissionPlanner.GCSViews
 
             while (threadrun)
             {
+              
+                 
                 if (MainV2.comPort.giveComport == true)
                 {
                     System.Threading.Thread.Sleep(50);

@@ -17,6 +17,12 @@ namespace MissionPlanner.SmartAir
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         bool running = true;
+
+        public bool Running
+        {
+            get { return running; }
+           
+        }
         JudgeServer js;
         int intervall = 100;
 
