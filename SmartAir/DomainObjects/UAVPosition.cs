@@ -26,7 +26,7 @@ namespace MissionPlanner.SmartAir
 
      
         public float Distance;
-        [NonSerialized]
+        
         public float Yaw;
 
         public float Airspeed;
