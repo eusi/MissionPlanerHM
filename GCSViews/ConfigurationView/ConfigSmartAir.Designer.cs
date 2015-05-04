@@ -35,7 +35,6 @@
             this.txtJSPassword = new System.Windows.Forms.TextBox();
             this.myLabel3 = new MissionPlanner.Controls.MyLabel();
             this.myLabel2 = new MissionPlanner.Controls.MyLabel();
-            this.btnOpenExternalFlightData = new MissionPlanner.Controls.MyButton();
             this.txtJSUser = new System.Windows.Forms.TextBox();
             this.txtJSUrl = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -92,13 +91,6 @@
             resources.ApplyResources(this.myLabel2, "myLabel2");
             this.myLabel2.Name = "myLabel2";
             this.myLabel2.resize = false;
-            // 
-            // btnOpenExternalFlightData
-            // 
-            resources.ApplyResources(this.btnOpenExternalFlightData, "btnOpenExternalFlightData");
-            this.btnOpenExternalFlightData.Name = "btnOpenExternalFlightData";
-            this.btnOpenExternalFlightData.UseVisualStyleBackColor = true;
-            this.btnOpenExternalFlightData.Click += new System.EventHandler(this.btnOpenExternalFlightData_Click);
             // 
             // txtJSUser
             // 
@@ -185,7 +177,6 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnOpenExternalFlightData);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ConfigSmartAir";
@@ -207,7 +198,6 @@
         private System.Windows.Forms.TextBox txtJSPassword;
         private Controls.MyLabel myLabel3;
         private Controls.MyLabel myLabel2;
-        private Controls.MyButton btnOpenExternalFlightData;
         private System.Windows.Forms.TextBox txtJSUser;
         private System.Windows.Forms.TextBox txtJSUrl;
         private System.Windows.Forms.GroupBox groupBox2;
