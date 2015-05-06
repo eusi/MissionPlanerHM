@@ -392,41 +392,15 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
-                {
 
-                    smartAirWSHost.Abort();
-                    smartAirWSHost = null;
-                }
-
-                if (smartAirWSHost == null)
-                {
-                    smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
-
-                    var binding = new WebHttpBinding();
-                    binding.MaxReceivedMessageSize = 2147000000;
-                    //binding.OpenTimeout = new TimeSpan(0, 10, 0);
-                    //binding.CloseTimeout = new TimeSpan(0, 10, 0);
-                    //binding.SendTimeout = new TimeSpan(0, 10, 0);
-                    //binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
-                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), binding, "");
-                    
-                    ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
-                    stp.HttpHelpPageEnabled = false;
-                    stp.IncludeExceptionDetailInFaults = true;
-                    smartAirWSHost.Open();
-                    
-                    this.btnStopWS.Enabled = true;
-                    this.btnStartWS.Enabled = false;
-                    log.Info("SAM REST service started.");
-                
-                }
-
+                SmartAir.SmartAirContext.Instance.StartSAMService(this.txtWSUrl.Text);
+                this.btnStopWS.Enabled = true;
+                this.btnStartWS.Enabled = false;
             }
             catch (Exception ex)
-            {               
+            {
                 MessageBox.Show(ex.Message);
-                log.Error("Starting REST service failed.",ex);
+                log.Error("Starting REST service failed.", ex);
             }
         }
 
@@ -434,24 +408,14 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
-                {
-                    smartAirWSHost.Abort();
-                }
-                else if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Opened)
-                {
-                    smartAirWSHost.Close();
-
-                }
-                smartAirWSHost = null;
+                SmartAir.SmartAirContext.Instance.StopSAMService();
                 this.btnStopWS.Enabled = false;
                 this.btnStartWS.Enabled = true;
-                log.Info("SAM REST service stopped.");
             }
             catch (Exception ex)
-            {               
-               MessageBox.Show(ex.Message);
-               log.Error("Error stopping REST service.",ex);
+            {
+                MessageBox.Show(ex.Message);
+                log.Error("Stopping REST service failed.", ex);
             }
         }
 
@@ -461,22 +425,14 @@ namespace MissionPlanner.GCSViews
         }
 
  
-
-
-       public JudgeServerWorker JSWorker;
-      
-
         private void btnJSStart_Click(object sender, EventArgs e)
         {
             try
-            {                
-                JSWorker = new JudgeServerWorker(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
-                Thread JSWorkerThread = new Thread(new ThreadStart(JSWorker.GetAndSendInfo));
-             
-                JSWorkerThread.Start();
+            {          
+                SmartAirContext.Instance.StartJudgeServer(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
-                log.Info("Connection to judge server established");
+       
             }
             catch (Exception ex)
             {
@@ -492,12 +448,11 @@ namespace MissionPlanner.GCSViews
         {
             try
             {
-                if (JSWorker != null)
-                    JSWorker.Stop();
 
+                SmartAir.SmartAirContext.Instance.StopJudgeServer();
                 btnJSStart.Enabled = true;
                 btnJSStop.Enabled = false;
-                log.Info("Connection to judge server closed.");
+
             }
             catch (Exception ex)
             {
@@ -553,7 +508,7 @@ namespace MissionPlanner.GCSViews
 
         private Dictionary<string, string[]> cmdParamNames = new Dictionary<string, string[]>();
 
-     public   WebServiceHost smartAirWSHost;
+     
 
         public enum altmode
         {

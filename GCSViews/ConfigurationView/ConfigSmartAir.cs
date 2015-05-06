@@ -79,18 +79,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 samRESTURL = MainV2.config["samRESTUrl"].ToString();
             this.txtWSUrl.Text = samRESTURL;
 
-            if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Opened)
-            {
-                this.btnStopWS.Enabled = true;
-                this.btnStartWS.Enabled = false;
-            }
-            if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Opened)
+         
+            if (SmartAir.SmartAirContext.Instance.IsSAMServiceRunning)
             {
                 this.btnStopWS.Enabled = true;
                 this.btnStartWS.Enabled = false;
             }
 
-            if (FlightPlanner.instance.JSWorker != null && FlightPlanner.instance.JSWorker.Running)
+            if (SmartAir.SmartAirContext.Instance.IsJudgeServerRunning)
             {
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
@@ -151,36 +147,10 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             try
             {
-                if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Faulted)
-                {
 
-                    FlightPlanner.instance.smartAirWSHost.Abort();
-                    FlightPlanner.instance.smartAirWSHost = null;
-                }
-
-                if (FlightPlanner.instance.smartAirWSHost == null)
-                {
-                    FlightPlanner.instance.smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(this.txtWSUrl.Text));
-
-                    var binding = new WebHttpBinding();
-                    binding.MaxReceivedMessageSize = 2147000000;
-                    //binding.OpenTimeout = new TimeSpan(0, 10, 0);
-                    //binding.CloseTimeout = new TimeSpan(0, 10, 0);
-                    //binding.SendTimeout = new TimeSpan(0, 10, 0);
-                    //binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
-                    ServiceEndpoint ep = FlightPlanner.instance.smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), binding, "");
-
-                    ServiceDebugBehavior stp = FlightPlanner.instance.smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
-                    stp.HttpHelpPageEnabled = false;
-                    stp.IncludeExceptionDetailInFaults = true;
-                    FlightPlanner.instance.smartAirWSHost.Open();
-
-                    this.btnStopWS.Enabled = true;
-                    this.btnStartWS.Enabled = false;
-                    log.Info("SAM REST service started.");
-
-                }
-
+                SmartAir.SmartAirContext.Instance.StartSAMService(this.txtWSUrl.Text);
+                this.btnStopWS.Enabled = true;
+                this.btnStartWS.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -193,24 +163,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             try
             {
-                if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Faulted)
-                {
-                    FlightPlanner.instance.smartAirWSHost.Abort();
-                }
-                else if (FlightPlanner.instance.smartAirWSHost != null && FlightPlanner.instance.smartAirWSHost.State == CommunicationState.Opened)
-                {
-                    FlightPlanner.instance.smartAirWSHost.Close();
-
-                }
-                FlightPlanner.instance.smartAirWSHost = null;
+                SmartAir.SmartAirContext.Instance.StopSAMService();
                 this.btnStopWS.Enabled = false;
                 this.btnStartWS.Enabled = true;
-                log.Info("SAM REST service stopped.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                log.Error("Error stopping REST service.", ex);
+                log.Error("Stopping REST service failed.", ex);
             }
         }
 
@@ -218,17 +178,14 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             try
             {
-                FlightPlanner.instance.JSWorker = new JudgeServerWorker(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.numIntervall.Value));
-                Thread JSWorkerThread = new Thread(new ThreadStart(FlightPlanner.instance.JSWorker.GetAndSendInfo));
-
-                JSWorkerThread.Start();
+                SmartAir.SmartAirContext.Instance.StartJudgeServer(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.numIntervall.Value));
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
-                log.Info("Connection to judge server established");
+                
             }
             catch (Exception ex)
             {
-
+                SmartAir.SmartAirContext.Instance.StopSAMService();
                 log.Error("Judge Server connection error.", ex);
                 MessageBox.Show(ex.Message);
 
@@ -239,16 +196,11 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         {
             try
             {
-                if (FlightPlanner.instance.JSWorker != null)
-                {
 
-                    FlightPlanner.instance.JSWorker.Stop();
-                    FlightPlanner.instance.JSWorker = null;
-                }
-
+                SmartAir.SmartAirContext.Instance.StopJudgeServer();
                 btnJSStart.Enabled = true;
                 btnJSStop.Enabled = false;
-                log.Info("Connection to judge server closed.");
+               
             }
             catch (Exception ex)
             {
@@ -261,18 +213,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
 
         private void btnOpenExternalFlightData_Click(object sender, EventArgs e)
         {
-            //// Open Flight Data Window
-            //var FlightData = new GCSViews.FlightData();
-
-            //ExternalFlightData fd = new ExternalFlightData();
-            //fd.Show();
-            //fd.TopLevel = true;
-            //fd.Visible = true;
-
-            //var FlightDataSwitcher = new MainSwitcher(fd);
-
-            //FlightDataSwitcher.AddScreen(new MainSwitcher.Screen("FlightData", FlightData, true));
-            //FlightDataSwitcher.ShowScreen("FlightData");
+            
         }
 
       

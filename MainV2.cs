@@ -1180,6 +1180,12 @@ namespace MissionPlanner
             }
             catch { }
 
+            if (SmartAir.SmartAirContext.Instance.IsJudgeServerRunning)
+                SmartAir.SmartAirContext.Instance.StopJudgeServer();
+
+            if (SmartAir.SmartAirContext.Instance.IsSAMServiceRunning)
+                SmartAir.SmartAirContext.Instance.StopSAMService();
+
             Utilities.adsb.Stop();
 
             Warnings.WarningEngine.Stop();

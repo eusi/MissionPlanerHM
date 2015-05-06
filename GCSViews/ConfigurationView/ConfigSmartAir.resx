@@ -144,13 +144,13 @@
     <value>12, 76</value>
   </data>
   <data name="myLabel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 23</value>
+    <value>73, 23</value>
   </data>
   <data name="myLabel5.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="myLabel5.Text" xml:space="preserve">
-    <value>Intervall</value>
+    <value>Intervall (ms)</value>
   </data>
   <data name="&gt;&gt;myLabel5.Name" xml:space="preserve">
     <value>myLabel5</value>

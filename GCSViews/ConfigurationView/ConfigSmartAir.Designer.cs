@@ -53,9 +53,14 @@
             // numIntervall
             // 
             resources.ApplyResources(this.numIntervall, "numIntervall");
+            this.numIntervall.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numIntervall.Name = "numIntervall";
             this.numIntervall.Value = new decimal(new int[] {
-            10,
+            100,
             0,
             0,
             0});

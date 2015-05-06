@@ -7,6 +7,10 @@ using System.Text;
 using System.Drawing;
 using log4net;
 using System.Reflection;
+using System.ServiceModel.Web;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.Threading;
 
 namespace MissionPlanner.SmartAir
 {
@@ -18,6 +22,105 @@ namespace MissionPlanner.SmartAir
         private static volatile SmartAirContext instance;
         private static object syncRoot = new Object();
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        WebServiceHost smartAirWSHost;
+        JudgeServerWorker JSWorker;
+        
+
+        public bool StartJudgeServer(string url, string username, string password,int intervall){
+
+            JSWorker = new JudgeServerWorker(url, username, password, intervall, intervall, intervall);
+            Thread JSObstaclesThread = new Thread(new ThreadStart(JSWorker.GetObstacles));
+            JSObstaclesThread.Name = "JSObstaclesThread";
+            JSObstaclesThread.Start();
+
+            Thread JSServerInfoThread = new Thread(new ThreadStart(JSWorker.GetServerInfo));
+            JSServerInfoThread.Name = "JSServerInfoThread";
+            JSServerInfoThread.Start();
+
+            Thread JSUAVPosThread = new Thread(new ThreadStart(JSWorker.SetUAVPosition));
+            JSUAVPosThread.Name = "JSUAVPosThread";
+            JSUAVPosThread.Start();
+
+            log.Info("Connection to judge server established");
+            return true;
+        }
+
+       public void StopJudgeServer(){ 
+           
+           if (JSWorker != null)
+                {
+
+                    JSWorker.Stop();
+                   JSWorker = null;
+                log.Info("Connection to judge server closed.");
+
+                }}
+
+        public bool IsSAMServiceRunning
+        {
+            get { return (smartAirWSHost != null && (smartAirWSHost.State==System.ServiceModel.CommunicationState.Opened ||smartAirWSHost.State==System.ServiceModel.CommunicationState.Opening));  }
+           
+        }
+
+        public bool IsJudgeServerRunning
+        {
+            get { return (JSWorker != null && JSWorker.Running); }
+
+        }
+
+
+        public bool StartSAMService(string WSUrl)
+        {
+           
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+                    log.Warn("SAM REST service was in faulted state. Restart service...");
+                    smartAirWSHost.Abort();
+                    smartAirWSHost = null;
+                }
+
+                if (smartAirWSHost == null)
+                {
+                    smartAirWSHost = new WebServiceHost(typeof(MissionPlanner.SmartAir.MissionPlannerService), new Uri(WSUrl));
+
+                    var binding = new WebHttpBinding();
+                    binding.MaxReceivedMessageSize = 2147000000;
+                    //binding.OpenTimeout = new TimeSpan(0, 10, 0);
+                    //binding.CloseTimeout = new TimeSpan(0, 10, 0);
+                    //binding.SendTimeout = new TimeSpan(0, 10, 0);
+                    //binding.ReceiveTimeout = new TimeSpan(0, 10, 0);
+                    ServiceEndpoint ep = smartAirWSHost.AddServiceEndpoint(typeof(SmartAir.IMissionPlannerService), binding, "");
+
+                    ServiceDebugBehavior stp = smartAirWSHost.Description.Behaviors.Find<ServiceDebugBehavior>();
+                    stp.HttpHelpPageEnabled = false;
+                    stp.IncludeExceptionDetailInFaults = true;
+                    smartAirWSHost.Open();
+                 
+                    log.Info("SAM REST service started.");
+
+                }
+            return true;
+        }
+
+        public bool StopSAMService(){
+
+          
+                if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Faulted)
+                {
+                    smartAirWSHost.Abort();
+                }
+                else if (smartAirWSHost != null && smartAirWSHost.State == CommunicationState.Opened)
+                {
+                    smartAirWSHost.Close();
+
+                }
+                smartAirWSHost = null;
+              
+                log.Info("SAM REST service stopped.");
+           return true;
+
+        }
 
         private SmartAirContext()
         { 
