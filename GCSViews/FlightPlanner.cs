@@ -49,7 +49,7 @@ namespace MissionPlanner.GCSViews
 
 
 
-        public void setNewWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode)
+        public void setNewWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, int currentMCRouteId)
         {
 
             try
@@ -63,23 +63,72 @@ namespace MissionPlanner.GCSViews
                     processToScreen(waypoints, true, false, false);
                 else if (insertionMode == RouteInsertionMode.ClearPendingRoutes)
                 {
-                       // delete pending routes from grid
-                        for (int i = Commands.Rows.Count - 1; i >= 0; i--)
+
+                    try
+                    {
+                        bool bRouteFound = false;
+                        if (SmartAirContext.Instance.UAVPosition != null && Commands.Rows.Count > 0)
                         {
-                            var cell = Commands.Rows[i].Cells[routeId.Index] as DataGridViewTextBoxCell;
-                            List<int> receivedRouteIds = waypoints.Select(x => x.routeId).Distinct().ToList();
-                            int routeIdOfCell;
-                            if (cell != null && cell.Value != null && int.TryParse(cell.Value.ToString(), out routeIdOfCell) && receivedRouteIds.Contains(routeIdOfCell))
+                            checkIfWpUpdateIsValid(currentMCRouteId);
+
+                            // find current route
+                            for (int i = Commands.Rows.Count - 1; i >= 0; i--)
                             {
-                                Commands.Rows.RemoveAt(i);
+
+                                var cell = Commands.Rows[i].Cells[routeId.Index] as DataGridViewTextBoxCell;
+
+                                int routeIdOfCell;
+                                if (cell != null && cell.Value != null && int.TryParse(cell.Value.ToString(), out routeIdOfCell) && routeIdOfCell == currentMCRouteId)
+                                {
+                                    // last waypoint of current route found                                     
+                                    
+                                    quickadd = true;
+                                    // delete all waypoints above
+                                    for (int j = Commands.Rows.Count - 1; j > i; j--)
+                                    {
+                                        Commands.Rows.RemoveAt(j);
+                                    }
+
+
+                                    //    quickadd = false;
+                                    bRouteFound = true;
+                                    break;
+                                }
+
+
+                            }
+
+                            if (!bRouteFound)
+                            {
+                                // no route found
+                                if (currentMCRouteId == 0)
+                                {
+                                    // no wp in list with currentRouteId 0 --> drone is flying to homepoint
+                                    log.Info("Heading to home --> Remove all waypoints before inserting new ones");
+                                    Commands.Rows.Clear();
+                                }
+                                else
+                                    log.WarnFormat("Current route id {0} not found in list. No waypoint are removed. Append only.", currentMCRouteId);
+
+
                             }
                         }
-                    
+
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is MissionPlanner.SmartAir.DomainObjects.OutOfSyncException || ex is MissionPlanner.SmartAir.DomainObjects.DangerousUpdateException)
+                            throw ex;
+
+                        log.Error("Error deleting pending. All new waypoints will be appended --> duplicate waypoints have to be deleted manually.", ex);
+                        this.Commands.UseWaitCursor = false;
+                    }
+
                     // append new waypoints                    
-                   processToScreen(waypoints, true, false, false);
-                  
+                    processToScreen(waypoints, true, false, false);
+
                 }
-                                
+
 
                 writeKML();
 
@@ -89,17 +138,55 @@ namespace MissionPlanner.GCSViews
                 if (port.BaseStream.IsOpen)
                 {
                     BUT_write_Click(null, null);
-                   
+
                 }
                 this.Commands.UseWaitCursor = false;
                 log.Info("Waypoints successfully set.");
             }
             catch (Exception ex)
             {
-                log.Error("Error setting new waypoints.",ex);
                 this.Commands.UseWaitCursor = false;
+                if (ex is MissionPlanner.SmartAir.DomainObjects.OutOfSyncException || ex is MissionPlanner.SmartAir.DomainObjects.DangerousUpdateException)
+                    throw ex;
+                log.Error("Error setting new waypoints.", ex);
+               
             }
 
+        }
+
+        public void checkIfWpUpdateIsValid(int currentMCRouteId)
+        {
+            int currentMPRouteId = SmartAirContext.Instance.UAVPosition.routeId;
+
+            if (currentMPRouteId != currentMCRouteId)
+            {
+                log.Fatal("Importing routes faild. MP and MC are out of sync. Please try import again.");
+
+                // MC and MP out of sync --> abort
+                throw new MissionPlanner.SmartAir.DomainObjects.OutOfSyncException("Importing routes faild. MP and MC are out of sync. Please try import again.");
+
+            }
+
+            //try
+            //{
+            //    // check shadow wp list
+            //    if (SmartAir.SmartAirContext.Instance.WayPointsTableOfAutoPilot != null && SmartAir.SmartAirContext.Instance.WayPointsTableOfAutoPilot.Count > SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot + 1)
+            //    {
+            //        var nextOfNextWPOfTable = SmartAir.SmartAirContext.Instance.WayPointsTableOfAutoPilot[(int)SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot + 1];
+            //        var NextWPOfTable = SmartAir.SmartAirContext.Instance.WayPointsTableOfAutoPilot[(int)SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot];
+            //        if (NextWPOfTable.routeId != nextOfNextWPOfTable.routeId)
+            //            throw new MissionPlanner.SmartAir.DomainObjects.DangerousUpdateException("Route update is not possible/too dangerous. The following waypoint of the current one belongs to another route (different route id). Lost of update is possible. Please try again." );
+
+
+            //    }
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
+           
+        
         }
 
         public List<Locationwp> getWayPoints()
@@ -151,23 +238,23 @@ namespace MissionPlanner.GCSViews
 
         public void drawZones(List<Zone> zonesToDraw)
         {
-            
+
             foreach (var zones in zonesToDraw)
             {
 
-                
+
                 GMapPolygon polygon = new GMapPolygon(zones.ZonePoints, zones.ZoneType.ToString());
 
                 polygon.Fill = new SolidBrush(Color.FromArgb(0, zones.Color.red, zones.Color.green, zones.Color.blue));
-                polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue),3);
-      
+                polygon.Stroke = new Pen(Color.FromArgb(255, zones.Color.red, zones.Color.green, zones.Color.blue), 3);
+
 
                 deleteZone(zones.ZoneType.ToString());
                 drawnpolygonsoverlay.Polygons.Add(polygon);
-         
+
             }
             MainMap.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
-            
+
         }
 
         private void deleteZone(String name)
@@ -186,24 +273,24 @@ namespace MissionPlanner.GCSViews
         }
 
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
-        {                        
+        {
             foreach (var target in targetsToDraw)
             {
                 // remove existing marker
                 var existingTargets = drawnpolygonsoverlay.Markers.Where(x => x.ToolTipText == target.TargetType.ToString()).ToList();
-                for (int i = existingTargets.Count()-1; i >= 0; i--)
+                for (int i = existingTargets.Count() - 1; i >= 0; i--)
                 {
                     drawnpolygonsoverlay.Markers.Remove(existingTargets[i]);
                 }
-                            
-                    
-                
+
+
+
                 // add marker
                 var image = getImg(target.TargetType);
-                if(image != null)
-                    drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, image,target.TargetType.ToString()));                    
+                if (image != null)
+                    drawnpolygonsoverlay.Markers.Add(new TargetMarker(target.Coordinates, image, target.TargetType.ToString()));
                 else
-                    drawnpolygonsoverlay.Markers.Add(new GMarkerGoogle(target.Coordinates,GMarkerGoogleType.arrow));
+                    drawnpolygonsoverlay.Markers.Add(new GMarkerGoogle(target.Coordinates, GMarkerGoogleType.arrow));
             }
         }
 
@@ -227,8 +314,8 @@ namespace MissionPlanner.GCSViews
                     return null;
             }
         }
-        
-        
+
+
 
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
@@ -258,7 +345,7 @@ namespace MissionPlanner.GCSViews
 
             foreach (var newObstacle in obstacleToDraw.MovingObstacles)
             {
-             
+
                 GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.White, 1);
@@ -268,7 +355,7 @@ namespace MissionPlanner.GCSViews
                 GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.SphereRadius.ToString() + " feets");
                 movingobstaclesoverlay.Markers.Add(marker);
 
- 
+
             }
 
         }
@@ -277,7 +364,7 @@ namespace MissionPlanner.GCSViews
         {
 
             int Points = 100;
-            int Radius = (int) radius;
+            int Radius = (int)radius;
             int Direction = 1;
             int startangle = 0;
 
@@ -319,15 +406,15 @@ namespace MissionPlanner.GCSViews
 
         public void hideWaypoint(int wpIndexToHide)
         {
-           
+
             try
             {
                 if (wpIndexToHide > 0 && hideWaypoints.Checked)
                 {
 
                     writeKML();
-  
-                    for (int i = 1; i <= wpIndexToHide; i++ ) 
+
+                    for (int i = 1; i <= wpIndexToHide; i++)
                     {
                         fullpointlist.RemoveAt(1);
 
@@ -343,7 +430,7 @@ namespace MissionPlanner.GCSViews
 
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -375,13 +462,13 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                log.Error("Draw server time failed.",ex);
+                log.Error("Draw server time failed.", ex);
 
             }
 
         }
 
-        
+
         private void btnSmartAir_Click(object sender, EventArgs e)
         {
             pnlSmartAir.Visible = true;
@@ -424,22 +511,22 @@ namespace MissionPlanner.GCSViews
             pnlSmartAir.Visible = false;
         }
 
- 
+
         private void btnJSStart_Click(object sender, EventArgs e)
         {
             try
-            {          
+            {
                 SmartAirContext.Instance.StartJudgeServer(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
                 btnJSStart.Enabled = false;
                 btnJSStop.Enabled = true;
-       
+
             }
             catch (Exception ex)
             {
 
-                log.Error("Judge Server connection error.", ex); 
+                log.Error("Judge Server connection error.", ex);
                 MessageBox.Show(ex.Message);
-                
+
             }
 
         }
@@ -461,7 +548,7 @@ namespace MissionPlanner.GCSViews
                 MessageBox.Show(ex.Message);
 
             }
-           
+
         }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
@@ -480,7 +567,7 @@ namespace MissionPlanner.GCSViews
 
         }
         #endregion
-        
+
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow = 0;
         public bool quickadd = false;
@@ -495,7 +582,7 @@ namespace MissionPlanner.GCSViews
 
         public static FlightPlanner instance = null;
 
-        public bool autopan {get;set;}
+        public bool autopan { get; set; }
 
         public List<PointLatLngAlt> pointlist = new List<PointLatLngAlt>(); // used to calc distance
         public List<PointLatLngAlt> fullpointlist = new List<PointLatLngAlt>();
@@ -508,7 +595,7 @@ namespace MissionPlanner.GCSViews
 
         private Dictionary<string, string[]> cmdParamNames = new Dictionary<string, string[]>();
 
-     
+
 
         public enum altmode
         {
@@ -657,8 +744,8 @@ namespace MissionPlanner.GCSViews
                         cell.Value = 50;
                     if (ans == 0 && (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2))
                         cell.Value = 15;
-                    
-                        // not online and verify alt via srtm
+
+                    // not online and verify alt via srtm
                     if (CHK_verifyheight.Checked) // use srtm data
                     {
                         // is absolute but no verify
@@ -674,7 +761,7 @@ namespace MissionPlanner.GCSViews
 
                         }
                     }
-                    
+
                     cell.DataGridView.EndEdit();
                 }
                 else
@@ -714,14 +801,14 @@ namespace MissionPlanner.GCSViews
             coords1.Lat = mouseposdisplay.Lat;
             coords1.Lng = mouseposdisplay.Lng;
             coords1.Alt = srtm.getAltitude(mouseposdisplay.Lat, mouseposdisplay.Lng, MainMap.Zoom);
-            
+
             try
             {
                 PointLatLng last;
 
                 if (pointlist[pointlist.Count - 1] == null)
                     return;
-                
+
                 last = pointlist[pointlist.Count - 1];
 
                 double lastdist = MainMap.MapProvider.Projection.GetDistance(last, currentMarker.Position);
@@ -796,7 +883,7 @@ namespace MissionPlanner.GCSViews
             // save wp file
             if (keyData == (Keys.Control | Keys.S))
             {
-                saveWPFileToolStripMenuItem_Click(null,null);
+                saveWPFileToolStripMenuItem_Click(null, null);
                 return true;
             }
 
@@ -841,7 +928,7 @@ namespace MissionPlanner.GCSViews
             comboBoxMapType.SelectedItem = MainMap.MapProvider;
 
             comboBoxMapType.SelectedValueChanged += new System.EventHandler(this.comboBoxMapType_SelectedValueChanged);
-           
+
             MainMap.RoutesEnabled = true;
 
             //MainMap.MaxZoom = 18;
@@ -890,11 +977,11 @@ namespace MissionPlanner.GCSViews
             objectsoverlay.Markers.Clear();
 
             // set current marker
-            currentMarker = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.red);
+            currentMarker = new GMarkerGoogle(MainMap.Position, GMarkerGoogleType.red);
             //top.Markers.Add(currentMarker);
 
             // map center
-            center = new GMarkerGoogle(MainMap.Position,GMarkerGoogleType.none);
+            center = new GMarkerGoogle(MainMap.Position, GMarkerGoogleType.none);
             top.Markers.Add(center);
 
             MainMap.Zoom = 3;
@@ -924,7 +1011,7 @@ namespace MissionPlanner.GCSViews
             {
                 try
                 {
-                    var index = GMapProviders.List.FindIndex(x =>  (x.Name == MainV2.getConfig("MapType")) );
+                    var index = GMapProviders.List.FindIndex(x => (x.Name == MainV2.getConfig("MapType")));
 
                     if (index != -1)
                         comboBoxMapType.SelectedIndex = index;
@@ -937,7 +1024,7 @@ namespace MissionPlanner.GCSViews
             Up.Image = global::MissionPlanner.Properties.Resources.up;
             Down.Image = global::MissionPlanner.Properties.Resources.down;
 
-          
+
         }
 
         void updateCMDParams()
@@ -1259,7 +1346,9 @@ namespace MissionPlanner.GCSViews
                 }
             }
 
+
             DataGridViewComboBoxCell cell = Commands.Rows[e.RowIndex].Cells[Command.Index] as DataGridViewComboBoxCell;
+
             if (cell.Value == null)
             {
                 cell.Value = "WAYPOINT";
@@ -1275,12 +1364,23 @@ namespace MissionPlanner.GCSViews
             if (quickadd)
                 return;
 
+
+
             try
             {
                 Commands.CurrentCell = Commands.Rows[e.RowIndex].Cells[0];
 
                 if (Commands.Rows.Count > 1)
                 {
+                    var predecessorRouteId = 0;
+
+                    if (!int.TryParse(Commands.Rows[e.RowIndex - 1].Cells[routeId.Index].Value.ToString(), out predecessorRouteId))
+                        log.Error("Error adding waypoint manually. The Route id of of the predecessor could not be parsed. Using id 0 instead.");
+
+
+                    Commands.Rows[e.RowIndex].Cells[routeId.Index].Value = predecessorRouteId;
+                    Commands.Rows[e.RowIndex].Cells[Task.Index].Value = SamType.MANUAL.ToString();
+
 
                     if (Commands.Rows[e.RowIndex - 1].Cells[Command.Index].Value.ToString() == "WAYPOINT")
                     {
@@ -1291,6 +1391,7 @@ namespace MissionPlanner.GCSViews
                         Commands.CurrentCell = Commands[1, e.RowIndex - 1];
                         //Commands_RowEnter(sender, new DataGridViewCellEventArgs(0, e.RowIndex-1));
                     }
+
                 }
             }
             catch (Exception) { }
@@ -1336,7 +1437,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point,GMarkerGoogleType.green);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green);
                 m.ToolTipMode = MarkerTooltipMode.Always;
                 m.ToolTipText = tag;
                 m.Tag = tag;
@@ -1363,7 +1464,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point,GMarkerGoogleType.red);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
                 m.ToolTipMode = MarkerTooltipMode.Never;
                 m.ToolTipText = "grid" + tag;
                 m.Tag = "grid" + tag;
@@ -1388,7 +1489,7 @@ namespace MissionPlanner.GCSViews
                 // thread for updateing row numbers
                 for (int a = 0; a < Commands.Rows.Count - 0; a++)
                 {
-                   // this.BeginInvoke((MethodInvoker)delegate
+                    // this.BeginInvoke((MethodInvoker)delegate
                     {
                         try
                         {
@@ -1505,7 +1606,7 @@ namespace MissionPlanner.GCSViews
                                 pointlist.Add(new PointLatLngAlt(double.Parse(cell3), double.Parse(cell4), (int)double.Parse(cell2) + homealt, "ROI" + (a + 1).ToString()) { color = Color.Red });
                                 // do set roi is not a nav command. so we dont route through it
                                 //fullpointlist.Add(pointlist[pointlist.Count - 1]);
-                                GMarkerGoogle m = new GMarkerGoogle(new PointLatLng(double.Parse(cell3), double.Parse(cell4)),GMarkerGoogleType.red);
+                                GMarkerGoogle m = new GMarkerGoogle(new PointLatLng(double.Parse(cell3), double.Parse(cell4)), GMarkerGoogleType.red);
                                 m.ToolTipMode = MarkerTooltipMode.Always;
                                 m.ToolTipText = (a + 1).ToString();
                                 m.Tag = (a + 1).ToString();
@@ -1671,7 +1772,7 @@ namespace MissionPlanner.GCSViews
 
         private void RegenerateWPRoute(List<PointLatLngAlt> fullpointlist)
         {
-            
+
 
             route.Clear();
             homeroute.Clear();
@@ -1683,7 +1784,7 @@ namespace MissionPlanner.GCSViews
             PointLatLngAlt lastnonspline = fullpointlist[0];
             List<PointLatLngAlt> splinepnts = new List<PointLatLngAlt>();
             List<PointLatLngAlt> wproute = new List<PointLatLngAlt>();
-            
+
             // add home - this causeszx the spline to always have a straight finish
             fullpointlist.Add(fullpointlist[0]);
 
@@ -1714,17 +1815,18 @@ namespace MissionPlanner.GCSViews
                         //sp._origin = sp.pv_location_to_vector(lastpnt);
                         //sp._destination = sp.pv_location_to_vector(fullpointlist[0]);
 
-                       // sp._spline_origin_vel = sp.pv_location_to_vector(lastpnt) - sp.pv_location_to_vector(lastnonspline);
+                        // sp._spline_origin_vel = sp.pv_location_to_vector(lastpnt) - sp.pv_location_to_vector(lastnonspline);
 
                         sp.set_wp_origin_and_destination(sp.pv_location_to_vector(lastpnt2), sp.pv_location_to_vector(lastpnt));
 
                         sp._flags.reached_destination = true;
 
-                        for (int no = 1; no < (splinepnts.Count-1); no++)
+                        for (int no = 1; no < (splinepnts.Count - 1); no++)
                         {
                             MissionPlanner.Controls.Waypoints.Spline2.spline_segment_end_type segtype = MissionPlanner.Controls.Waypoints.Spline2.spline_segment_end_type.SEGMENT_END_STRAIGHT;
 
-                            if (no < (splinepnts.Count - 2)) {
+                            if (no < (splinepnts.Count - 2))
+                            {
                                 segtype = MissionPlanner.Controls.Waypoints.Spline2.spline_segment_end_type.SEGMENT_END_SPLINE;
                             }
 
@@ -1737,7 +1839,7 @@ namespace MissionPlanner.GCSViews
                                 float t = 1f;
                                 //sp.update_spline();
                                 sp.advance_spline_target_along_track(t);
-                               // Console.WriteLine(sp.pv_vector_to_location(sp.target_pos).ToString());
+                                // Console.WriteLine(sp.pv_vector_to_location(sp.target_pos).ToString());
                                 list.Add(sp.pv_vector_to_location(sp.target_pos));
                             }
 
@@ -1746,10 +1848,10 @@ namespace MissionPlanner.GCSViews
                         }
 
                         list.ForEach(x =>
-                            {
-                                wproute.Add(x);
-                            });
-                        
+                        {
+                            wproute.Add(x);
+                        });
+
 
                         splinepnts.Clear();
 
@@ -1770,12 +1872,12 @@ namespace MissionPlanner.GCSViews
                     lastpnt = fullpointlist[a];
                 }
             }
-             /*
+            /*
 
-            List<PointLatLng> list = new List<PointLatLng>();
-            fullpointlist.ForEach(x => { list.Add(x); });
-            route.Points.AddRange(list);
-            */
+           List<PointLatLng> list = new List<PointLatLng>();
+           fullpointlist.ForEach(x => { list.Add(x); });
+           route.Points.AddRange(list);
+           */
             // route is full need to get 1, 2 and last point as "HOME" route
 
             int count = wproute.Count;
@@ -1788,8 +1890,8 @@ namespace MissionPlanner.GCSViews
                 wproute.ForEach(x =>
                 {
                     counter++;
-                    if (counter == 1){ homepoint = x; return; }
-                    if (counter == 2){ homeroute.Points.Add(x); homeroute.Points.Add(homepoint); }
+                    if (counter == 1) { homepoint = x; return; }
+                    if (counter == 2) { homeroute.Points.Add(x); homeroute.Points.Add(homepoint); }
                     if (counter == count - 1) { lastpoint = x; }
                     if (counter == count) { homeroute.Points.Add(x); homeroute.Points.Add(lastpoint); return; }
                     route.Points.Add(x);
@@ -1806,7 +1908,7 @@ namespace MissionPlanner.GCSViews
                 polygonsoverlay.Routes.Add(route);
             }
         }
-        
+
         /// <summary>
         /// used to redraw the polygon
         /// </summary>
@@ -1855,7 +1957,7 @@ namespace MissionPlanner.GCSViews
                 }
             }
         }
-        
+
         void setgradanddistandaz()
         {
             int a = 0;
@@ -1881,7 +1983,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-       
+
 
         /// <summary>
         /// Saves a waypoint writer file
@@ -2005,8 +2107,9 @@ namespace MissionPlanner.GCSViews
 
                 log.Info("Done");
             }
-            catch { 
-                error = 1; throw; 
+            catch
+            {
+                error = 1; throw;
             }
             try
             {
@@ -2078,7 +2181,7 @@ namespace MissionPlanner.GCSViews
 
                     byte cmd = (byte)(int)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
 
-                    if (cmd < (byte)MAVLink.MAV_CMD.LAST && double.Parse(Commands[Alt.Index,a].Value.ToString()) < double.Parse(TXT_altwarn.Text))
+                    if (cmd < (byte)MAVLink.MAV_CMD.LAST && double.Parse(Commands[Alt.Index, a].Value.ToString()) < double.Parse(TXT_altwarn.Text))
                     {
                         if (cmd != (byte)MAVLink.MAV_CMD.TAKEOFF &&
                             cmd != (byte)MAVLink.MAV_CMD.LAND &&
@@ -2135,7 +2238,7 @@ namespace MissionPlanner.GCSViews
                 catch { throw new Exception("Your home location is invalid"); }
 
                 log.Info("wps values " + MainV2.comPort.MAV.wps.Values.Count);
-                log.Info("cmd rows " +(Commands.Rows.Count + 1)); // + home
+                log.Info("cmd rows " + (Commands.Rows.Count + 1)); // + home
 
                 if (MainV2.comPort.MAV.wps.Values.Count == (Commands.Rows.Count + 1))
                 {
@@ -2156,7 +2259,7 @@ namespace MissionPlanner.GCSViews
                         {
                             temp.command = (byte)Commands.Rows[a].Cells[Command.Index].Tag;
                         }
-                        else 
+                        else
                         {
                             temp.command = (byte)(int)Enum.Parse(typeof(MAVLink.MAV_CMD), Commands.Rows[a].Cells[Command.Index].Value.ToString(), false);
                         }
@@ -2167,8 +2270,8 @@ namespace MissionPlanner.GCSViews
                         temp.param2 = (float)(double.Parse(Commands.Rows[a].Cells[Param2.Index].Value.ToString()));
                         temp.param3 = (float)(double.Parse(Commands.Rows[a].Cells[Param3.Index].Value.ToString()));
                         temp.param4 = (float)(double.Parse(Commands.Rows[a].Cells[Param4.Index].Value.ToString()));
-                        
-                       
+
+
 
                         if (temp.command == item.command &&
                             temp.x == item.x &&
@@ -2200,19 +2303,19 @@ namespace MissionPlanner.GCSViews
 
                 port.setWP(home, (ushort)0, MAVLink.MAV_FRAME.GLOBAL, 0);
 
-                   List<Locationwp> tempWPList = new List<Locationwp>();
-                   home.IsLoiterInterruptAllowed = false;
-                   tempWPList.Add(home);
+                List<Locationwp> tempWPList = new List<Locationwp>();
+                home.IsLoiterInterruptAllowed = false;
+                tempWPList.Add(home);
 
                 MAVLink.MAV_FRAME frame = MAVLink.MAV_FRAME.GLOBAL_RELATIVE_ALT;
-              
+
 
 
                 // process grid to memory eeprom
                 for (int a = 0; a < Commands.Rows.Count - 0; a++)
                 {
                     ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(a * 100 / Commands.Rows.Count, "Setting WP " + a);
-                    
+
                     Locationwp temp = new Locationwp();
                     if (Commands.Rows[a].Cells[Command.Index].Value.ToString().Contains("UNKNOWN"))
                     {
@@ -2241,7 +2344,7 @@ namespace MissionPlanner.GCSViews
                         }
                     }
 
-                   
+
                     temp.alt = (float)(double.Parse(Commands.Rows[a].Cells[Alt.Index].Value.ToString()) / MainV2.comPort.MAV.cs.multiplierdist);
                     temp.lat = (double.Parse(Commands.Rows[a].Cells[Lat.Index].Value.ToString()));
                     temp.lng = (double.Parse(Commands.Rows[a].Cells[Lon.Index].Value.ToString()));
@@ -2254,24 +2357,24 @@ namespace MissionPlanner.GCSViews
                     if (taskValue != null)
                     {
                         SamType tmp;
-                        if(Enum.TryParse(taskValue.ToString(), out tmp))
-                           temp.SamType = (int)tmp;
-                        else                        
+                        if (Enum.TryParse(taskValue.ToString(), out tmp))
+                            temp.SamType = (int)tmp;
+                        else
                             temp.SamType = 91;
-                        
+
                     }
-                    else                    
-                      temp.SamType = 91;
+                    else
+                        temp.SamType = 91;
 
                     temp.wpId = (int)(int.Parse(Commands.Rows[a].Cells[wpId.Index].Value.ToString()));
-                    temp.routeId = (int)(int.Parse(Commands.Rows[a].Cells[routeId.Index].Value.ToString())); 
+                    temp.routeId = (int)(int.Parse(Commands.Rows[a].Cells[routeId.Index].Value.ToString()));
 
                     if (Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value != null)
                         temp.IsLoiterInterruptAllowed = (bool)Commands.Rows[a].Cells[IsLoiterInterruptAllowed.Index].Value;
                     else
                         temp.IsLoiterInterruptAllowed = false;
 
-                    
+
                     MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(a + 1), frame, 0);
 
                     // we timed out while uploading wps/ command wasnt replaced/ command wasnt added
@@ -2281,16 +2384,16 @@ namespace MissionPlanner.GCSViews
                         port.setWPPartialUpdate((short)(a + 1), (short)(Commands.Rows.Count + 1));
                         // reupload this point.
                         ans = port.setWP(temp, (ushort)(a + 1), frame, 0);
-                    } 
+                    }
 
-                    if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_NO_SPACE) 
+                    if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_NO_SPACE)
                     {
                         e.ErrorMessage = "Upload failed, please reduce the number of wp's";
                         return;
                     }
                     if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_INVALID)
                     {
-                        e.ErrorMessage = "Upload failed, mission was rejected byt the Mav,\n item had a bad option wp# " +a+1+" "+ ans;
+                        e.ErrorMessage = "Upload failed, mission was rejected byt the Mav,\n item had a bad option wp# " + a + 1 + " " + ans;
                         return;
                     }
                     if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE)
@@ -2298,14 +2401,14 @@ namespace MissionPlanner.GCSViews
                         // invalid sequence can only occur if we failed to see a response from the apm when we sent the request.
                         // therefore it did see the request and has moved on that step, and so do we.
                         continue;
-                    } 
+                    }
                     if (ans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
                     {
                         e.ErrorMessage = "Upload wps failed " + Commands.Rows[a].Cells[Command.Index].Value.ToString() + " " + Enum.Parse(typeof(MAVLink.MAV_MISSION_RESULT), ans.ToString());
                         return;
                     }
                     tempWPList.Add(temp);
-                    
+
                 }
 
                 port.setWPACK();
@@ -2320,13 +2423,13 @@ namespace MissionPlanner.GCSViews
 
                 try
                 {
-                    port.setParam(new string[] {"LOITER_RAD","WP_LOITER_RAD"}, (float)(int.Parse(TXT_loiterrad.Text) / MainV2.comPort.MAV.cs.multiplierdist));
+                    port.setParam(new string[] { "LOITER_RAD", "WP_LOITER_RAD" }, (float)(int.Parse(TXT_loiterrad.Text) / MainV2.comPort.MAV.cs.multiplierdist));
                 }
                 catch
                 {
 
                 }
-                SmartAirContext.Instance.WayPointsTableOfAutoPilot=tempWPList;
+                SmartAirContext.Instance.WayPointsTableOfAutoPilot = tempWPList;
                 ((Controls.ProgressReporterDialogue)sender).UpdateProgressAndStatus(100, "Done.");
             }
             catch (Exception ex) { log.Error(ex); MainV2.comPort.giveComport = false; throw; }
@@ -2418,7 +2521,7 @@ namespace MissionPlanner.GCSViews
                 cell.Value = temp.p3;
                 cell = Commands.Rows[i].Cells[Param4.Index] as DataGridViewTextBoxCell;
                 cell.Value = temp.p4;
-             
+
                 DataGridViewCheckBoxCell IsLoiterInterruptAllowedcell = (Commands.Rows[i].Cells[IsLoiterInterruptAllowed.Index]) as DataGridViewCheckBoxCell;
                 IsLoiterInterruptAllowedcell.Value = temp.IsLoiterInterruptAllowed;
 
@@ -2429,7 +2532,7 @@ namespace MissionPlanner.GCSViews
                 cell.Value = temp.routeId;
 
                 cell = Commands.Rows[i].Cells[Task.Index] as DataGridViewTextBoxCell;
-                cell.Value = Enum.GetName(typeof(SamType),temp.SamType);
+                cell.Value = Enum.GetName(typeof(SamType), temp.SamType);
 
 
                 setWPParams();
@@ -2664,6 +2767,11 @@ namespace MissionPlanner.GCSViews
                     return;
                 if (e.ColumnIndex == Delete.Index && (e.RowIndex + 0) < Commands.RowCount) // delete
                 {
+                    if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
+                    {
+                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be deleted.");
+                        return;
+                    }
                     quickadd = true;
                     Commands.Rows.RemoveAt(e.RowIndex);
                     quickadd = false;
@@ -2671,6 +2779,11 @@ namespace MissionPlanner.GCSViews
                 }
                 if (e.ColumnIndex == Up.Index && e.RowIndex != 0) // up
                 {
+                    if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
+                    {
+                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be moved.");
+                        return;
+                    }
                     DataGridViewRow myrow = Commands.CurrentRow;
                     Commands.Rows.Remove(myrow);
                     Commands.Rows.Insert(e.RowIndex - 1, myrow);
@@ -2678,6 +2791,11 @@ namespace MissionPlanner.GCSViews
                 }
                 if (e.ColumnIndex == Down.Index && e.RowIndex < Commands.RowCount - 1) // down
                 {
+                    if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
+                    {
+                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be moved.");
+                        return;
+                    }
                     DataGridViewRow myrow = Commands.CurrentRow;
                     Commands.Rows.Remove(myrow);
                     Commands.Rows.Insert(e.RowIndex + 1, myrow);
@@ -2822,7 +2940,7 @@ namespace MissionPlanner.GCSViews
 
                 sr.Close();
 
-                
+
                 processToScreen(cmds, append);
 
                 writeKML();
@@ -2835,7 +2953,7 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-       
+
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
@@ -2900,7 +3018,7 @@ namespace MissionPlanner.GCSViews
 
         // marker
         GMapMarker currentMarker;
-        GMapMarker center = new GMarkerGoogle(new PointLatLng(0.0, 0.0),GMarkerGoogleType.none);
+        GMapMarker center = new GMarkerGoogle(new PointLatLng(0.0, 0.0), GMarkerGoogleType.none);
 
         // polygons
         GMapPolygon wppolygon;
@@ -2913,7 +3031,7 @@ namespace MissionPlanner.GCSViews
         public static GMapOverlay objectsoverlay; // where the markers a drawn
         public static GMapOverlay routesoverlay;// static so can update from gcs
         public static GMapOverlay polygonsoverlay; // where the track is drawn
-        public static GMapOverlay airportsoverlay; 
+        public static GMapOverlay airportsoverlay;
         public static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
         GMapOverlay drawnpolygonsoverlay;
         GMapOverlay stationaryobstaclesoverlay;
@@ -2950,7 +3068,8 @@ namespace MissionPlanner.GCSViews
                     rc.ResetColor();
                     MainMap.Invalidate(false);
                 }
-                if (item is GMapMarkerRallyPt) {
+                if (item is GMapMarkerRallyPt)
+                {
                     CurrentRallyPt = null;
                 }
                 if (item is GMapMarker)
@@ -3710,7 +3829,7 @@ namespace MissionPlanner.GCSViews
 
                 polygonsoverlay.Polygons.Add(line);
 
-                polygonsoverlay.Markers.Add(new GMarkerGoogle(MouseDownStart,GMarkerGoogleType.red));
+                polygonsoverlay.Markers.Add(new GMarkerGoogle(MouseDownStart, GMarkerGoogleType.red));
                 MainMap.Invalidate();
                 CustomMessageBox.Show("Distance: " + FormatDistance(MainMap.MapProvider.Projection.GetDistance(startmeasure, MouseDownStart), true) + " AZ: " + (MainMap.MapProvider.Projection.GetBearing(startmeasure, MouseDownStart).ToString("0")));
                 polygonsoverlay.Polygons.Remove(line);
@@ -3768,7 +3887,7 @@ namespace MissionPlanner.GCSViews
         {
             drawnpolygon.Points.Clear();
             drawnpolygonsoverlay.Clear();
-            
+
             int tag = 0;
             list.ForEach(x =>
             {
@@ -3880,7 +3999,10 @@ namespace MissionPlanner.GCSViews
                 {
                     try
                     {
-                        Commands.Rows.RemoveAt(no - 1); // home is 0
+                        if (Commands.Rows[no].Cells[wpId.Index].Value.ToString() == "0")
+                            Commands.Rows.RemoveAt(no - 1); // home is 0
+                        else
+                            CustomMessageBox.Show("The waypoint was imported from mission control and cannot be deleted.");
                     }
                     catch { CustomMessageBox.Show("error selecting wp, please try again."); }
                 }
@@ -4062,7 +4184,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point,GMarkerGoogleType.green);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green);
                 m.ToolTipMode = MarkerTooltipMode.Always;
                 m.ToolTipText = tag;
                 m.Tag = tag;
@@ -4239,7 +4361,7 @@ namespace MissionPlanner.GCSViews
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show("Failed to send new fence points "+ ex.ToString(),"Error");
+                CustomMessageBox.Show("Failed to send new fence points " + ex.ToString(), "Error");
             }
         }
 
@@ -4276,7 +4398,7 @@ namespace MissionPlanner.GCSViews
             }
 
             // do return location
-            geofenceoverlay.Markers.Add(new GMarkerGoogle(new PointLatLng(geofencepolygon.Points[0].Lat, geofencepolygon.Points[0].Lng),GMarkerGoogleType.red) { ToolTipMode = MarkerTooltipMode.OnMouseOver, ToolTipText = "GeoFence Return" });
+            geofenceoverlay.Markers.Add(new GMarkerGoogle(new PointLatLng(geofencepolygon.Points[0].Lat, geofencepolygon.Points[0].Lng), GMarkerGoogleType.red) { ToolTipMode = MarkerTooltipMode.OnMouseOver, ToolTipText = "GeoFence Return" });
             geofencepolygon.Points.RemoveAt(0);
 
             // add now - so local points are calced
@@ -4352,7 +4474,7 @@ namespace MissionPlanner.GCSViews
                         if (a == 0)
                         {
                             geofenceoverlay.Markers.Clear();
-                            geofenceoverlay.Markers.Add(new GMarkerGoogle(new PointLatLng(double.Parse(items[0]), double.Parse(items[1])),GMarkerGoogleType.red) { ToolTipMode = MarkerTooltipMode.OnMouseOver, ToolTipText = "GeoFence Return" });
+                            geofenceoverlay.Markers.Add(new GMarkerGoogle(new PointLatLng(double.Parse(items[0]), double.Parse(items[1])), GMarkerGoogleType.red) { ToolTipMode = MarkerTooltipMode.OnMouseOver, ToolTipText = "GeoFence Return" });
                             MainMap.UpdateMarkerLocalPosition(geofenceoverlay.Markers[0]);
                         }
                         else
@@ -4499,7 +4621,7 @@ namespace MissionPlanner.GCSViews
 
             quickadd = true;
 
-            for (; a <= (startangle+360) && a >= 0; a += step)
+            for (; a <= (startangle + 360) && a >= 0; a += step)
             {
 
                 selectedrow = Commands.Rows.Add();
@@ -4599,7 +4721,7 @@ namespace MissionPlanner.GCSViews
         {
             if (!cmdParamNames.ContainsKey("DO_SET_ROI"))
             {
-                CustomMessageBox.Show("Command not supported","Error");
+                CustomMessageBox.Show("Command not supported", "Error");
                 return;
             }
 
@@ -5415,12 +5537,12 @@ namespace MissionPlanner.GCSViews
                 area.HeightLat = top - bottom;
                 area.WidthLng = right - left;
 
-               
+
 
                 int todo;
                 // todo
                 // split up pull area to smaller chunks
-                 
+
                 for (int i = 1; i <= MainMap.MaxZoom; i++)
                 {
                     if (res == DialogResult.Yes)
@@ -5429,7 +5551,7 @@ namespace MissionPlanner.GCSViews
                         obj.KeyDown += obj_KeyDown;
                         obj.ShowCompleteMessage = false;
                         obj.Start(area, i, MainMap.MapProvider, 100, 0);
-                        
+
                     }
                     else if (res == DialogResult.No)
                     {
@@ -5480,7 +5602,7 @@ namespace MissionPlanner.GCSViews
                     {
                         TilePrefetcher obj = new TilePrefetcher();
                         obj.ShowCompleteMessage = false;
-                        obj.Start(area, i, MainMap.MapProvider, 100,0);
+                        obj.Start(area, i, MainMap.MapProvider, 100, 0);
                     }
                     else if (res == DialogResult.No)
                     {
@@ -5545,7 +5667,7 @@ namespace MissionPlanner.GCSViews
 
                     // cleanup after out
                     if (tempdir != "")
-                        Directory.Delete(tempdir,true);                    
+                        Directory.Delete(tempdir, true);
 
                     kml = kml.Replace("<Snippet/>", "");
 
@@ -6009,7 +6131,7 @@ namespace MissionPlanner.GCSViews
         {
             byte count = 0;
 
-            MainV2.comPort.setParam("RALLY_TOTAL", rallypointoverlay.Markers.Count );
+            MainV2.comPort.setParam("RALLY_TOTAL", rallypointoverlay.Markers.Count);
 
             foreach (GMapMarkerRallyPt pnt in rallypointoverlay.Markers)
             {
@@ -6046,7 +6168,7 @@ namespace MissionPlanner.GCSViews
             }
             else
             {
-                CustomMessageBox.Show("Bad Altitude","error");
+                CustomMessageBox.Show("Bad Altitude", "error");
             }
         }
 
@@ -6117,7 +6239,6 @@ namespace MissionPlanner.GCSViews
         }
 
         private void processKMLMission(object sender, SharpKml.Base.ElementEventArgs e)
-        
         {
             SharpKml.Dom.Element element = e.Element;
             try
@@ -6175,11 +6296,11 @@ namespace MissionPlanner.GCSViews
             }
             catch { CustomMessageBox.Show("Failed to open url http://127.0.0.1:56781/network.kml"); }
         }
-        
+
         private void modifyAltToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string altdif = "0";
-            InputBox.Show("Alt Change","Please enter the alitude change you require.\n(20 = up 20, *2 = up by alt * 2)",ref altdif);
+            InputBox.Show("Alt Change", "Please enter the alitude change you require.\n(20 = up 20, *2 = up by alt * 2)", ref altdif);
 
             int altchange = 0;
             float multiplyer = 1;
@@ -6300,13 +6421,13 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             if (InputBox.Show("Zone", "Enter Zone. (eg 50S, 11N)", ref zone) != DialogResult.OK)
                 return;
-            if (InputBox.Show("Easting", "Easting", ref easting)!= DialogResult.OK)
+            if (InputBox.Show("Easting", "Easting", ref easting) != DialogResult.OK)
                 return;
             if (InputBox.Show("Northing", "Northing", ref northing) != DialogResult.OK)
                 return;
 
-            string newzone = zone.ToLower().Replace('s',' ');
-            newzone = newzone.ToLower().Replace('n',' ');
+            string newzone = zone.ToLower().Replace('s', ' ');
+            newzone = newzone.ToLower().Replace('n', ' ');
 
             int zoneint = int.Parse(newzone);
 
@@ -6331,7 +6452,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             LoadSHPFile(file);
         }
 
-        private void LoadSHPFile(string file) 
+        private void LoadSHPFile(string file)
         {
             ProjectionInfo pStart = new ProjectionInfo();
             ProjectionInfo pESRIEnd = KnownCoordinateSystems.Geographic.World.WGS1984;
@@ -6340,7 +6461,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (File.Exists(file))
             {
                 string prjfile = Path.GetDirectoryName(file) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(file) + ".prj";
-                if (File.Exists(prjfile)) {
+                if (File.Exists(prjfile))
+                {
 
                     using (StreamReader re = File.OpenText(Path.GetDirectoryName(file) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(file) + ".prj"))
                     {
@@ -6384,14 +6506,14 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
                     try
                     {
                         if (dtOriginal.Columns.Contains("ELEVATION"))
-                            z = (float)Convert.ChangeType(dtOriginal.Rows[row]["ELEVATION"],TypeCode.Single);
+                            z = (float)Convert.ChangeType(dtOriginal.Rows[row]["ELEVATION"], TypeCode.Single);
                     }
                     catch { }
 
                     try
                     {
                         if (z == -1 && dtOriginal.Columns.Contains("alt"))
-                            z = (float)Convert.ChangeType(dtOriginal.Rows[row]["alt"],TypeCode.Single);
+                            z = (float)Convert.ChangeType(dtOriginal.Rows[row]["alt"], TypeCode.Single);
                     }
                     catch { }
 
@@ -6405,7 +6527,8 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
                     try
                     {
-                        if (dtOriginal.Columns.Contains("wp")) {
+                        if (dtOriginal.Columns.Contains("wp"))
+                        {
                             wp = (float)Convert.ChangeType(dtOriginal.Rows[row]["wp"], TypeCode.Single);
                             dosort = true;
                         }
@@ -6471,7 +6594,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         private void insertSplineWPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string wpno = (selectedrow+1).ToString("0");
+            string wpno = (selectedrow + 1).ToString("0");
             if (InputBox.Show("Insert WP", "Insert WP after wp#", ref wpno) == DialogResult.OK)
             {
                 try
@@ -6507,11 +6630,11 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             //string Pointsin = "20";
             //if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Points", "Number of points to generate Circle", ref Pointsin))
-              //  return;
+            //  return;
 
             //string Directionin = "1";
             //if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("Points", "Direction of circle (-1 or 1)", ref Directionin))
-              //  return;
+            //  return;
 
             string minaltin = "5";
             if (System.Windows.Forms.DialogResult.Cancel == InputBox.Show("min alt", "Min Alt", ref minaltin))
@@ -6560,19 +6683,19 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             }
             //if (!int.TryParse(Pointsin, out Points))
             {
-              //  CustomMessageBox.Show("Bad Point value");
+                //  CustomMessageBox.Show("Bad Point value");
                 //return;
             }
 
             //if (!int.TryParse(Directionin, out Direction))
             {
-              //  CustomMessageBox.Show("Bad Direction value");
+                //  CustomMessageBox.Show("Bad Direction value");
                 //return;
             }
 
             //if (!int.TryParse(startanglein, out startangle))
             {
-              //  CustomMessageBox.Show("Bad start angle value");
+                //  CustomMessageBox.Show("Bad start angle value");
                 //return;
             }
 
@@ -6590,7 +6713,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
             bool startup = true;
 
-            for (int stepalt = minalt; stepalt <= maxalt;)
+            for (int stepalt = minalt; stepalt <= maxalt; )
             {
 
                 for (a = 0; a <= (startangle + 360) && a >= 0; a += step)
@@ -6614,7 +6737,7 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
                     setfromMap(pll.Lat, pll.Lng, (int)stepalt);
 
-                    if (! startup)
+                    if (!startup)
                         stepalt += altstep / Points;
 
                 }
@@ -6735,6 +6858,6 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
 
         }
 
-    
+
     }
 }

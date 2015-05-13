@@ -7,12 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 
 namespace MissionPlanner.SmartAir
 {
+     //[ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class MissionPlannerService : IMissionPlannerService
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -45,8 +49,9 @@ namespace MissionPlanner.SmartAir
         /// <param name="waypoints">The waypoints to add.</param>
         /// <param name="insertionMode">Indicates how to process a imported route with its waypoints.</param>
         /// <param name="routingMode">Indicates how the auto routing mechanism will handle the new routes.</param> 
+        /// <param name="currentRouteId">The currentRouteId of mission control.</param>
         /// <returns>true, if the operation was sucessful.</returns>
-        public bool setWayPoints(List<Locationwp> waypoints,RouteInsertionMode insertionMode, AutoRoutingMode routingMode)
+        public bool setWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, AutoRoutingMode routingMode, int currentRouteId)
         {
             try
             {
@@ -70,13 +75,15 @@ namespace MissionPlanner.SmartAir
 
                 SmartAirContext.Instance.ReceivedRoutes.Add(new Route() { WayPoints = waypoints, InsertionMode = insertionMode,RoutingMode=routingMode });
 
-                MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, insertionMode);
+                MissionPlanner.GCSViews.FlightPlanner.instance.setNewWayPoints(waypoints, insertionMode, currentRouteId);
                 SmartAirContext.Instance.LoadNextRoute(SmartAirContext.Instance.NextWPIndexFromAutopilot);
-
+                
                 return true;
             }
             catch (Exception ex)
             {
+                if (ex is MissionPlanner.SmartAir.DomainObjects.OutOfSyncException || ex is MissionPlanner.SmartAir.DomainObjects.DangerousUpdateException)
+                    throw new WebFaultException<String>("OutOfSync",System.Net.HttpStatusCode.Conflict);
                 log.Fatal("Importing received waypoints failed.",ex);
                 return false;
             }
@@ -100,7 +107,9 @@ namespace MissionPlanner.SmartAir
                 clone.p2 = lastWP.p2;
                 clone.p3 = lastWP.p3;
                 clone.p4 = lastWP.p4;
-
+                clone.routeId = lastWP.routeId;
+                clone.SamType = lastWP.SamType;
+                
                 route.Add(clone);
 
 
@@ -118,12 +127,13 @@ namespace MissionPlanner.SmartAir
         {
             try
             {
-                
+               
                 var wayPoints =MissionPlanner.GCSViews.FlightPlanner.instance.getWayPoints();
                 return wayPoints;
             }
             catch (Exception ex)
             {
+               
                 log.Error("Error getting waypoints",ex);
                 return null;
             }
@@ -151,7 +161,11 @@ namespace MissionPlanner.SmartAir
                         SmartAirContext.Instance.Zones.Add(zone.ZoneType, zone);
                     }
                 }
-                log.Info("New zones received: " + newZones.Select(x => x.ZoneType.ToString()));
+                string sZones="";
+                var zones = newZones.Select(x => x.ZoneType.ToString());
+                foreach (var zone in zones)
+	                sZones += zone + " ";
+                log.Info("New zones received: " + sZones);
 
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawZones(newZones);
                

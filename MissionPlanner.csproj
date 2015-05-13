@@ -263,6 +263,8 @@
       <DependentUpon>ExternalFlightData.cs</DependentUpon>
     </Compile>
     <Compile Include="SmartAir\DomainObjects\AutoRoutingMode.cs" />
+    <Compile Include="SmartAir\DomainObjects\DangerousUpdateException.cs" />
+    <Compile Include="SmartAir\DomainObjects\OutOfSyncException.cs" />
     <Compile Include="SmartAir\DomainObjects\RouteInsertionMode.cs" />
     <Compile Include="SmartAir\Interfaces\JudgeServerWorker.cs" />
     <Compile Include="SmartAir\DomainObjects\SamType.cs" />

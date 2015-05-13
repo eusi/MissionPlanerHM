@@ -11,6 +11,7 @@ using System.Text;
 namespace MissionPlanner.SmartAir
 {
     [ServiceContract]
+   
     public interface IMissionPlannerService
     {
 
@@ -28,6 +29,7 @@ namespace MissionPlanner.SmartAir
         /// <param name="waypoints">The waypoints to add.</param>
         /// <param name="insertionMode">Indicates how to process a imported route with its waypoints.</param>
         /// <param name="routingMode">Indicates how the auto routing mechanism will handle the new routes.</param> 
+        /// <param name="currentRouteId">The currentRouteId of mission control.</param>
         /// <returns>true, if the operation was sucessful.</returns>
         [OperationContract()]
         [WebInvoke(
@@ -36,7 +38,7 @@ namespace MissionPlanner.SmartAir
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json
             )]
-        bool setWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, AutoRoutingMode routingMode);
+        bool setWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, AutoRoutingMode routingMode, int currentRouteId);
 
 
         /// <summary>
