@@ -95,7 +95,7 @@ namespace MissionPlanner.SmartAir
                 {
 
                     var serverTime = js.GetServerInfo();
-                    log.Info("Judge server time received. " + DateTime.Now.ToLongTimeString());
+                  //  log.Info("Judge server time received. " + DateTime.Now.ToLongTimeString());
                     MissionPlanner.GCSViews.FlightPlanner.instance.drawServerTime(serverTime);                   
 
                     Thread.Sleep(serverInfoIntervall);
@@ -133,7 +133,7 @@ namespace MissionPlanner.SmartAir
                     // get, set and draw obstacles
                     var obstacles = js.GetObstacles();
 
-                    log.Info("Judge server obstacles received. " + DateTime.Now.ToLongTimeString());
+                 //   log.Info("Judge server obstacles received. " + DateTime.Now.ToLongTimeString());
                     MissionPlanner.GCSViews.FlightPlanner.instance.drawObstacles(obstacles);
                     SmartAir.SmartAirContext.Instance.LatestObstacles = obstacles;
 
@@ -173,7 +173,7 @@ namespace MissionPlanner.SmartAir
                     if (position != null)
                     {
                         js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
-                        log.Info("Current position was sent to judge server. " + DateTime.Now.ToLongTimeString());
+                      //  log.Info("Current position was sent to judge server. " + DateTime.Now.ToLongTimeString());
                     }
 
                     Thread.Sleep(_UAVPosIntervall);

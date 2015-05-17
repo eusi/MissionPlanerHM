@@ -236,8 +236,16 @@ namespace MissionPlanner.GCSViews
             return result;
         }
 
+
+        delegate void DrawZonesDelegate(List<Zone> zonesToDraw);
+
         public void drawZones(List<Zone> zonesToDraw)
         {
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new DrawZonesDelegate(drawZones), zonesToDraw);
+                return;
+            }
 
             foreach (var zones in zonesToDraw)
             {
@@ -272,8 +280,16 @@ namespace MissionPlanner.GCSViews
 
         }
 
+        delegate void DrawTargetsDelegate(List<SmartAir.Target> targetsToDraw);
+
         public void drawTargets(List<SmartAir.Target> targetsToDraw)
         {
+             if (InvokeRequired)
+            {
+                this.BeginInvoke(new DrawTargetsDelegate(drawTargets), targetsToDraw);
+                return;
+            }
+
             foreach (var target in targetsToDraw)
             {
                 // remove existing marker
@@ -282,8 +298,7 @@ namespace MissionPlanner.GCSViews
                 {
                     drawnpolygonsoverlay.Markers.Remove(existingTargets[i]);
                 }
-
-
+                
 
                 // add marker
                 var image = getImg(target.TargetType);
@@ -315,10 +330,16 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-
+        delegate void DrawObstaclesDelegate(JudgeServerInterface.Obstacles obstacleToDraw);
 
         public void drawObstacles(JudgeServerInterface.Obstacles obstacleToDraw)
         {
+
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new DrawObstaclesDelegate(drawObstacles), obstacleToDraw);
+                return;
+            }
 
             if (stationaryobstaclesoverlay.Markers.Count != obstacleToDraw.StationaryObstacles.Count)
             {
@@ -335,8 +356,21 @@ namespace MissionPlanner.GCSViews
 
 
                     Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
-                    GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.CylinderHeight.ToString() + " feets");
+                    GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, "h:"+ newObstacle.CylinderHeight.ToString() + "ft\n" +  "r:" +newObstacle.CylinderRadius.ToString()+"ft");
+                    if (marker.ToolTip != null)
+                    {
+                      
+                        Brush ToolTipBackColor = new SolidBrush(Color.FromArgb(180, Color.White));
+                        marker.ToolTip.Fill = ToolTipBackColor;
+                        var kkas = marker.ToolTip.Font;
+                        marker.ToolTip.Offset.X=4;
+                        marker.ToolTip.Offset.Y=-12;
+                    //    marker.ToolTip.Font= new Font(Font.FontFamily.mi)
+
+                    }
+                    marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                     stationaryobstaclesoverlay.Markers.Add(marker);
+               
                 }
             }
 
@@ -352,7 +386,19 @@ namespace MissionPlanner.GCSViews
                 movingobstaclesoverlay.Polygons.Add(newCircle);
                 obstacles.Add(newCircle);
                 Image icon = Image.FromFile("SmartAir\\Resources\\mono-point.png");
-                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, newObstacle.SphereRadius.ToString() + " feets");
+                GMapMarker marker = new TargetMarker(new PointLatLng(newObstacle.Latitude, newObstacle.Longitude), icon, "alt:" + ((int)(newObstacle.Altitude)).ToString() + "ft\n" + "r:" + newObstacle.SphereRadius.ToString() + " ft");
+                if (marker.ToolTip != null)
+                {
+
+                    Brush ToolTipBackColor = new SolidBrush(Color.FromArgb(180, Color.White));
+                    marker.ToolTip.Fill = ToolTipBackColor;
+                    var kkas = marker.ToolTip.Font;
+                    marker.ToolTip.Offset.X = 4;
+                    marker.ToolTip.Offset.Y = -12;
+                    //    marker.ToolTip.Font= new Font(Font.FontFamily.mi)
+
+                }
+                marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
                 movingobstaclesoverlay.Markers.Add(marker);
 
 
@@ -404,26 +450,60 @@ namespace MissionPlanner.GCSViews
 
         }
 
-        public void hideWaypoint(int wpIndexToHide)
+        delegate void UpdateKMLDelegate(int LastWPIndex, int NextWPIndex);
+
+      
+
+        public void hideWaypoint(int LastWPIndex, int NextWPIndex)
         {
 
             try
             {
-                if (wpIndexToHide > 0 && hideWaypoints.Checked)
+                if (LastWPIndex > 0 && hideWaypoints.Checked)
                 {
-
-                    writeKML();
-
-                    for (int i = 1; i <= wpIndexToHide; i++)
+                    if (InvokeRequired)
                     {
-                        fullpointlist.RemoveAt(1);
-
+                        this.BeginInvoke(new UpdateKMLDelegate(hideWaypoint), LastWPIndex,NextWPIndex);
+                        return;
                     }
 
-                    for (int i = 1; i <= wpIndexToHide; i++)
+           
+                    if ( NextWPIndex <= LastWPIndex)
                     {
-                        objectsoverlay.Markers.RemoveAt(2);
-                        objectsoverlay.Markers.RemoveAt(2);
+                        // in case the next waypoint is smaller than the last index (eg user uses setWP to switch back to a wp)  --> redraw complete waypoints on map 
+               
+                        writeKML();
+
+                        for (int i = 1; i < NextWPIndex; i++)
+                        {
+                            if (fullpointlist.Count > 1)
+                                fullpointlist.RemoveAt(1);
+
+                        }
+
+                        for (int i = 1; i < NextWPIndex; i++)
+                        {
+                            if (objectsoverlay.Markers.Count > 2)
+                                objectsoverlay.Markers.RemoveAt(2);
+                            if (objectsoverlay.Markers.Count > 2)
+                                objectsoverlay.Markers.RemoveAt(2);
+                        }
+                    }
+	
+
+                    else if ( NextWPIndex > LastWPIndex) 
+                    {
+                        // delete only reached wps (no complete redrawing of all wps necessary)
+                        for (int i = 0; i < NextWPIndex-LastWPIndex; i++)
+                        {
+                            if (fullpointlist.Count > 1)
+                                fullpointlist.RemoveAt(1);
+                            if (objectsoverlay.Markers.Count > 2)
+                                objectsoverlay.Markers.RemoveAt(2);
+                            if (objectsoverlay.Markers.Count > 2)
+                                objectsoverlay.Markers.RemoveAt(2);
+                        }
+                      
                     }
                     RegenerateWPRoute(fullpointlist);
 
@@ -586,7 +666,7 @@ namespace MissionPlanner.GCSViews
 
         public List<PointLatLngAlt> pointlist = new List<PointLatLngAlt>(); // used to calc distance
         public List<PointLatLngAlt> fullpointlist = new List<PointLatLngAlt>();
-        public List<PointLatLngAlt> hidepointlist = new List<PointLatLngAlt>();
+       
         public List<GMapMarker> hidemarkers = new List<GMapMarker>();
         public GMapRoute route = new GMapRoute("wp route");
         public GMapRoute homeroute = new GMapRoute("home route");
@@ -1786,7 +1866,8 @@ namespace MissionPlanner.GCSViews
             List<PointLatLngAlt> wproute = new List<PointLatLngAlt>();
 
             // add home - this causeszx the spline to always have a straight finish
-            fullpointlist.Add(fullpointlist[0]);
+            if (fullpointlist.LastOrDefault() != null && fullpointlist.Last() != fullpointlist[0])
+                fullpointlist.Add(fullpointlist[0]);
 
             for (int a = 0; a < fullpointlist.Count; a++)
             {
@@ -6850,6 +6931,10 @@ Column 1: Field type (RALLY is the only one at the moment -- may have RALLY_LAND
             if (!this.hideWaypoints.Checked)
             {
                 writeKML();
+            }
+            else
+            {
+                hideWaypoint((int)(SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot + 1), (int)(SmartAir.SmartAirContext.Instance.NextWPIndexFromAutopilot));
             }
         }
 

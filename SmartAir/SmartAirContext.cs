@@ -257,7 +257,7 @@ namespace MissionPlanner.SmartAir
                 if (lastWPIndexFromAutopilot != nextWPIndexFromAutopilot)
                 {
                     LoadNextRoute(nextWPIndexFromAutopilot);
-                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndexFromAutopilot);
+                    MissionPlanner.GCSViews.FlightPlanner.instance.hideWaypoint((int)lastWPIndexFromAutopilot, (int)value);
                     lastWPIndexFromAutopilot = nextWPIndexFromAutopilot;
                 }
                 nextWPIndexFromAutopilot = value;

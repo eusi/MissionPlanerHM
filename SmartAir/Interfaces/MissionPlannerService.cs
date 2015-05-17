@@ -258,7 +258,12 @@ namespace MissionPlanner.SmartAir
                         SmartAirContext.Instance.Targets.Add(targetsGroupedByType.Key, targetsGroupedByType.ToList());
                     }
                 }
-                log.Info("New targets received: " + targets.Select(x => x.TargetType.ToString()));
+                string sTargets = "";
+                var stargets = targets.Select(x => x.TargetType.ToString());
+                foreach (var target in stargets)
+                    sTargets += target + " ";
+
+                log.Info("New targets received: " + sTargets);
                 MissionPlanner.GCSViews.FlightPlanner.instance.drawTargets(targets);
                 return true;
             }
