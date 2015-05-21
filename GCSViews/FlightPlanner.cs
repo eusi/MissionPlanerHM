@@ -47,10 +47,17 @@ namespace MissionPlanner.GCSViews
     {
         #region SmartAir
 
+         delegate void SetNewWaypointsDelegate(List<Locationwp> waypoints, RouteInsertionMode insertionMode, int currentMCRouteId);
 
+      
 
         public void setNewWayPoints(List<Locationwp> waypoints, RouteInsertionMode insertionMode, int currentMCRouteId)
         {
+            if (InvokeRequired)
+            {
+                this.BeginInvoke(new SetNewWaypointsDelegate(setNewWayPoints),  waypoints,  insertionMode,  currentMCRouteId);
+                return;
+            }
 
             try
             {
