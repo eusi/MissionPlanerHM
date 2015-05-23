@@ -296,10 +296,17 @@ namespace MissionPlanner.SmartAir
         /// <summary>
         /// This method checks if the service is reachable.
         /// </summary>
-        /// <returns>true, if connection is established</returns>
-        public bool testConnection()
+        /// <returns>homeLocation as PointLatLngAlt, if connection is established</returns>
+        public PointLatLngAlt testConnection()
         {
-            return true;
+            // get home location
+            if (MainV2.comPort.MAV.cs.HomeLocation.Lat != 0 && MainV2.comPort.MAV.cs.HomeLocation.Lng != 0)
+            {
+                return new PointLatLngAlt( MainV2.comPort.MAV.cs.HomeLocation.Lat,
+                                           MainV2.comPort.MAV.cs.HomeLocation.Lng );
+            }
+
+            return null;
         }
 
         /// <summary>

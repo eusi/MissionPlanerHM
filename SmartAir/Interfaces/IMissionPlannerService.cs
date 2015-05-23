@@ -117,7 +117,7 @@ namespace MissionPlanner.SmartAir
         /// <returns>true, if connection is established</returns>
         [OperationContract()]
         [WebGet(ResponseFormat = WebMessageFormat.Json, BodyStyle = WebMessageBodyStyle.Bare)]
-        bool testConnection();
+        PointLatLngAlt testConnection();
 
         /// <summary>
         /// This method creates test data including UAVPos History, Zones, Obstacles, Targets.
