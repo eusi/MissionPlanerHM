@@ -318,7 +318,7 @@ namespace MissionPlanner.SmartAir
         public void createTestData()
         {
             // create position test data
-            UAVPosition =new UAVPosition(123.23, 123.34, 654.45, DateTime.Now.ToString("yyyyMMddHHmmssffff"));
+            UAVPosition =new UAVPosition(123.23, 123.34, 654.45, DateTime.Now.ToString("yyyyMMddHHmmssffff"),123.32);
            
             latestObstacles = new Obstacles();
 

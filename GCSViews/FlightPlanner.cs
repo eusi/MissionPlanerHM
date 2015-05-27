@@ -354,7 +354,9 @@ namespace MissionPlanner.GCSViews
                 stationaryobstaclesoverlay.Markers.Clear();
                 foreach (var newObstacle in obstacleToDraw.StationaryObstacles)
                 {
-                    GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.CylinderRadius, 100);
+
+                    var radiusInMeter = newObstacle.CylinderRadius * 0.304800610;
+                    GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, radiusInMeter, 100);
                     newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Red));
                     newCircle.Stroke = new Pen(Color.White, 1);
 
@@ -386,8 +388,8 @@ namespace MissionPlanner.GCSViews
 
             foreach (var newObstacle in obstacleToDraw.MovingObstacles)
             {
-
-                GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, newObstacle.SphereRadius, 100);
+               var radiusInMeter= newObstacle.SphereRadius* 0.304800610;
+               GMapPolygon newCircle = CreateCircle(newObstacle.Latitude, newObstacle.Longitude, radiusInMeter, 100);
                 newCircle.Fill = new SolidBrush(Color.FromArgb(180, Color.Blue));
                 newCircle.Stroke = new Pen(Color.White, 1);
                 movingobstaclesoverlay.Polygons.Add(newCircle);
@@ -470,48 +472,46 @@ namespace MissionPlanner.GCSViews
                 {
                     if (InvokeRequired)
                     {
-                        this.BeginInvoke(new UpdateKMLDelegate(hideWaypoint), LastWPIndex,NextWPIndex);
+                        this.BeginInvoke(new UpdateKMLDelegate(hideWaypoint), LastWPIndex, NextWPIndex);
                         return;
                     }
 
-           
-                    if ( NextWPIndex <= LastWPIndex)
-                    {
-                        // in case the next waypoint is smaller than the last index (eg user uses setWP to switch back to a wp)  --> redraw complete waypoints on map 
-               
+
+
+                    // in case the next waypoint is smaller than the last index (eg user uses setWP to switch back to a wp)  --> redraw complete waypoints on map 
+                    if (NextWPIndex <= LastWPIndex)
                         writeKML();
 
-                        for (int i = 1; i < NextWPIndex; i++)
-                        {
-                            if (fullpointlist.Count > 1)
-                                fullpointlist.RemoveAt(1);
-
-                        }
-
-                        for (int i = 1; i < NextWPIndex; i++)
-                        {
-                            if (objectsoverlay.Markers.Count > 2)
-                                objectsoverlay.Markers.RemoveAt(2);
-                            if (objectsoverlay.Markers.Count > 2)
-                                objectsoverlay.Markers.RemoveAt(2);
-                        }
-                    }
-	
-
-                    else if ( NextWPIndex > LastWPIndex) 
+                    for (int i = fullpointlist.Count - 1; i >= 0; i--)
                     {
-                        // delete only reached wps (no complete redrawing of all wps necessary)
-                        for (int i = 0; i < NextWPIndex-LastWPIndex; i++)
-                        {
-                            if (fullpointlist.Count > 1)
-                                fullpointlist.RemoveAt(1);
-                            if (objectsoverlay.Markers.Count > 2)
-                                objectsoverlay.Markers.RemoveAt(2);
-                            if (objectsoverlay.Markers.Count > 2)
-                                objectsoverlay.Markers.RemoveAt(2);
-                        }
-                      
+                        int iTag;
+                        if (fullpointlist[i].Tag != null && int.TryParse(fullpointlist[i].Tag, out iTag) && iTag < NextWPIndex)
+                            fullpointlist.RemoveAt(i);
                     }
+
+
+                    for (int i = objectsoverlay.Markers.Count - 1; i >= 0; i--)
+                    {
+                        if (objectsoverlay.Markers[i] is GMapMarkerRect)
+                        {
+                            var border = ((GMapMarkerRect)objectsoverlay.Markers[i]);
+                            int iTag;
+                            if (border.InnerMarker != null && border.InnerMarker.Tag != null && int.TryParse((string)border.InnerMarker.Tag, out iTag) && iTag < NextWPIndex)
+                                objectsoverlay.Markers.RemoveAt(i);
+
+
+                        }
+                        else if (objectsoverlay.Markers[i] is GMarkerGoogle)
+                        {
+                            var marker = ((GMarkerGoogle)objectsoverlay.Markers[i]);
+                            int iTag;
+                            if (marker.Tag != null && int.TryParse((string)marker.Tag, out iTag) && iTag < NextWPIndex)
+                                objectsoverlay.Markers.RemoveAt(i);
+                        }
+
+
+                    }
+
                     RegenerateWPRoute(fullpointlist);
 
 

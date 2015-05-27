@@ -172,7 +172,9 @@ namespace MissionPlanner.SmartAir
                     var position = SmartAir.SmartAirContext.Instance.UAVPosition;
                     if (position != null)
                     {
-                        js.setUASTelemetry(position.Lat, position.Lng, position.Alt, position.Yaw);
+                        var alt_asl_feet = position.Alt_ASL/ 0.304800610;
+                        
+                        js.setUASTelemetry(position.Lat, position.Lng, alt_asl_feet, position.Yaw);
                       //  log.Info("Current position was sent to judge server. " + DateTime.Now.ToLongTimeString());
                     }
 

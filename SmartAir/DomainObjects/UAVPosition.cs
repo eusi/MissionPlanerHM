@@ -14,16 +14,19 @@ namespace MissionPlanner.SmartAir
     {
         public UAVPosition()
         { }
-        public UAVPosition(double lat, double lng, double alt, string timeStamp)
+        public UAVPosition(double lat, double lng, double alt_rel, string timeStamp, double alt_asl)
         {
             this.Lat = lat;
             this.Lng = lng;
-            this.Alt = alt;            
+            this.Alt = alt_rel;            
             this.Ts = timeStamp;
+            this.Alt_ASL = alt_asl;
         }
         [NonSerialized]
         public string Ts;
 
+        [NonSerialized]
+        public double Alt_ASL;
      
         public float Distance;
         

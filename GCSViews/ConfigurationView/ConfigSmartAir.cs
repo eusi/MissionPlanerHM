@@ -18,6 +18,7 @@ using System.ServiceModel.Web;
 using System.ServiceModel.Description;
 using log4net;
 using MissionPlanner.SmartAir;
+using JudgeServerInterface;
 
 namespace MissionPlanner.GCSViews.ConfigurationView
 {
@@ -211,9 +212,63 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             }
         }
 
-        private void btnOpenExternalFlightData_Click(object sender, EventArgs e)
+       
+
+        private void btnEval_Click(object sender, EventArgs e)
         {
+            try
+            {
+
+                var js = new JudgeServer();
+
+                js.Connect(this.txtJSUrl.Text, "testadmin", "testpass");
+                string result = js.EvaluateTeam();
+                DataTable dt = new DataTable();
+
+                string[] stringSeparators = new string[] { "\r\n" };
             
+                var rows = result.Split(stringSeparators, StringSplitOptions.RemoveEmptyEntries);
+                var header = rows.FirstOrDefault();
+                if (header != null)
+                {
+                    var cols = header.Split(',');
+                    foreach (var col in cols)
+                    {
+                        DataColumn dc = new DataColumn(col);
+                        dt.Columns.Add(dc);
+                    }
+
+
+
+                }
+                for (int i = 1; i < rows.Count(); i++)
+                {
+                    var cells = rows[i].Split(',');
+                    var dr = dt.NewRow();
+                    for (int j = 0; j < cells.Count(); j++)
+                    {
+                        dr[j] = cells[j];
+
+                    }
+                    dt.Rows.Add(dr);
+
+
+                }
+                dgEval.DataSource = dt;
+
+            }
+            catch (Exception ex)
+            {
+
+                log.Error("Judge Server EvaluateTeam error.", ex);
+                MessageBox.Show(ex.Message);
+
+            }
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
         }
 
       

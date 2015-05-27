@@ -45,9 +45,15 @@
             this.btnStartWS = new MissionPlanner.Controls.MyButton();
             this.myLabel1 = new MissionPlanner.Controls.MyLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnEval = new MissionPlanner.Controls.MyButton();
+            this.dgEval = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.myLabel6 = new MissionPlanner.Controls.MyLabel();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervall)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEval)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // numIntervall
@@ -113,6 +119,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.numIntervall);
             this.groupBox2.Controls.Add(this.myLabel5);
             this.groupBox2.Controls.Add(this.myLabel4);
@@ -178,6 +185,38 @@
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
+            // btnEval
+            // 
+            resources.ApplyResources(this.btnEval, "btnEval");
+            this.btnEval.Name = "btnEval";
+            this.btnEval.UseVisualStyleBackColor = true;
+            this.btnEval.Click += new System.EventHandler(this.btnEval_Click);
+            // 
+            // dgEval
+            // 
+            this.dgEval.AllowUserToAddRows = false;
+            this.dgEval.AllowUserToDeleteRows = false;
+            this.dgEval.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            resources.ApplyResources(this.dgEval, "dgEval");
+            this.dgEval.Name = "dgEval";
+            this.dgEval.RowHeadersVisible = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.myLabel6);
+            this.groupBox3.Controls.Add(this.btnEval);
+            this.groupBox3.Controls.Add(this.dgEval);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.TabStop = false;
+            // 
+            // myLabel6
+            // 
+            this.myLabel6.BackColor = System.Drawing.Color.Yellow;
+            resources.ApplyResources(this.myLabel6, "myLabel6");
+            this.myLabel6.Name = "myLabel6";
+            this.myLabel6.resize = false;
+            // 
             // ConfigSmartAir
             // 
             resources.ApplyResources(this, "$this");
@@ -191,6 +230,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgEval)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -213,6 +254,10 @@
         private Controls.MyButton btnStartWS;
         private Controls.MyLabel myLabel1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private Controls.MyButton btnEval;
+        private System.Windows.Forms.DataGridView dgEval;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private Controls.MyLabel myLabel6;
 
     }
 }

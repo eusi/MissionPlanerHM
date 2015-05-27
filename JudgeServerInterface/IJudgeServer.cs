@@ -39,6 +39,13 @@ namespace JudgeServerInterface
         /// <param name="heading">The heading of the aircraft as a floating point degree value. Valid values are: 0 <= uas_heading <= 360.</param>
         /// <returns>flag if submiting was successfull</returns>
         void setUASTelemetry(double latitude, double longitude, double altitude, double heading);
+
+          /// <summary>
+        /// Evaluates the teams.
+        /// </summary>
+        /// <returns>Obstacles</returns>
+        string EvaluateTeam();
+        
     }
 
  

@@ -24,14 +24,16 @@ namespace JudgeServerInterface
             Login,
             ServerInfo,
             Obstacles,
-            Telemetry
+            Telemetry,
+            EvaluateTeams
         }
 
         private Dictionary<ServerLinks, String> serverLinks = new Dictionary<ServerLinks, string>() {
             {ServerLinks.Login, "/api/login"},
             {ServerLinks.ServerInfo, "/api/interop/server_info"},
             {ServerLinks.Obstacles, "/api/interop/obstacles"},
-            {ServerLinks.Telemetry, "/api/interop/uas_telemetry"}
+            {ServerLinks.Telemetry, "/api/interop/uas_telemetry"},
+             {ServerLinks.EvaluateTeams, "/auvsi_admin/evaluate_teams.csv"}
         };
 
         private RestClient httpClient;
@@ -119,6 +121,24 @@ namespace JudgeServerInterface
                 obs = JsonDeserializer.GetObstacles(response.Content);
             
             return obs;
+        }
+
+        /// <summary>
+        /// Fetches the Obstacles from the JudgeServer
+        /// </summary>
+        /// <returns>Obstacles</returns>
+        public string EvaluateTeam()
+        {
+          
+
+            IRestResponse response = this.Request(ServerLinks.EvaluateTeams);
+            if (response != null)
+                return response.Content;
+            else
+                return "";
+            
+
+        
         }
 
         /// <summary>
