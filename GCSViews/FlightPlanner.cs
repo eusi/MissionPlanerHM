@@ -545,6 +545,7 @@ namespace MissionPlanner.GCSViews
                         this.lblMessageTime.Text = "MessageTime: " + (serverInfo.MessageTimeStamp.Length > 5 ? serverInfo.MessageTimeStamp.Substring(0, serverInfo.ServerTime.Length - 3) : serverInfo.MessageTimeStamp);
                     if (serverInfo.ServerMessage != null)
                         this.lblServerInfo.Text = "Server Message: " + serverInfo.ServerMessage;
+                   
                 }
             }
             catch (Exception ex)
@@ -555,88 +556,6 @@ namespace MissionPlanner.GCSViews
 
         }
 
-
-        private void btnSmartAir_Click(object sender, EventArgs e)
-        {
-            pnlSmartAir.Visible = true;
-
-        }
-
-        private void btnStartWS_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-                SmartAir.SmartAirContext.Instance.StartSAMService(this.txtWSUrl.Text);
-                this.btnStopWS.Enabled = true;
-                this.btnStartWS.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                log.Error("Starting REST service failed.", ex);
-            }
-        }
-
-        private void btnStopWS_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SmartAir.SmartAirContext.Instance.StopSAMService();
-                this.btnStopWS.Enabled = false;
-                this.btnStartWS.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                log.Error("Stopping REST service failed.", ex);
-            }
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            pnlSmartAir.Visible = false;
-        }
-
-
-        private void btnJSStart_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SmartAirContext.Instance.StartJudgeServer(this.txtJSUrl.Text, this.txtJSUser.Text, this.txtJSPassword.Text, (int)(this.nudIntervall.Value));
-                btnJSStart.Enabled = false;
-                btnJSStop.Enabled = true;
-
-            }
-            catch (Exception ex)
-            {
-
-                log.Error("Judge Server connection error.", ex);
-                MessageBox.Show(ex.Message);
-
-            }
-
-        }
-
-        private void btnJSStop_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-                SmartAir.SmartAirContext.Instance.StopJudgeServer();
-                btnJSStart.Enabled = true;
-                btnJSStop.Enabled = false;
-
-            }
-            catch (Exception ex)
-            {
-
-                log.Error("Error stopping judge server.", ex);
-                MessageBox.Show(ex.Message);
-
-            }
-
-        }
 
         private void chkAutoLoiterInterrupt_CheckedChanged(object sender, EventArgs e)
         {
@@ -655,6 +574,7 @@ namespace MissionPlanner.GCSViews
         }
         #endregion
 
+        private CustomYesNoMessageBox deleteMCWaypointWarningBox = new CustomYesNoMessageBox("You are trying to delete/move a waypoint imported from mission control. This is critical and can cause synchronization problems between Mission Control and Mission Planner. Do you want to proceed anyway?", "Warning");
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         int selectedrow = 0;
         public bool quickadd = false;
@@ -2842,6 +2762,8 @@ namespace MissionPlanner.GCSViews
         }
 
 
+        
+
         /// <summary>
         /// used to control buttons in the datagrid
         /// </summary>
@@ -2857,8 +2779,16 @@ namespace MissionPlanner.GCSViews
                 {
                     if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
                     {
-                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be deleted.");
-                        return;
+                        if (!deleteMCWaypointWarningBox.DoNotAskAgain)
+                        {
+                            
+                            if (deleteMCWaypointWarningBox.ShowDialog() == DialogResult.No)
+                            {
+                                return;
+                            }
+                             
+                        }
+
                     }
                     quickadd = true;
                     Commands.Rows.RemoveAt(e.RowIndex);
@@ -2869,8 +2799,12 @@ namespace MissionPlanner.GCSViews
                 {
                     if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
                     {
-                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be moved.");
-                        return;
+                        if (!deleteMCWaypointWarningBox.DoNotAskAgain)
+                        {
+                            if (deleteMCWaypointWarningBox.ShowDialog() == DialogResult.No)
+                                return;
+                        }
+                             
                     }
                     DataGridViewRow myrow = Commands.CurrentRow;
                     Commands.Rows.Remove(myrow);
@@ -2881,8 +2815,12 @@ namespace MissionPlanner.GCSViews
                 {
                     if (Commands.Rows[e.RowIndex].Cells[wpId.Index].Value.ToString() != "0")
                     {
-                        CustomMessageBox.Show("The waypoint was imported from mission control and cannot be moved.");
-                        return;
+                        if (!deleteMCWaypointWarningBox.DoNotAskAgain)
+                        {
+                            if (deleteMCWaypointWarningBox.ShowDialog() == DialogResult.No)
+                                return;
+                        }
+
                     }
                     DataGridViewRow myrow = Commands.CurrentRow;
                     Commands.Rows.Remove(myrow);

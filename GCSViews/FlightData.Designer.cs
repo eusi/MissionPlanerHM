@@ -135,6 +135,7 @@
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chkLogAutoRefresh = new System.Windows.Forms.CheckBox();
             this.chkSAMFilter = new System.Windows.Forms.CheckBox();
             this.coords1 = new MissionPlanner.Controls.Coords();
             this.Zoomlevel = new System.Windows.Forms.NumericUpDown();
@@ -142,6 +143,11 @@
             this.CHK_autopan = new System.Windows.Forms.CheckBox();
             this.CB_tuning = new System.Windows.Forms.CheckBox();
             this.grdEvents = new System.Windows.Forms.DataGridView();
+            this.Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MessageObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Exception = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LoggerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ZedGraphTimer = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openScriptDialog = new System.Windows.Forms.OpenFileDialog();
@@ -150,11 +156,6 @@
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MessageObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Exception = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LoggerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStripMap.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
@@ -1704,6 +1705,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkLogAutoRefresh);
             this.panel1.Controls.Add(this.chkSAMFilter);
             this.panel1.Controls.Add(this.coords1);
             this.panel1.Controls.Add(this.Zoomlevel);
@@ -1712,6 +1714,16 @@
             this.panel1.Controls.Add(this.CB_tuning);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // chkLogAutoRefresh
+            // 
+            resources.ApplyResources(this.chkLogAutoRefresh, "chkLogAutoRefresh");
+            this.chkLogAutoRefresh.Checked = true;
+            this.chkLogAutoRefresh.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkLogAutoRefresh.Name = "chkLogAutoRefresh";
+            this.toolTip1.SetToolTip(this.chkLogAutoRefresh, resources.GetString("chkLogAutoRefresh.ToolTip"));
+            this.chkLogAutoRefresh.UseVisualStyleBackColor = true;
+            this.chkLogAutoRefresh.CheckedChanged += new System.EventHandler(this.chkLogAutoRefresh_CheckedChanged);
             // 
             // chkSAMFilter
             // 
@@ -1826,6 +1838,43 @@
             this.grdEvents.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.grdEvents_RowPrePaint);
             this.grdEvents.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.grdEvents_RowsAdded);
             // 
+            // Level
+            // 
+            this.Level.DataPropertyName = "Level";
+            resources.ApplyResources(this.Level, "Level");
+            this.Level.Name = "Level";
+            this.Level.ReadOnly = true;
+            // 
+            // TimeStamp
+            // 
+            this.TimeStamp.DataPropertyName = "TimeStamp";
+            resources.ApplyResources(this.TimeStamp, "TimeStamp");
+            this.TimeStamp.Name = "TimeStamp";
+            this.TimeStamp.ReadOnly = true;
+            // 
+            // MessageObject
+            // 
+            this.MessageObject.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.MessageObject.DataPropertyName = "MessageObject";
+            resources.ApplyResources(this.MessageObject, "MessageObject");
+            this.MessageObject.Name = "MessageObject";
+            this.MessageObject.ReadOnly = true;
+            // 
+            // Exception
+            // 
+            this.Exception.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Exception.DataPropertyName = "ExceptionObject";
+            resources.ApplyResources(this.Exception, "Exception");
+            this.Exception.Name = "Exception";
+            this.Exception.ReadOnly = true;
+            // 
+            // LoggerName
+            // 
+            this.LoggerName.DataPropertyName = "LoggerName";
+            resources.ApplyResources(this.LoggerName, "LoggerName");
+            this.LoggerName.Name = "LoggerName";
+            this.LoggerName.ReadOnly = true;
+            // 
             // ZedGraphTimer
             // 
             this.ZedGraphTimer.Tick += new System.EventHandler(this.timer1_Tick);
@@ -1869,43 +1918,6 @@
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // Level
-            // 
-            this.Level.DataPropertyName = "Level";
-            resources.ApplyResources(this.Level, "Level");
-            this.Level.Name = "Level";
-            this.Level.ReadOnly = true;
-            // 
-            // TimeStamp
-            // 
-            this.TimeStamp.DataPropertyName = "TimeStamp";
-            resources.ApplyResources(this.TimeStamp, "TimeStamp");
-            this.TimeStamp.Name = "TimeStamp";
-            this.TimeStamp.ReadOnly = true;
-            // 
-            // MessageObject
-            // 
-            this.MessageObject.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.MessageObject.DataPropertyName = "MessageObject";
-            resources.ApplyResources(this.MessageObject, "MessageObject");
-            this.MessageObject.Name = "MessageObject";
-            this.MessageObject.ReadOnly = true;
-            // 
-            // Exception
-            // 
-            this.Exception.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Exception.DataPropertyName = "ExceptionObject";
-            resources.ApplyResources(this.Exception, "Exception");
-            this.Exception.Name = "Exception";
-            this.Exception.ReadOnly = true;
-            // 
-            // LoggerName
-            // 
-            this.LoggerName.DataPropertyName = "LoggerName";
-            resources.ApplyResources(this.LoggerName, "LoggerName");
-            this.LoggerName.Name = "LoggerName";
-            this.LoggerName.ReadOnly = true;
             // 
             // FlightData
             // 
@@ -2113,6 +2125,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MessageObject;
         private System.Windows.Forms.DataGridViewTextBoxColumn Exception;
         private System.Windows.Forms.DataGridViewTextBoxColumn LoggerName;
+        private System.Windows.Forms.CheckBox chkLogAutoRefresh;
 
     }
 }

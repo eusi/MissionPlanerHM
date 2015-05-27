@@ -6,11 +6,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using log4net;
+using System.Reflection;
 
 namespace MissionPlanner.Controls
 {
     public partial class MainSwitcher : IDisposable
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public delegate void ThemeManager(Control ctl);
 
         public static event ThemeManager ApplyTheme;
@@ -83,11 +87,21 @@ namespace MissionPlanner.Controls
                     current.Control.Close();
 
                     current.Control.Dispose();
+                    try
+                    {
+                        current.Control = (MyUserControl)Activator.CreateInstance(current.Control.GetType());
+                        // set the next new instance as not visible
+                        current.Control.Visible = false;
+                    }
+                    catch (Exception ex)
+                    {
 
-                    current.Control = (MyUserControl)Activator.CreateInstance(current.Control.GetType());
+                        log.Error("Error switching views. Cannot disable old view.", ex);
+                    }
 
-                    // set the next new instance as not visible
-                    current.Control.Visible = false;
+                 
+
+                  
                 }
             }
 

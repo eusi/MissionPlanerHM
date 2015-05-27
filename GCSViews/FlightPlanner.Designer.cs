@@ -51,15 +51,33 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FlightPlanner));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Commands = new System.Windows.Forms.DataGridView();
+            this.Command = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Param1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Param2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Param3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Param4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Lat = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Lon = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Alt = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Up = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Down = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Grad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Dist = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AZ = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.wpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.routeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Task = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsLoiterInterruptAllowed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.CHK_verifyheight = new System.Windows.Forms.CheckBox();
             this.TXT_WPRad = new System.Windows.Forms.TextBox();
             this.TXT_DefaultAlt = new System.Windows.Forms.TextBox();
@@ -102,31 +120,12 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.BUT_loadwpfile = new MissionPlanner.Controls.MyButton();
             this.BUT_saveWPFile = new MissionPlanner.Controls.MyButton();
-            this.btnSmartAir = new MissionPlanner.Controls.MyButton();
             this.chkAutoLoiterInterrupt = new System.Windows.Forms.CheckBox();
             this.hideWaypoints = new System.Windows.Forms.CheckBox();
             this.panelMap = new System.Windows.Forms.Panel();
             this.lblMessageTime = new System.Windows.Forms.Label();
             this.lblServerTime = new System.Windows.Forms.Label();
             this.lblServerInfo = new System.Windows.Forms.Label();
-            this.pnlSmartAir = new BSE.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.nudIntervall = new System.Windows.Forms.NumericUpDown();
-            this.myLabel5 = new MissionPlanner.Controls.MyLabel();
-            this.myLabel4 = new MissionPlanner.Controls.MyLabel();
-            this.txtJSPassword = new System.Windows.Forms.TextBox();
-            this.myLabel3 = new MissionPlanner.Controls.MyLabel();
-            this.myLabel2 = new MissionPlanner.Controls.MyLabel();
-            this.txtJSUser = new System.Windows.Forms.TextBox();
-            this.btnJSStop = new MissionPlanner.Controls.MyButton();
-            this.txtJSUrl = new System.Windows.Forms.TextBox();
-            this.btnJSStart = new MissionPlanner.Controls.MyButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.myLabel1 = new MissionPlanner.Controls.MyLabel();
-            this.btnStopWS = new MissionPlanner.Controls.MyButton();
-            this.txtWSUrl = new System.Windows.Forms.TextBox();
-            this.btnStartWS = new MissionPlanner.Controls.MyButton();
-            this.btnClose = new MissionPlanner.Controls.MyButton();
             this.lbl_distance = new System.Windows.Forms.Label();
             this.lbl_homedist = new System.Windows.Forms.Label();
             this.lbl_prevdist = new System.Windows.Forms.Label();
@@ -202,24 +201,6 @@
             this.panelBASE = new System.Windows.Forms.Panel();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.Command = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.Param1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Param2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Param3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Param4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Lat = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Lon = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Alt = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Up = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Down = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Grad = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Dist = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AZ = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.wpId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.routeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Task = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsLoiterInterruptAllowed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.Commands)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -230,10 +211,6 @@
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panelMap.SuspendLayout();
-            this.pnlSmartAir.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudIntervall)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.panelBASE.SuspendLayout();
@@ -243,14 +220,14 @@
             // 
             this.Commands.AllowUserToAddRows = false;
             resources.ApplyResources(this.Commands, "Commands");
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Commands.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Commands.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.Commands.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Command,
             this.Param1,
@@ -271,17 +248,17 @@
             this.Task,
             this.IsLoiterInterruptAllowed});
             this.Commands.Name = "Commands";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.Format = "N0";
-            dataGridViewCellStyle5.NullValue = "0";
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            this.Commands.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            this.Commands.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.Format = "N0";
+            dataGridViewCellStyle13.NullValue = "0";
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            this.Commands.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
+            this.Commands.RowsDefaultCellStyle = dataGridViewCellStyle14;
             this.Commands.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.Commands_CellContentClick);
             this.Commands.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.Commands_CellEndEdit);
             this.Commands.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.Commands_DataError);
@@ -290,6 +267,143 @@
             this.Commands.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.Commands_RowEnter);
             this.Commands.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.Commands_RowsAdded);
             this.Commands.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.Commands_RowValidating);
+            // 
+            // Command
+            // 
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(68)))), ((int)(((byte)(69)))));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.White;
+            this.Command.DefaultCellStyle = dataGridViewCellStyle10;
+            this.Command.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+            resources.ApplyResources(this.Command, "Command");
+            this.Command.Name = "Command";
+            // 
+            // Param1
+            // 
+            this.Param1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Param1, "Param1");
+            this.Param1.Name = "Param1";
+            this.Param1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Param1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Param2
+            // 
+            this.Param2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Param2, "Param2");
+            this.Param2.Name = "Param2";
+            this.Param2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Param2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Param3
+            // 
+            this.Param3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Param3, "Param3");
+            this.Param3.Name = "Param3";
+            this.Param3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Param3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Param4
+            // 
+            this.Param4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Param4, "Param4");
+            this.Param4.Name = "Param4";
+            this.Param4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Param4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Lat
+            // 
+            this.Lat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Lat, "Lat");
+            this.Lat.Name = "Lat";
+            this.Lat.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Lon
+            // 
+            this.Lon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Lon, "Lon");
+            this.Lon.Name = "Lon";
+            this.Lon.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Alt
+            // 
+            this.Alt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            resources.ApplyResources(this.Alt, "Alt");
+            this.Alt.Name = "Alt";
+            this.Alt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Delete
+            // 
+            resources.ApplyResources(this.Delete, "Delete");
+            this.Delete.Name = "Delete";
+            this.Delete.Text = "X";
+            // 
+            // Up
+            // 
+            this.Up.DefaultCellStyle = dataGridViewCellStyle11;
+            resources.ApplyResources(this.Up, "Up");
+            this.Up.Image = ((System.Drawing.Image)(resources.GetObject("Up.Image")));
+            this.Up.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.Up.Name = "Up";
+            // 
+            // Down
+            // 
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.Down.DefaultCellStyle = dataGridViewCellStyle12;
+            resources.ApplyResources(this.Down, "Down");
+            this.Down.Image = ((System.Drawing.Image)(resources.GetObject("Down.Image")));
+            this.Down.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.Down.Name = "Down";
+            // 
+            // Grad
+            // 
+            resources.ApplyResources(this.Grad, "Grad");
+            this.Grad.Name = "Grad";
+            this.Grad.ReadOnly = true;
+            this.Grad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Dist
+            // 
+            resources.ApplyResources(this.Dist, "Dist");
+            this.Dist.Name = "Dist";
+            this.Dist.ReadOnly = true;
+            this.Dist.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // AZ
+            // 
+            resources.ApplyResources(this.AZ, "AZ");
+            this.AZ.Name = "AZ";
+            this.AZ.ReadOnly = true;
+            this.AZ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // wpId
+            // 
+            this.wpId.DataPropertyName = "wpId";
+            this.wpId.FillWeight = 40F;
+            resources.ApplyResources(this.wpId, "wpId");
+            this.wpId.Name = "wpId";
+            this.wpId.ReadOnly = true;
+            // 
+            // routeId
+            // 
+            this.routeId.DataPropertyName = "routeId";
+            this.routeId.FillWeight = 50F;
+            resources.ApplyResources(this.routeId, "routeId");
+            this.routeId.Name = "routeId";
+            this.routeId.ReadOnly = true;
+            // 
+            // Task
+            // 
+            this.Task.FillWeight = 150F;
+            resources.ApplyResources(this.Task, "Task");
+            this.Task.Name = "Task";
+            this.Task.ReadOnly = true;
+            // 
+            // IsLoiterInterruptAllowed
+            // 
+            this.IsLoiterInterruptAllowed.FillWeight = 1F;
+            resources.ApplyResources(this.IsLoiterInterruptAllowed, "IsLoiterInterruptAllowed");
+            this.IsLoiterInterruptAllowed.Name = "IsLoiterInterruptAllowed";
+            this.IsLoiterInterruptAllowed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IsLoiterInterruptAllowed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // CHK_verifyheight
             // 
@@ -409,8 +523,8 @@
             // 
             // dataGridViewImageColumn1
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle15;
             resources.ApplyResources(this.dataGridViewImageColumn1, "dataGridViewImageColumn1");
             this.dataGridViewImageColumn1.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn1.Image")));
             this.dataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -418,8 +532,8 @@
             // 
             // dataGridViewImageColumn2
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridViewImageColumn2.DefaultCellStyle = dataGridViewCellStyle16;
             resources.ApplyResources(this.dataGridViewImageColumn2, "dataGridViewImageColumn2");
             this.dataGridViewImageColumn2.Image = ((System.Drawing.Image)(resources.GetObject("dataGridViewImageColumn2.Image")));
             this.dataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
@@ -578,7 +692,6 @@
             this.flowLayoutPanel1.Controls.Add(this.panel2);
             this.flowLayoutPanel1.Controls.Add(this.panel5);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
-            this.flowLayoutPanel1.Controls.Add(this.btnSmartAir);
             this.flowLayoutPanel1.Controls.Add(this.chkAutoLoiterInterrupt);
             this.flowLayoutPanel1.Controls.Add(this.hideWaypoints);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
@@ -642,13 +755,6 @@
             this.BUT_saveWPFile.UseVisualStyleBackColor = true;
             this.BUT_saveWPFile.Click += new System.EventHandler(this.BUT_saveWPFile_Click);
             // 
-            // btnSmartAir
-            // 
-            resources.ApplyResources(this.btnSmartAir, "btnSmartAir");
-            this.btnSmartAir.Name = "btnSmartAir";
-            this.btnSmartAir.UseVisualStyleBackColor = true;
-            this.btnSmartAir.Click += new System.EventHandler(this.btnSmartAir_Click);
-            // 
             // chkAutoLoiterInterrupt
             // 
             resources.ApplyResources(this.chkAutoLoiterInterrupt, "chkAutoLoiterInterrupt");
@@ -670,7 +776,6 @@
             this.panelMap.Controls.Add(this.lblMessageTime);
             this.panelMap.Controls.Add(this.lblServerTime);
             this.panelMap.Controls.Add(this.lblServerInfo);
-            this.panelMap.Controls.Add(this.pnlSmartAir);
             this.panelMap.Controls.Add(this.lbl_distance);
             this.panelMap.Controls.Add(this.lbl_homedist);
             this.panelMap.Controls.Add(this.lbl_prevdist);
@@ -696,162 +801,6 @@
             // 
             resources.ApplyResources(this.lblServerInfo, "lblServerInfo");
             this.lblServerInfo.Name = "lblServerInfo";
-            // 
-            // pnlSmartAir
-            // 
-            this.pnlSmartAir.AssociatedSplitter = null;
-            this.pnlSmartAir.BackColor = System.Drawing.Color.Transparent;
-            this.pnlSmartAir.CaptionFont = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Bold);
-            this.pnlSmartAir.CaptionHeight = 27;
-            this.pnlSmartAir.Controls.Add(this.groupBox2);
-            this.pnlSmartAir.Controls.Add(this.groupBox1);
-            this.pnlSmartAir.Controls.Add(this.btnClose);
-            this.pnlSmartAir.CustomColors.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
-            this.pnlSmartAir.CustomColors.CaptionCloseIcon = System.Drawing.SystemColors.ControlText;
-            this.pnlSmartAir.CustomColors.CaptionExpandIcon = System.Drawing.SystemColors.ControlText;
-            this.pnlSmartAir.CustomColors.CaptionGradientBegin = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(244)))), ((int)(((byte)(242)))));
-            this.pnlSmartAir.CustomColors.CaptionGradientEnd = System.Drawing.SystemColors.ButtonFace;
-            this.pnlSmartAir.CustomColors.CaptionGradientMiddle = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
-            this.pnlSmartAir.CustomColors.CaptionSelectedGradientBegin = System.Drawing.Color.FromArgb(((int)(((byte)(182)))), ((int)(((byte)(189)))), ((int)(((byte)(210)))));
-            this.pnlSmartAir.CustomColors.CaptionSelectedGradientEnd = System.Drawing.Color.FromArgb(((int)(((byte)(182)))), ((int)(((byte)(189)))), ((int)(((byte)(210)))));
-            this.pnlSmartAir.CustomColors.CaptionText = System.Drawing.SystemColors.ControlText;
-            this.pnlSmartAir.CustomColors.CollapsedCaptionText = System.Drawing.SystemColors.ControlText;
-            this.pnlSmartAir.CustomColors.ContentGradientBegin = System.Drawing.SystemColors.ButtonFace;
-            this.pnlSmartAir.CustomColors.ContentGradientEnd = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(245)))), ((int)(((byte)(244)))));
-            this.pnlSmartAir.CustomColors.InnerBorderColor = System.Drawing.SystemColors.Window;
-            this.pnlSmartAir.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pnlSmartAir.Image = null;
-            resources.ApplyResources(this.pnlSmartAir, "pnlSmartAir");
-            this.pnlSmartAir.Name = "pnlSmartAir";
-            this.pnlSmartAir.ShowCloseIcon = true;
-            this.pnlSmartAir.ToolTipTextCloseIcon = null;
-            this.pnlSmartAir.ToolTipTextExpandIconPanelCollapsed = null;
-            this.pnlSmartAir.ToolTipTextExpandIconPanelExpanded = null;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.nudIntervall);
-            this.groupBox2.Controls.Add(this.myLabel5);
-            this.groupBox2.Controls.Add(this.myLabel4);
-            this.groupBox2.Controls.Add(this.txtJSPassword);
-            this.groupBox2.Controls.Add(this.myLabel3);
-            this.groupBox2.Controls.Add(this.myLabel2);
-            this.groupBox2.Controls.Add(this.txtJSUser);
-            this.groupBox2.Controls.Add(this.btnJSStop);
-            this.groupBox2.Controls.Add(this.txtJSUrl);
-            this.groupBox2.Controls.Add(this.btnJSStart);
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // nudIntervall
-            // 
-            resources.ApplyResources(this.nudIntervall, "nudIntervall");
-            this.nudIntervall.Name = "nudIntervall";
-            this.nudIntervall.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // myLabel5
-            // 
-            resources.ApplyResources(this.myLabel5, "myLabel5");
-            this.myLabel5.Name = "myLabel5";
-            this.myLabel5.resize = false;
-            // 
-            // myLabel4
-            // 
-            resources.ApplyResources(this.myLabel4, "myLabel4");
-            this.myLabel4.Name = "myLabel4";
-            this.myLabel4.resize = false;
-            // 
-            // txtJSPassword
-            // 
-            this.txtJSPassword.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.txtJSPassword, "txtJSPassword");
-            this.txtJSPassword.Name = "txtJSPassword";
-            // 
-            // myLabel3
-            // 
-            resources.ApplyResources(this.myLabel3, "myLabel3");
-            this.myLabel3.Name = "myLabel3";
-            this.myLabel3.resize = false;
-            // 
-            // myLabel2
-            // 
-            resources.ApplyResources(this.myLabel2, "myLabel2");
-            this.myLabel2.Name = "myLabel2";
-            this.myLabel2.resize = false;
-            // 
-            // txtJSUser
-            // 
-            this.txtJSUser.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.txtJSUser, "txtJSUser");
-            this.txtJSUser.Name = "txtJSUser";
-            // 
-            // btnJSStop
-            // 
-            resources.ApplyResources(this.btnJSStop, "btnJSStop");
-            this.btnJSStop.Name = "btnJSStop";
-            this.btnJSStop.UseVisualStyleBackColor = true;
-            this.btnJSStop.Click += new System.EventHandler(this.btnJSStop_Click);
-            // 
-            // txtJSUrl
-            // 
-            this.txtJSUrl.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.txtJSUrl, "txtJSUrl");
-            this.txtJSUrl.Name = "txtJSUrl";
-            // 
-            // btnJSStart
-            // 
-            resources.ApplyResources(this.btnJSStart, "btnJSStart");
-            this.btnJSStart.Name = "btnJSStart";
-            this.btnJSStart.UseVisualStyleBackColor = true;
-            this.btnJSStart.Click += new System.EventHandler(this.btnJSStart_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.myLabel1);
-            this.groupBox1.Controls.Add(this.btnStopWS);
-            this.groupBox1.Controls.Add(this.txtWSUrl);
-            this.groupBox1.Controls.Add(this.btnStartWS);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // myLabel1
-            // 
-            resources.ApplyResources(this.myLabel1, "myLabel1");
-            this.myLabel1.Name = "myLabel1";
-            this.myLabel1.resize = false;
-            // 
-            // btnStopWS
-            // 
-            resources.ApplyResources(this.btnStopWS, "btnStopWS");
-            this.btnStopWS.Name = "btnStopWS";
-            this.btnStopWS.UseVisualStyleBackColor = true;
-            this.btnStopWS.Click += new System.EventHandler(this.btnStopWS_Click);
-            // 
-            // txtWSUrl
-            // 
-            this.txtWSUrl.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.txtWSUrl, "txtWSUrl");
-            this.txtWSUrl.Name = "txtWSUrl";
-            // 
-            // btnStartWS
-            // 
-            resources.ApplyResources(this.btnStartWS, "btnStartWS");
-            this.btnStartWS.Name = "btnStartWS";
-            this.btnStartWS.UseVisualStyleBackColor = true;
-            this.btnStartWS.Click += new System.EventHandler(this.btnStartWS_Click);
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.Name = "btnClose";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // lbl_distance
             // 
@@ -1388,143 +1337,6 @@
             this.timer1.Interval = 600;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // Command
-            // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(68)))), ((int)(((byte)(69)))));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            this.Command.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Command.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-            resources.ApplyResources(this.Command, "Command");
-            this.Command.Name = "Command";
-            // 
-            // Param1
-            // 
-            this.Param1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Param1, "Param1");
-            this.Param1.Name = "Param1";
-            this.Param1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Param1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Param2
-            // 
-            this.Param2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Param2, "Param2");
-            this.Param2.Name = "Param2";
-            this.Param2.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Param2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Param3
-            // 
-            this.Param3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Param3, "Param3");
-            this.Param3.Name = "Param3";
-            this.Param3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Param3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Param4
-            // 
-            this.Param4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Param4, "Param4");
-            this.Param4.Name = "Param4";
-            this.Param4.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Param4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Lat
-            // 
-            this.Lat.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Lat, "Lat");
-            this.Lat.Name = "Lat";
-            this.Lat.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Lon
-            // 
-            this.Lon.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Lon, "Lon");
-            this.Lon.Name = "Lon";
-            this.Lon.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Alt
-            // 
-            this.Alt.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            resources.ApplyResources(this.Alt, "Alt");
-            this.Alt.Name = "Alt";
-            this.Alt.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Delete
-            // 
-            resources.ApplyResources(this.Delete, "Delete");
-            this.Delete.Name = "Delete";
-            this.Delete.Text = "X";
-            // 
-            // Up
-            // 
-            this.Up.DefaultCellStyle = dataGridViewCellStyle3;
-            resources.ApplyResources(this.Up, "Up");
-            this.Up.Image = ((System.Drawing.Image)(resources.GetObject("Up.Image")));
-            this.Up.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.Up.Name = "Up";
-            // 
-            // Down
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.Down.DefaultCellStyle = dataGridViewCellStyle4;
-            resources.ApplyResources(this.Down, "Down");
-            this.Down.Image = ((System.Drawing.Image)(resources.GetObject("Down.Image")));
-            this.Down.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.Down.Name = "Down";
-            // 
-            // Grad
-            // 
-            resources.ApplyResources(this.Grad, "Grad");
-            this.Grad.Name = "Grad";
-            this.Grad.ReadOnly = true;
-            this.Grad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Dist
-            // 
-            resources.ApplyResources(this.Dist, "Dist");
-            this.Dist.Name = "Dist";
-            this.Dist.ReadOnly = true;
-            this.Dist.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // AZ
-            // 
-            resources.ApplyResources(this.AZ, "AZ");
-            this.AZ.Name = "AZ";
-            this.AZ.ReadOnly = true;
-            this.AZ.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // wpId
-            // 
-            this.wpId.DataPropertyName = "wpId";
-            this.wpId.FillWeight = 40F;
-            resources.ApplyResources(this.wpId, "wpId");
-            this.wpId.Name = "wpId";
-            this.wpId.ReadOnly = true;
-            // 
-            // routeId
-            // 
-            this.routeId.DataPropertyName = "routeId";
-            this.routeId.FillWeight = 50F;
-            resources.ApplyResources(this.routeId, "routeId");
-            this.routeId.Name = "routeId";
-            this.routeId.ReadOnly = true;
-            // 
-            // Task
-            // 
-            this.Task.FillWeight = 150F;
-            resources.ApplyResources(this.Task, "Task");
-            this.Task.Name = "Task";
-            this.Task.ReadOnly = true;
-            // 
-            // IsLoiterInterruptAllowed
-            // 
-            this.IsLoiterInterruptAllowed.FillWeight = 1F;
-            resources.ApplyResources(this.IsLoiterInterruptAllowed, "IsLoiterInterruptAllowed");
-            this.IsLoiterInterruptAllowed.Name = "IsLoiterInterruptAllowed";
-            this.IsLoiterInterruptAllowed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.IsLoiterInterruptAllowed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // FlightPlanner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1550,12 +1362,6 @@
             this.panel2.ResumeLayout(false);
             this.panelMap.ResumeLayout(false);
             this.panelMap.PerformLayout();
-            this.pnlSmartAir.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudIntervall)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.panelBASE.ResumeLayout(false);
@@ -1684,26 +1490,7 @@
         private System.Windows.Forms.ToolStripMenuItem createSplineCircleToolStripMenuItem;
         private System.Windows.Forms.ComboBox CMB_altmode;
         private System.Windows.Forms.ToolStripMenuItem fromSHPToolStripMenuItem;
-        private Controls.MyButton btnSmartAir;
-        private BSE.Windows.Forms.Panel pnlSmartAir;
-        private System.Windows.Forms.TextBox txtWSUrl;
-        private Controls.MyButton btnStartWS;
-        private Controls.MyButton btnStopWS;
-        private Controls.MyButton btnClose;
         private System.Windows.Forms.CheckBox chkAutoLoiterInterrupt;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox txtJSUser;
-        private Controls.MyButton btnJSStop;
-        private System.Windows.Forms.TextBox txtJSUrl;
-        private Controls.MyButton btnJSStart;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private Controls.MyLabel myLabel1;
-        private Controls.MyLabel myLabel3;
-        private Controls.MyLabel myLabel2;
-        private Controls.MyLabel myLabel4;
-        private System.Windows.Forms.TextBox txtJSPassword;
-        private System.Windows.Forms.NumericUpDown nudIntervall;
-        private Controls.MyLabel myLabel5;
         private System.Windows.Forms.Label lblServerInfo;
         private System.Windows.Forms.CheckBox hideWaypoints;
         private System.Windows.Forms.Label lblMessageTime;

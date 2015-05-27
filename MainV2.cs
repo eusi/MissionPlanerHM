@@ -1019,38 +1019,38 @@ namespace MissionPlanner
                             _connectionControl.TOOL_APMFirmware.SelectedIndex = _connectionControl.TOOL_APMFirmware.Items.IndexOf(Firmwares.ArduPlane);
                         }
 
-                    // check for newer firmware
-                      var softwares = Firmware.LoadSoftwares();
+                    //// check for newer firmware
+                    //  var softwares = Firmware.LoadSoftwares();
 
-                      if (softwares.Count > 0)
-                      {
-                          try
-                          {
-                              string[] fields1 = comPort.MAV.VersionString.Split(' ');
+                    //  if (softwares.Count > 0)
+                    //  {
+                    //      try
+                    //      {
+                    //          string[] fields1 = comPort.MAV.VersionString.Split(' ');
 
-                              foreach (Firmware.software item in softwares)
-                              {
-                                  string[] fields2 = item.name.Split(' ');
+                    //          foreach (Firmware.software item in softwares)
+                    //          {
+                    //              string[] fields2 = item.name.Split(' ');
 
-                                  // check primare firmware type. ie arudplane, arducopter
-                                  if (fields1[0] == fields2[0])
-                                  {
-                                      Version ver1 = VersionDetection.GetVersion(comPort.MAV.VersionString);
-                                      Version ver2 = VersionDetection.GetVersion(item.name);
+                    //              // check primare firmware type. ie arudplane, arducopter
+                    //              if (fields1[0] == fields2[0])
+                    //              {
+                    //                  Version ver1 = VersionDetection.GetVersion(comPort.MAV.VersionString);
+                    //                  Version ver2 = VersionDetection.GetVersion(item.name);
 
-                                      if (ver2 > ver1)
-                                      {
-                                          Common.MessageShowAgain("New Firmware","New firmware available\n" + item.name + "\nPlease upgrade");
-                                          break;
-                                      }
+                    //                  if (ver2 > ver1)
+                    //                  {
+                    //                      Common.MessageShowAgain("New Firmware","New firmware available\n" + item.name + "\nPlease upgrade");
+                    //                      break;
+                    //                  }
 
-                                      // check the first hit only
-                                      break;
-                                  }
-                              }
-                          }
-                          catch (Exception ex) { log.Error(ex); }
-                      }
+                    //                  // check the first hit only
+                    //                  break;
+                    //              }
+                    //          }
+                    //      }
+                    //      catch (Exception ex) { log.Error(ex); }
+                    //  }
 
                     FlightData.CheckBatteryShow();
 
@@ -2050,24 +2050,26 @@ namespace MissionPlanner
 
             Program.Splash.Close();
 
-            try
-            {
-                // single update check per day - in a seperate thread
-                if (getConfig("update_check") != DateTime.Now.ToShortDateString())
-                {
-                    System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
-                    config["update_check"] = DateTime.Now.ToShortDateString();
-                }
-                else if (getConfig("beta_updates") == "True")
-                {
-                    MissionPlanner.Utilities.Update.dobeta = true;
-                    System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
-                }
-            }
-            catch (Exception ex)
-            {
-                log.Error("Update check failed", ex);
-            }
+            // deactivate update check for smartair
+            //try
+            //{
+             
+            //    // single update check per day - in a seperate thread
+            //    if (getConfig("update_check") != DateTime.Now.ToShortDateString())
+            //    {
+            //        System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
+            //        config["update_check"] = DateTime.Now.ToShortDateString();
+            //    }
+            //    else if (getConfig("beta_updates") == "True")
+            //    {
+            //        MissionPlanner.Utilities.Update.dobeta = true;
+            //        System.Threading.ThreadPool.QueueUserWorkItem(checkupdate);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    log.Error("Update check failed", ex);
+            //}
 
             try
             {

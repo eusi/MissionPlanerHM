@@ -256,6 +256,12 @@
     <Compile Include="GCSViews\ConfigurationView\ConfigSmartAir.Designer.cs">
       <DependentUpon>ConfigSmartAir.cs</DependentUpon>
     </Compile>
+    <Compile Include="GCSViews\CustomYesNoMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GCSViews\CustomYesNoMessageBox.Designer.cs">
+      <DependentUpon>CustomYesNoMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="GCSViews\ExternalFlightData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -844,6 +850,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ConfigurationView\ConfigTradHeli.zh-TW.resx">
       <DependentUpon>ConfigTradHeli.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GCSViews\CustomYesNoMessageBox.resx">
+      <DependentUpon>CustomYesNoMessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\ExternalFlightData.resx">
       <DependentUpon>ExternalFlightData.cs</DependentUpon>

@@ -175,36 +175,45 @@ namespace MissionPlanner.GCSViews
 
         public void drawLogEntry(LoggingEvent logEntry)
         {
-           
-            if (InvokeRequired)
+            try
             {
-                this.BeginInvoke(new DrawLogEntryDelegate(drawLogEntry), logEntry);
-                return;
-            }
-            if (_filteredLogEntries != null && logEntry != null  )
-            {
-                if (this.chkSAMFilter.Checked)
-                {
 
-                    if (logEntry.LoggerName == typeof(MissionPlanner.GCSViews.FlightPlanner).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.MissionPlannerService).ToString()
-                        || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.SmartAirContext).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.JudgeServerWorker).ToString())
+
+                if (InvokeRequired)
+                {
+                    this.BeginInvoke(new DrawLogEntryDelegate(drawLogEntry), logEntry);
+                    return;
+                }
+                if (_filteredLogEntries != null && logEntry != null)
+                {
+                    if (this.chkSAMFilter.Checked)
                     {
-                        _filteredLogEntries.Insert(0, logEntry);
+
+                        if (logEntry.LoggerName == typeof(MissionPlanner.GCSViews.FlightPlanner).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.MissionPlannerService).ToString()
+                            || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.SmartAirContext).ToString() || logEntry.LoggerName == typeof(MissionPlanner.SmartAir.JudgeServerWorker).ToString())
+                        {
+                            _filteredLogEntries.Insert(0, logEntry);
+
+                        }
 
                     }
+                    else
+                    {
+                        _filteredLogEntries.Insert(0, logEntry);
+                    }
+                    _fullLogFile.Insert(0, logEntry);
 
-                }
-                else
-                {
-                    _filteredLogEntries.Insert(0, logEntry);
-                }
-                _fullLogFile.Insert(0, logEntry);
-      
-                if (_filteredLogEntries.Count > 500)
-                    _filteredLogEntries.RemoveAt(500);
+                    if (_filteredLogEntries.Count > 500)
+                        _filteredLogEntries.RemoveAt(500);
 
-                if (_filteredLogEntries.Count > 500)
-                    _filteredLogEntries.RemoveAt(500);
+                    if (_fullLogFile.Count > 500)
+                        _fullLogFile.RemoveAt(500);
+                }
+            }
+            catch (Exception ex )
+            {
+
+                log.Error("Error showing log entry in flight data.", ex);
             }
 
 
@@ -230,10 +239,13 @@ namespace MissionPlanner.GCSViews
                     _filteredLogEntries.Add(entry);
                 }
             }
+            if (!chkLogAutoRefresh.Checked)
+                chkLogAutoRefresh_CheckedChanged(sender, e);
         }
 
         private void grdEvents_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
+            if(chkLogAutoRefresh.Checked)
             if (this.grdEvents.Rows.Count > 0)
                 this.grdEvents.FirstDisplayedScrollingRowIndex = 0;
         }
@@ -3311,6 +3323,27 @@ namespace MissionPlanner.GCSViews
 
             //thisthread.Join();
         }
+
+        private void chkLogAutoRefresh_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkLogAutoRefresh.Checked)
+            {
+                BindingList<LoggingEvent> tempStaticList = new BindingList<LoggingEvent>();
+
+                foreach (var logEvent in _filteredLogEntries)
+                {
+                    tempStaticList.Add(logEvent);
+                }
+                grdEvents.DataSource = tempStaticList;
+            }
+            else
+            {
+                grdEvents.DataSource = _filteredLogEntries;
+
+            }
+        }
+
+     
 
       
 
